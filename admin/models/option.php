@@ -7,32 +7,23 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelOption extends JModel
+class JoomElectionModelOption extends JModelLegacy
 {
 	var $_list = null;
 	var $_page = null;
-	
-	function __construct()
-	{
-		parent::__construct();
-	}
 
 	
 	function &getOptions()
 	{
-		global $mainframe;
-		
-		// Initialize variables
-		$db		=& $this->getDBO();
-		
-		$limit 		= JRequest::getVar('limit', $mainframe->getCfg('list_limit')); 
-		$limitstart = JRequest::getVar('limitstart', 0);
+    $input = JFactory::getApplication()->input;
+		$limit 		= $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
+		$limitstart = $input->getInt('limitstart', 0);
 		
 		// Get the total number of records
 		$query = 'SELECT COUNT(*)'
 		. ' FROM #__joomelection_option';
-		$db->setQuery($query);
-		$total = $db->loadResult();
+		$this->_db->setQuery($query);
+		$total = $this->_db->loadResult();
 		
 		// Create the pagination object
 		jimport('joomla.html.pagination');
@@ -62,7 +53,8 @@ class JoomElectionModelOption extends JModel
 
 	function getOption()
 	{
-		$option_ids = JRequest::getVar('cid',  array(0), '', 'array');
+    $input = JFactory::getApplication()->input;
+		$option_ids = $input->get('cid',  array(), 'array');
 		
 		$query = ' SELECT * FROM #__joomelection_option '.
 				'  WHERE option_id = '.(int) $option_ids[0];
@@ -85,9 +77,12 @@ class JoomElectionModelOption extends JModel
 	
 	
 	function getOptionFromRequest()	{
+    $input = JFactory::getApplication()->input;
+    
 		$option =& $this->getTable();
-		$data 	= JRequest::get( 'post' );
-		if (!$option->bind($data)) {
+		$data = $input->getArray(); //Get all input
+		
+    if (!$option->bind($data)) {
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
@@ -96,10 +91,11 @@ class JoomElectionModelOption extends JModel
 
 
 	function store()	{
-		global $mainframe;
+    $input = JFactory::getApplication()->input;
+  
 		$option 		=& $this->getTable();
 		$electionModel 	=& $this->getInstance('election', 'JoomElectionModel');
-		$data 			= JRequest::get( 'post' );
+		$data = $input->getArray(); //Get all input
 
 		// Bind the form fields to the table
 		if (!$option->bind($data)) {
@@ -109,19 +105,19 @@ class JoomElectionModelOption extends JModel
 		
 		//Validate option name is not empty
 		if ((strlen($option->name) > 0) == false) {
-			$mainframe->enqueueMessage('You have to give a name to option', 'error');
+			JFactory::getApplication()->enqueueMessage('You have to give a name to option', 'error');
 			return false;
 		}
 		
 		//Validate option number is number and not 0
 		if ((((int) $option->option_number) > 0) == false) {
-			$mainframe->enqueueMessage('Option number have to valid number (zero is not valid)', 'error');
+			JFactory::getApplication()->enqueueMessage('Option number have to valid number (zero is not valid)', 'error');
 			return false;
 		}
 		
 		//Validate that election isa selected
 		if (($option->election_id > 0) == false) {
-			$mainframe->enqueueMessage('You have to select election for option', 'error');
+			JFactory::getApplication()->enqueueMessage('You have to select election for option', 'error');
 			return false;
 		}
 		
@@ -129,17 +125,17 @@ class JoomElectionModelOption extends JModel
 		if($election->election_type_id == 2) {
 			//List election. Validate that list is selected
 			if (($option->list_id > 0) == false) {
-				$mainframe->enqueueMessage('You have to select election list for option. Create one first i there is none', 'error');
+				JFactory::getApplication()->enqueueMessage('You have to select election list for option. Create one first i there is none', 'error');
 				return false;
 			}
 		}
 		
-		$option->description = JRequest::getVar( 'description', '', 'post', 'string', JREQUEST_ALLOWRAW );
+		$option->description = $input->getHtml( 'description', '');
 		
 		// Store the table to the database
 		if (!$option->store()) {
 			$this->setError( $row->getErrorMsg());
-			$mainframe->enqueueMessage('Unable to save option', 'error');
+			JFactory::getApplication()->enqueueMessage('Unable to save option', 'error');
 			return false;
 		}
 
@@ -149,7 +145,9 @@ class JoomElectionModelOption extends JModel
 
 	function delete()
 	{
-		$option_Ids = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+    $input = JFactory::getApplication()->input;
+  
+		$option_Ids = $input->get( 'cid', array(), 'array' );
 		$row 		=& $this->getTable();
 		$voteModel 	=& $this->getInstance('vote', 'JoomElectionModel');
 
@@ -219,8 +217,9 @@ class JoomElectionModelOption extends JModel
 	
 	
 	function publish()	{
-		$cid		= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$task		= JRequest::getCmd( 'task' );
+    $input = JFactory::getApplication()->input;
+		$cid		= $input->get( 'cid', array(), 'array' );
+		$task		= $input->getCmd( 'task' );
 		$publish	= ($task == 'publish');
 		$n			= count( $cid );
 
@@ -243,4 +242,3 @@ class JoomElectionModelOption extends JModel
 		return true;
 	}
 }
-?>

@@ -7,14 +7,8 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelElectiontype extends JModel
+class JoomElectionModelElectiontype extends JModelLegacy
 {
-	
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 
 	function getElectionTypes()
 	{

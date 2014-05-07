@@ -6,18 +6,20 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewOption extends JView
+class JoomElectionViewOption extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
+    $input = JFactory::getApplication()->input;
+  
 		//Get models stored to view in controller
 		$optionModel		= &$this->getModel('option');
 		$electionModel		= &$this->getModel('election');
 		$electionListModel	= &$this->getModel('list');
 		
 		//Continue editing?
-		$continue_edit = JRequest::getVar('continue_edit',  0, 'post', 'int');
+		$continue_edit = $input->getInt('continue_edit',  0);
 		if($continue_edit == 1) {
 			$option	= $optionModel->getOptionFromRequest();
 		}

@@ -7,12 +7,13 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewVoterspasswordgeneration extends JView
+class JoomElectionViewVoterspasswordgeneration extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
-		$selectedVoters	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+    $input = JFactory::getApplication()->input;
+		$selectedVoters	= $input->get( 'cid', array(), 'array' );
 		if(((int) $selectedVoters[0]) == 0) {
 			$selectedVoutersCount = 0;
 		}

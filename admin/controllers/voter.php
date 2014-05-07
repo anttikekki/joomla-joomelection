@@ -5,7 +5,7 @@
 defined('_JEXEC') or die();
 
 
-class JoomElectionControllerVoter extends JoomElectionController
+class JoomElectionControllerVoter extends JControllerLegacy
 {
 
 	function __construct()
@@ -53,7 +53,8 @@ class JoomElectionControllerVoter extends JoomElectionController
 			$link = 'index.php?option=com_joomelection&controller=voter&task=showList';
 			$this->setRedirect($link, $msg);
 		} else {
-			JRequest::setVar( 'continue_edit', '1' );
+			$input = JFactory::getApplication()->input;
+			$input->setVar('continue_edit', '1');
 			$this->edit();
 		}
 	}
@@ -147,4 +148,3 @@ class JoomElectionControllerVoter extends JoomElectionController
 		$this->setRedirect( 'index.php?option=com_joomelection&controller=voter&task=showList', $msg );
 	}
 }
-?>

@@ -7,11 +7,13 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewVoters extends JView
+class JoomElectionViewVoters extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
+    $input = JFactory::getApplication()->input;
+  
 		JToolBarHelper::title(   JText::_( 'Voters' ), 'generic.png' );
 		JToolBarHelper::custom('showVotersImport', 'upload.png', 'upload.png', $alt = JText::_( 'Import voters' ), $listSelect = false);
 		JToolBarHelper::custom('showGeneratePasswordForm', 'send.png', 'send.png', $alt = JText::_( 'Generate passwords' ), $listSelect = false);
@@ -27,14 +29,14 @@ class JoomElectionViewVoters extends JView
 		// Get data from the model
 		$voters			=& $voterModel->getVoters();
 		$pagination 	=& $voterModel->getPagination();
-		$search 		= JRequest::getVar('search', '');
+		$search 		= $input->getInt('search', '');
 		
 		$electionList	=& $electionModel->getAllElections();
 		$default_election_id = 0;
 		if(count($electionList) > 0) {
 			$default_election_id = $electionList[0]->election_id;
 		}
-		$election_id	= JRequest::getVar('election_id', $default_election_id);
+		$election_id	= $input->getInt('election_id', $default_election_id);
 		$electionList	= JHTML::_('select.genericlist', $electionList, 'election_id', 'class="inputbox" onchange="document.adminForm.submit();" '. '', 'election_id', 'election_name', $election_id );
 		
 		$this->assignRef('voters',			$voters);

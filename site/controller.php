@@ -1,35 +1,29 @@
 <?php
 
+// no direct access
+defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
 
-
-class JoomElectionController extends JController
-{
-
-	function display()
-	{
-		parent::display();
-	}
+class JoomElectionController extends JControllerLegacy {
 	
 	
-	function confirmVote()
-	{
+	function confirmVote() {
 		$user	=& JFactory::getUser();
+    $input = JFactory::getApplication()->input;
 		
 		//If gid = 18 then registered User, meaning Voter
 		if( $user->get('gid') == 18 ) {
 			
 			$model = $this->getModel('joomelection');
-			$voted_option = $model->getOptionIdDecrypted(JRequest::getVar('vote_option', 0));
+			$voted_option = $model->getOptionIdDecrypted($input->getCmd('vote_option', 0));
 			$option_is_valid = $model->validOption($voted_option);
 			
 			if($option_is_valid) {
 				$election = $model->getElectionIdFromOption($voted_option);
 				$voter_is_valid = $model->getElectionVoterStatus($election);
 				if($voter_is_valid) {
-					$model = &$this->getModel('joomelection' );
-					$view = & $this->getView('confirmvote', 'html');
+					$model =& $this->getModel('joomelection' );
+					$view =& $this->getView('confirmvote', 'html');
 					$view->setModel( $model, true );
 					$view->setLayout("default");
 					$view->display(); 
@@ -52,16 +46,16 @@ class JoomElectionController extends JController
 	}
 	
 	
-	function vote()
-	{
+	function vote() {
 		$user			=& JFactory::getUser();
-		$confirm_vote 	= JRequest::getVar('confirm_vote', 0);
+    $input = JFactory::getApplication()->input;
+		$confirm_vote 	= $input->getInt('confirm_vote', 0);
 		
 		//If gid = 18 then registered User, meaning Voter
 		if( $user->get('gid') == 18 ) {
 			
 			$model = $this->getModel('joomelection');
-			$voted_option = $model->getOptionIdDecrypted(JRequest::getVar('vote_option', 0));
+			$voted_option = $model->getOptionIdDecrypted($input->getCmd('vote_option', 0));
 			$option_is_valid = $model->validOption($voted_option);
 			
 			if($option_is_valid) {

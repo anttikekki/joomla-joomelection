@@ -8,7 +8,7 @@ define('BUFFER_READ_LEN', 4096);
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelVoter extends JModel
+class JoomElectionModelVoter extends JModelLegacy
 {	
 	var $_list = null;
 	var $_page = null;
@@ -24,19 +24,19 @@ class JoomElectionModelVoter extends JModel
 
 	function &getVoters()
 	{
-		global $mainframe;
 		$electionModel = $this->getInstance('election', 'JoomElectionModel');
 		
-		$limit 		= JRequest::getVar('limit', $mainframe->getCfg('list_limit')); 
-		$limitstart = JRequest::getVar('limitstart', 0);
-		$search 	= JRequest::getVar('search', '');
+		$input = JFactory::getApplication()->input;
+		$limit = $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
+		$limitstart = $input->getInt('limitstart', 0);
+		$search 	= $input->getString('search', '');
 		
 		$electionList	=& $electionModel->getAllElections();
 		$default_election_id = 0;
 		if(count($electionList) > 0) {
 			$default_election_id = $electionList[0]->election_id;
 		}
-		$election_id= JRequest::getVar('election_id', $default_election_id);
+		$election_id= $input->getInt('election_id', $default_election_id);
 		
 		
 		// Get the total number of voters
@@ -46,7 +46,7 @@ class JoomElectionModelVoter extends JModel
 		. ' LEFT JOIN #__joomelection_election_voter_status AS evs ON evs.voter_id = v.voter_id AND evs.election_id = '.$election_id
 		;
 		if ($search) {
-			$query = $query . ' WHERE LOWER(u.name) LIKE "%'.$this->_db->getEscaped($search).'%"';
+			$query = $query . ' WHERE LOWER(u.name) LIKE "%'.$this->_db->escape($search).'%"';
 		}
 		$query = $query . ' ORDER BY u.name';
 		
@@ -66,7 +66,7 @@ class JoomElectionModelVoter extends JModel
 		. ' LEFT JOIN #__joomelection_election_voter_status AS evs ON evs.voter_id = v.voter_id AND evs.election_id = '. (int) $election_id
 		;
 		if ($search) {
-			$query = $query . ' WHERE LOWER(u.name) LIKE "%'.$this->_db->getEscaped($search).'%"';
+			$query = $query . ' WHERE LOWER(u.name) LIKE "%'.$this->_db->escape($search).'%"';
 		}
 		$query = $query . ' ORDER BY u.name';
 		
@@ -88,7 +88,8 @@ class JoomElectionModelVoter extends JModel
 
 	function getVoter()
 	{
-		$array = JRequest::getVar('cid',  0, '', 'array');
+    $input = JFactory::getApplication()->input;
+		$array = $input->get('cid', array(), 'array');
 		
 		$query = 'SELECT v.voter_id, v.email_sent, u.name, u.username, u.email '
 		. ' FROM #__joomelection_voter AS v'
@@ -117,12 +118,14 @@ class JoomElectionModelVoter extends JModel
 	
 	
 	function getVoterFromRequest() {
+    $input = JFactory::getApplication()->input;
+  
 		$voter = new stdClass();
-		$voter->voter_id = JRequest::getVar( 'id', 0, 'post', 'int');
-		$voter->name = JRequest::getVar('name', '', 'post', 'string');
-		$voter->username = JRequest::getVar('username', '', 'post', 'string');
-		$voter->password = JRequest::getVar('password', '', 'post', 'string', JREQUEST_ALLOWRAW);
-		$voter->email = JRequest::getVar('email', '', 'post', 'string');
+		$voter->voter_id = $input->getInt( 'id', 0,);
+		$voter->name = $input->getString('name', '');
+		$voter->username = $input->getString('username', '');
+		$voter->password = $input->getRaw('password', '');
+		$voter->email = $input->getString('email', '');
 		
 		return $voter;
 	}
@@ -131,22 +134,22 @@ class JoomElectionModelVoter extends JModel
 	
 
 	function store()	{
-		global $mainframe;
+    $input = JFactory::getApplication()->input;
 		$electionModel 	=& $this->getInstance('election', 'JoomElectionModel');
 		$voter 			=& $this->getTable();
 	
 	 	// Create a new voter
-	 	$user_id_from_post 	= JRequest::getVar( 'id', 0, 'post', 'int');
-		$sendEmailToVoter 	= JRequest::getVar( 'sendEmailToVoter', 0, 'post', 'int');
-		$election_id	 	= JRequest::getVar( 'election_id', 0, 'post', 'int');
+	 	$user_id_from_post 	= $input->getInt( 'id', 0);
+		$sendEmailToVoter 	= $input->getInt( 'sendEmailToVoter', 0);
+		$election_id	 	= $input->getInt( 'election_id', 0);
 	
 		$user 					= new JUser($user_id_from_post);
 		$userData 				= array();
-		$userData['name']		= JRequest::getVar('name', '', 'post', 'string');
-		$userData['username']	= JRequest::getVar('username', '', 'post', 'string');
-		$userData['password']	= JRequest::getVar('password', '', 'post', 'string', JREQUEST_ALLOWRAW);
+		$userData['name']		= $input->getString('name', '');
+		$userData['username']	= $input->getString('username', '');
+		$userData['password']	= $input->getRaw('password', '');
 		$userData['password2']	= $userData['password'];
-		$userData['email']		= JRequest::getVar('email', '', 'post', 'string');
+		$userData['email']		= $input->getString('email', '');
 		$userData['gid']		= 18; //Userlevel
 		$clearPassword 			= $userData['password'];
 		
@@ -156,13 +159,13 @@ class JoomElectionModelVoter extends JModel
 		}
 		
 		if (!$user->bind($userData)) {
-			$mainframe->enqueueMessage($user->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
 			return false;
 		}
 		
 		if(!$user->save()) {
-			$mainframe->enqueueMessage(JText::_('Cannot save the user information for user ') . $userData['username'], 'message');
-			$mainframe->enqueueMessage($user->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $userData['username'], 'message');
+			JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
 			return false;
 		}
 		
@@ -174,7 +177,7 @@ class JoomElectionModelVoter extends JModel
 				$email_sent = 1;
 			}
 			else {
-				$mainframe->enqueueMessage(JText::_( 'Cannot send password to voter because you didnt select election that email is used' ), 'message');
+				JFactory::getApplication()->enqueueMessage(JText::_( 'Cannot send password to voter because you didnt select election that email is used' ), 'message');
 				return false;
 			}
 		}
@@ -183,8 +186,8 @@ class JoomElectionModelVoter extends JModel
 			//Existing voter
 			$voter->email_sent = $email_sent;
 			if (!$voter->store()) {
-				$mainframe->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
-				$mainframe->enqueueMessage($this->_db->getErrorMsg(), 'error');
+				JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
+				JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
 				return false;
 			}
 		}
@@ -196,8 +199,8 @@ class JoomElectionModelVoter extends JModel
 			;
 			$this->_db->setQuery( $query );
 			if (!$this->_db->query()) {
-				$mainframe->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
-				$mainframe->enqueueMessage($this->_db->getErrorMsg(), 'error');
+				JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
+				JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
 				return false;
 			}
 		}
@@ -210,18 +213,16 @@ class JoomElectionModelVoter extends JModel
 	
 	
 	function validateUser($userData, $user_id) {
-		global $mainframe;
-		
 		//Validate name is not empty
 		if ((strlen(trim($userData['name'])) > 0) == false) {
-			$mainframe->enqueueMessage('Voter name can not be empty', 'error');
+			JFactory::getApplication()->enqueueMessage('Voter name can not be empty', 'error');
 			return false;
 		}
 		
 		
 		//Validate username is not empty
 		if ((strlen(trim($userData['username'])) > 0) == false) {
-			$mainframe->enqueueMessage('Voter username can not be empty', 'error');
+			JFactory::getApplication()->enqueueMessage('Voter username can not be empty', 'error');
 			return false;
 		}
 		else {
@@ -235,7 +236,7 @@ class JoomElectionModelVoter extends JModel
 			$this->_db->setQuery( $query );
 			$id_from_db = intval( $this->_db->loadResult() );
 			if ($id_from_db && $id_from_db != intval( $user_id )) {
-				$mainframe->enqueueMessage('Username is allready in use. Username have to be unique', 'error');
+				JFactory::getApplication()->enqueueMessage('Username is allready in use. Username have to be unique', 'error');
 				return false;
 			}
 		}
@@ -243,7 +244,7 @@ class JoomElectionModelVoter extends JModel
 		
 		//Validate email is not empty
 		if ((strlen(trim($userData['email'])) > 0) == false) {
-			$mainframe->enqueueMessage('Voter email can not be empty', 'error');
+			JFactory::getApplication()->enqueueMessage('Voter email can not be empty', 'error');
 			return false;
 		}
 		else {
@@ -257,7 +258,7 @@ class JoomElectionModelVoter extends JModel
 			$this->_db->setQuery( $query );
 			$id_from_db = intval( $this->_db->loadResult() );
 			if ($id_from_db && $id_from_db != intval( $user_id )) {
-				$mainframe->enqueueMessage('Email is allready in use. Email has to be unique.', 'error');
+				JFactory::getApplication()->enqueueMessage('Email is allready in use. Email has to be unique.', 'error');
 				return false;
 			}
 		}
@@ -270,7 +271,8 @@ class JoomElectionModelVoter extends JModel
 	
 	function delete()
 	{
-		$cids 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+    $input = JFactory::getApplication()->input;
+		$cids 	= $input->get( 'cid', array(), 'array' );
 		$voter 	=& $this->getTable();
 
 		if (count( $cids ))		{
@@ -326,21 +328,21 @@ class JoomElectionModelVoter extends JModel
 	
 	function importVotersFromCsv() {
 		//Import voters from CSV-file and store them to Users-table
-		global $mainframe;
 		jimport('joomla.filesystem.file');
 		jimport('joomla.user.helper');
+    $input = JFactory::getApplication()->input;
 		
 		$voter 				=& $this->getTable();
 		$electionModel 		=& $this->getInstance('election', 'JoomElectionModel');
-		$file 				= JRequest::getVar( 'fileUpload', '', 'files', 'array' );
-		$generatePassword 	= JRequest::getVar( 'generatePassword', 0, 'post', 'int');
-		$sendEmailToVoter 	= JRequest::getVar( 'sendEmailToVoter', 0, 'post', 'int');
-		$election_id	 	= JRequest::getVar( 'election_id', 0, 'post', 'int');
-		$separator		 	= JRequest::getVar( 'separator', ';', 'post', 'string');
+		$file 				= $input->files->get( 'fileUpload');
+		$generatePassword 	= $input->getInt( 'generatePassword', 0);
+		$sendEmailToVoter 	= $input->getInt( 'sendEmailToVoter', 0);
+		$election_id	 	= $input->getInt( 'election_id', 0);
+		$separator		 	= $input->getString( 'separator', ';');
 		
 		if($sendEmailToVoter == 1) {
 			if(!$election_id > 0) {
-				$mainframe->enqueueMessage(JText::_('Cannot send password to voter because you didnt select election that email is used'), 'message');
+				JFactory::getApplication()->enqueueMessage(JText::_('Cannot send password to voter because you didnt select election that email is used'), 'message');
 				return false;
 			}
 		}
@@ -383,7 +385,7 @@ class JoomElectionModelVoter extends JModel
 						
 						//Validate data
 						if($this->validateUser($user_data, 0) == false) {
-							$mainframe->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct? Usernames and emails have to be unique!'), 'error');
+							JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct? Usernames and emails have to be unique!'), 'error');
 							$import_success = false;
 						}
 						else {
@@ -404,8 +406,8 @@ class JoomElectionModelVoter extends JModel
 							
 							//Save user to database
 							if (!$user->save()) {
-								$mainframe->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
-								$mainframe->enqueueMessage($user->getError(), 'error');
+								JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
+								JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
 								$import_success = false;
 							}
 							else {
@@ -418,8 +420,8 @@ class JoomElectionModelVoter extends JModel
 								;
 								$this->_db->setQuery( $query );
 								if (!$this->_db->query()) {
-									$mainframe->enqueueMessage(JText::_('Cannot save the user information for user ') . $user_data['username'], 'message');
-									$mainframe->enqueueMessage($user->getError(), 'error');
+									JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $user_data['username'], 'message');
+									JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
 									$import_success = false;
 								}
 							}
@@ -456,18 +458,18 @@ class JoomElectionModelVoter extends JModel
 					return $import_success;
 				}
 				else {
-					$mainframe->enqueueMessage('Tiedosto ei ole CSV-tiedosto', 'message');
+					JFactory::getApplication()->enqueueMessage('Tiedosto ei ole CSV-tiedosto', 'message');
 					return false;
 				}
 			}
 			else {
-				$mainframe->enqueueMessage('Epäkelpo tiedosto', 'message');
+				JFactory::getApplication()->enqueueMessage('Epäkelpo tiedosto', 'message');
 				return false;
 			}
 			
 		}
 		else {
-			$mainframe->enqueueMessage('Valitse tiedosto ladataksesi sen', 'message');
+			JFactory::getApplication()->enqueueMessage('Valitse tiedosto ladataksesi sen', 'message');
 			return false;
 		}
 		
@@ -478,17 +480,15 @@ class JoomElectionModelVoter extends JModel
 	
 	
 	function sendPasswordEmail($user, $password, &$election) {
-		global $mainframe;
-
 		$name 			= $user->name;
 		$email 			= $user->email;
 		$username 		= $user->username;
-		$sitename 		= $mainframe->getCfg( 'sitename' );
-		$mailfrom 		= $mainframe->getCfg( 'mailfrom' );
-		$fromname 		= $mainframe->getCfg( 'fromname' );
+		$sitename 		= JFactory::getApplication()->getCfg( 'sitename' );
+		$mailfrom 		= JFactory::getApplication()->getCfg( 'mailfrom' );
+		$fromname 		= JFactory::getApplication()->getCfg( 'fromname' );
 		
 		$markers 	= array("[name]", "[username]", "[password]", "[election_name]", "[www]");
-		$data   	= array($name, $username, $password, $election->election_name, $mainframe->getSiteURL());
+		$data   	= array($name, $username, $password, $election->election_name, JFactory::getApplication()->getSiteURL());
 		
 		$subject	= str_replace($markers, $data, $election->election_voter_email_header);
 		$subject 	= html_entity_decode($subject, ENT_QUOTES);
@@ -504,17 +504,17 @@ class JoomElectionModelVoter extends JModel
 	
 	
 	function generatePasswordAndSendEmail() {
-		global $mainframe;
 		jimport('joomla.user.helper');
+    $input = JFactory::getApplication()->input;
 		
-		$selectedGenerationGroup 	= JRequest::getVar( 'selectedGenerationGroup', 3, 'post', 'int' );
+		$selectedGenerationGroup 	= $input->getInt( 'selectedGenerationGroup', 3);
 		$selectedVotersIdsArray 	= array();
 		$user_data					= array();
 		$updated_users 				= array();
 		
 		//1 = generate and send email to selected
 		if($selectedGenerationGroup == 1) {
-			$selectedVotersIdsString 	= JRequest::getVar( 'selectedVoters', '', 'post', 'string' );
+			$selectedVotersIdsString 	= $input->getString( 'selectedVoters', '');
 			$selectedVotersIdsArray = explode(",", $selectedVotersIdsString);
 		}
 		else if($selectedGenerationGroup == 0) { //Generate password and sen email to all voters
@@ -548,15 +548,15 @@ class JoomElectionModelVoter extends JModel
 				
 				//Update user data to database
 				if (!$user->save()) {
-					$mainframe->enqueueMessage(JText::_('Cannot update the user information for user ') . $user->username, 'message');
-					$mainframe->enqueueMessage($user->getError(), 'error');
+					JFactory::getApplication()->enqueueMessage(JText::_('Cannot update the user information for user ') . $user->username, 'message');
+					JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
 					return false;
 				}
 			}
 		}
 		
 		
-		$election_id = JRequest::getVar('election_id', 0, 'post', 'int');
+		$election_id = $input->getInt('election_id', 0);
 		if($election_id > 0) {
 			$electionModel 	=& $this->getInstance('election', 'JoomElectionModel');
 			$election		=& $electionModel->getElection($election_id);
@@ -574,7 +574,7 @@ class JoomElectionModelVoter extends JModel
 			return true;
 		}
 		else {
-			$mainframe->enqueueMessage('No election created. You need to create at least one election to send emails.', 'message');
+			JFactory::getApplication()->enqueueMessage('No election created. You need to create at least one election to send emails.', 'message');
 			return false;
 		}
 	}

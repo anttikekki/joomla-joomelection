@@ -7,12 +7,11 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewElections extends JView
+class JoomElectionViewElections extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
 		jimport('joomla.utilities.date');
 		
 		JToolBarHelper::title(   JText::_( 'Elections' ), 'generic.png' );

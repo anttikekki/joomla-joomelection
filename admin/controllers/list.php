@@ -5,7 +5,7 @@
 defined('_JEXEC') or die();
 
 
-class JoomElectionControllerList extends JoomElectionController
+class JoomElectionControllerList extends JControllerLegacy
 {
 
 	function __construct()
@@ -13,7 +13,7 @@ class JoomElectionControllerList extends JoomElectionController
 		parent::__construct();
 
 		// Register Extra tasks
-		$this->registerTask( 'add'  , 	'edit' );
+		$this->registerTask('add', 'edit');
 	}
 	
 	

@@ -7,7 +7,7 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewVotersImport extends JView
+class JoomElectionViewVotersImport extends JViewLegacy
 {
 
 	function display($tpl = null)

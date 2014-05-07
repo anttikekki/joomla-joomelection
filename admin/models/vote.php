@@ -7,7 +7,7 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelVote extends JModel
+class JoomElectionModelVote extends JModelLegacy
 {
 
 	function __construct()

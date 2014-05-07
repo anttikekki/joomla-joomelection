@@ -6,16 +6,18 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewResult extends JView
+class JoomElectionViewResult extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
+    $input = JFactory::getApplication()->input;
+  
 		$resultModel 	= &$this->getModel('result');
 		$electionModel 	= &$this->getModel('election');
 		$statistics		= $resultModel->getStatistics();
 		$election		= $electionModel->getElection($statistics->election_id);
-		$task_opened_from 	= JRequest::getVar( 'opener_task', '', 'post', 'string' );
+		$task_opened_from 	= $input->getString( 'opener_task', '');
 		$results;
 		
 		if($election->election_type_id == 1) {

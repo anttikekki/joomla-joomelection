@@ -6,19 +6,19 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewVoter extends JView
+class JoomElectionViewVoter extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
-		global $mainframe;
+    $input = JFactory::getApplication()->input;
 		
 		//Get model
 		$electionModel 	= $this->getModel('election');
 		$voterModel 	= $this->getModel('voter');
 		
 		//Continue editing?
-		$continue_edit = JRequest::getVar('continue_edit',  0, 'post', 'int');
+		$continue_edit = $input->getInt('continue_edit',  0);
 		if($continue_edit == 1) {
 			$voter = $voterModel->getVoterFromRequest();
 		}
@@ -27,9 +27,9 @@ class JoomElectionViewVoter extends JView
 		}
 		
 		$isNew				= ($voter->voter_id < 1);
-		$stored_limit 		= JRequest::getVar('limit', $mainframe->getCfg('list_limit')); 
-		$stored_limitstart 	= JRequest::getVar('limitstart', 0);
-		$stored_search 		= JRequest::getVar('search', '');
+		$stored_limit 		= $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
+		$stored_limitstart 	= $input->getInt('limitstart', 0);
+		$stored_search 		= $input->getString('search', '');
 		$elections			= & $electionModel->getAllElections();
 		$elections_list		= JHTML::_('select.genericlist', $elections, 'election_id', 'class="inputbox" ', 'election_id', 'election_name' );
 		

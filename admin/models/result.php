@@ -7,19 +7,13 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelResult extends JModel
+class JoomElectionModelResult extends JModelLegacy
 {
-
-	function __construct()
-	{
-		parent::__construct();
-	}
-
-
 
 	function getCandidateElectionResult()
 	{
-		$election_id = JRequest::getVar('election_id');
+    $input = JFactory::getApplication()->input;
+		$election_id = $input->getInt('election_id', 0);
 		
 		$query = ' SELECT o.option_number, o.name, COUNT(v.option_id) AS votes '
 		. ' FROM #__joomelection_option AS o '
@@ -36,7 +30,8 @@ class JoomElectionModelResult extends JModel
 	
 	function getListElectionResult()
 	{
-		$election_id = JRequest::getVar('election_id');
+		$input = JFactory::getApplication()->input;
+		$election_id = $input->getInt('election_id', 0);
 		
 		$query = ' SELECT o. option_id, o.option_number, o.name, COUNT(v.option_id) AS votes, list_totals.list_name, list_totals.list_votes '
 		. ' FROM #__joomelection_option AS o '
@@ -63,7 +58,8 @@ class JoomElectionModelResult extends JModel
 	
 	function getStatistics()
 	{
-		$election_id = JRequest::getVar('election_id', 0);
+		$input = JFactory::getApplication()->input;
+		$election_id = $input->getInt('election_id', 0);
 		
 		$query = ' SELECT COUNT(election_id) AS voters_who_voted'
 		. ' FROM #__joomelection_election_voter_status '
@@ -104,9 +100,8 @@ class JoomElectionModelResult extends JModel
 	function resultsInCsv()
 	{
 		jimport('joomla.utilities.date');
-
-		$config 		=& JFactory::getConfig();
-		$tzoffset 		= $config->getValue('config.offset');
+    
+		$tzoffset 		= $JFactory::getApplication()->getCfg('config.offset');
 		$now			= new JDate('now', $tzoffset);		
 		$statistics 	= $this->getStatistics();
 		$electionModel 	=& $this->getInstance('election', 'JoomElectionModel');
@@ -128,7 +123,7 @@ class JoomElectionModelResult extends JModel
 		
 		//Write election statistics to csv
 		$csvData .= utf8_decode(JText::_( 'Result for' )) 				.$sep. utf8_decode($statistics->election_name) . $cr;
-		$csvData .= utf8_decode(JText::_( 'Results printed' )) 			.$sep. utf8_decode(JHTML::_('date',  $now->toMySQL(), '%Y-%m-%d %H:%M:%S')) . $cr;
+		$csvData .= utf8_decode(JText::_( 'Results printed' )) 			.$sep. utf8_decode(JHTML::_('date',  $now->toSql(), '%Y-%m-%d %H:%M:%S')) . $cr;
 		$csvData .= utf8_decode(JText::_( 'Total number of voters' )) 	.$sep. utf8_decode($statistics->voter_total) . $cr;
 		$csvData .= utf8_decode(JText::_( 'Voters who voted' ))			.$sep. $statistics->voters_who_voted . $cr;
 		$csvData .= utf8_decode(JText::_( 'Voter percentage' ))			.$sep. $statistics->voted_percentage . $cr;
@@ -172,4 +167,3 @@ class JoomElectionModelResult extends JModel
 	}
 
 }
-?>

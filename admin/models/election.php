@@ -4,38 +4,27 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.model');
 
-
-class JoomElectionModelElection extends JModel
+class JoomElectionModelElection extends JModelLegacy
 {
 	var $_list = null;
 	var $_page = null;
 	
-	function __construct()
-	{
-		parent::__construct();
-	}
-	
 	
 	function &getElections()
-	{
-		global $mainframe;
-		
-		// Initialize variables
-		$db		=& $this->getDBO();
-		
-		$limit = JRequest::getVar('limit', $mainframe->getCfg('list_limit')); 
-		$limitstart = JRequest::getVar('limitstart', 0);
+	{		
+		$input = JFactory::getApplication()->input;
+		$limit = $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
+		$limitstart = $input->getInt('limitstart', 0);
 		
 		// Get the total number of records
 		$query = 'SELECT COUNT(*)'
 		. ' FROM #__joomelection_election';
-		$db->setQuery($query);
-		$total = $db->loadResult();
+		$this->_db->setQuery($query);
+		$total = $this->_db->loadResult();
 		
 		// Create the pagination object
-		jimport('joomla.html.pagination');
+    jimport('joomla.html.pagination');
 		$this->_page = new JPagination($total, $limitstart, $limit);
 		
 		//Get list data
@@ -60,7 +49,6 @@ class JoomElectionModelElection extends JModel
 	
 	function &getAllElections()
 	{
-		//Get list data
 		$query = ' SELECT * '
 		. ' FROM #__joomelection_election'
 		;
@@ -70,7 +58,6 @@ class JoomElectionModelElection extends JModel
 	
 	function &getListElections()
 	{
-		//Get list data
 		$query = ' SELECT * '
 		. ' FROM #__joomelection_election'
 		. ' WHERE election_type_id = 2'
@@ -81,8 +68,9 @@ class JoomElectionModelElection extends JModel
 	
 	
 	function publish()	{
-		$cid		= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$task		= JRequest::getCmd( 'task' );
+    $input = JFactory::getApplication()->input;
+		$cid		= $input->get( 'cid', array(), 'array' );
+		$task		= $input->getCmd( 'task' );
 		$publish	= ($task == 'publish');
 		$n			= count( $cid );
 
@@ -108,8 +96,9 @@ class JoomElectionModelElection extends JModel
 
 	function getElection($election_id=0)
 	{
+    $input = JFactory::getApplication()->input;
 		if($election_id == 0) {
-			$array = JRequest::getVar('cid',  array(0), '', 'array');
+			$array = $input->get('cid', array(), 'array');
 			$election_id = $array[0];
 		}
 		
@@ -138,7 +127,8 @@ class JoomElectionModelElection extends JModel
 	function store()	{
 		$row =& $this->getTable();
 
-		$data = JRequest::get( 'post' );
+    $input = JFactory::getApplication()->input;
+		$data = $input->getArray(); //Get all input
 
 		// Bind the form fields to the table
 		if (!$row->bind($data)) {
@@ -147,20 +137,19 @@ class JoomElectionModelElection extends JModel
 		}
 		
 		jimport('joomla.utilities.date');
-		$config =& JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
+		$tzoffset = JFactory::getApplication()->getCfg('config.offset');
 		
-		$row->election_description 				= JRequest::getVar( 'election_description', '', 'post', 'string', JREQUEST_ALLOWHTML );
-		$row->vote_success_description 			= JRequest::getVar( 'vote_success_description', '', 'post', 'string', JREQUEST_ALLOWHTML );
+		$row->election_description 				= $input->getHtml( 'election_description', '');
+		$row->vote_success_description 			= $input->getHtml( 'vote_success_description', '');
 		
-		$row->date_to_open 			= substr(JRequest::getVar( 'date_to_open', '', 'post', 'string'), 0, 10) ." ". JRequest::getVar( 'time_to_open', '', 'post', 'string');
-		$row->date_to_close 		= substr(JRequest::getVar( 'date_to_close', '', 'post', 'string'), 0, 10) ." ". JRequest::getVar( 'time_to_close', '', 'post', 'string');
+		$row->date_to_open 			= substr($input->getString( 'date_to_open', ''), 0, 10) ." ". $input->getString( 'time_to_open', '');
+		$row->date_to_close 		= substr($input->getString( 'date_to_close', ''), 0, 10) ." ". $input->getString( 'time_to_close', '');
 
 		$date = new JDate($row->date_to_open, $tzoffset);
-		$row->date_to_open = $date->toMySQL();
+		$row->date_to_open = $date->toSql();
 		
 		$date = new JDate($row->date_to_close, $tzoffset);
-		$row->date_to_close = $date->toMySQL();
+		$row->date_to_close = $date->toSql();
 		
 		// Make sure the record is valid
 		if (!$row->check()) {
@@ -180,7 +169,8 @@ class JoomElectionModelElection extends JModel
 
 	function delete()
 	{
-		$election_ids 	= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+    $input = JFactory::getApplication()->input;
+		$election_ids 	= $input->get( 'cid', array(), 'array' );
 		$listModel 		=& $this->getInstance('list', 'JoomElectionModel');
 		$optionModel 	=& $this->getInstance('option', 'JoomElectionModel');
 		$row 			=& $this->getTable();
@@ -214,7 +204,4 @@ class JoomElectionModelElection extends JModel
 		}
 		return true;
 	}
-			
-
 }
-?>

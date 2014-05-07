@@ -5,7 +5,7 @@
 defined('_JEXEC') or die();
 
 
-class JoomElectionControllerOption extends JoomElectionController
+class JoomElectionControllerOption extends JControllerLegacy
 {
 
 	function __construct()
@@ -13,7 +13,7 @@ class JoomElectionControllerOption extends JoomElectionController
 		parent::__construct();
 
 		// Register Extra tasks
-		$this->registerTask( 'add'  , 	'edit' );
+		$this->registerTask('add', 'edit');
 	}
 	
 	
@@ -53,7 +53,8 @@ class JoomElectionControllerOption extends JoomElectionController
 			$link = 'index.php?option=com_joomelection&controller=option&task=showList';
 			$this->setRedirect($link, $msg);
 		} else {
-			JRequest::setVar( 'continue_edit', '1' );
+      $input = JFactory::getApplication()->input;
+			$input->setVar('continue_edit', '1');
 			$this->edit();
 		}
 	}
@@ -109,7 +110,8 @@ class JoomElectionControllerOption extends JoomElectionController
 	
 	function listElectionListsForElection()
 	{
-		$election_id = JRequest::getVar( 'election_id', 0, 'get', 'int' );
+    $input = JFactory::getApplication()->input;
+		$election_id = $input->getInt( 'election_id', 0);
 		$electionListModel = $this->getModel('list');
 		$electionLists = $electionListModel->getElectionListsForElection($election_id);
 		
@@ -121,10 +123,9 @@ class JoomElectionControllerOption extends JoomElectionController
 		}
 		
 		//Print select box
-        echo $electionListsComboBox;
-        
-        // Return to keep the application from going anywhere else. Echoed content returns to browser.
-        return;
+    echo $electionListsComboBox;
+    
+    // Return to keep the application from going anywhere else. Echoed content returns to browser.
+    return;
 	}
 }
-?>

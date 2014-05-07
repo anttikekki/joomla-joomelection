@@ -5,7 +5,7 @@
 defined('_JEXEC') or die();
 
 
-class JoomElectionControllerElection extends JoomElectionController
+class JoomElectionControllerElection extends JControllerLegacy
 {
 
 	function __construct()

@@ -1,4 +1,11 @@
 <?php
+/**
+ * JoomElection component for Joomla 3
+ *
+ * @author      Antti Kekki
+ * @copyright   Antti Kekki, http://code.google.com/p/joomelection/
+ * @version     2.0.0
+ */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');

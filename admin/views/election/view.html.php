@@ -6,11 +6,13 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view' );
 
 
-class JoomElectionViewElection extends JView
+class JoomElectionViewElection extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
+    $input = JFactory::getApplication()->input;
+  
 		//Get model
 		$electionModel 		= &$this->getModel('election');
 		$electionTypeModel 	= &$this->getModel('electionType');
@@ -29,7 +31,7 @@ class JoomElectionViewElection extends JView
 		$election->published 			= JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $election->published);
 		$election->confirm_vote 		= JHTML::_('select.booleanlist', 'confirm_vote', 'class="inputbox"', $election->confirm_vote);
 		$election->confirm_vote_by_sign = JHTML::_('select.booleanlist', 'confirm_vote_by_sign', 'class="inputbox"', $election->confirm_vote_by_sign);
-		$task			 				= JRequest::getVar( 'task', '', '', 'string' );
+		$task			 				= $input->getString( 'task', '');
 
 		$text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
 		JToolBarHelper::title(   JText::_( 'Election' ).': <small><small>[ ' . $text.' ]</small></small>' );

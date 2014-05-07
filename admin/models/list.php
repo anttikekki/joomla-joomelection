@@ -7,32 +7,23 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelList extends JModel
+class JoomElectionModelList extends JModelLegacy
 {	
 	var $_list = null;
 	var $_page = null;
-	
-	function __construct()
-	{
-		parent::__construct();
-	}
 
 	
 	function &getElectionLists()
 	{
-		global $mainframe;
-		
-		// Initialize variables
-		$db		=& $this->getDBO();
-		
-		$limit 		= JRequest::getVar('limit', $mainframe->getCfg('list_limit')); 
-		$limitstart = JRequest::getVar('limitstart', 0);
+    $input = JFactory::getApplication()->input;
+		$limit 		= $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
+		$limitstart = $input->getInt('limitstart', 0);
 		
 		// Get the total number of records
 		$query = 'SELECT COUNT(*)'
 		. ' FROM #__joomelection_list';
-		$db->setQuery($query);
-		$total = $db->loadResult();
+		$this->_db->setQuery($query);
+		$total = $this->_db->loadResult();
 		
 		// Create the pagination object
 		jimport('joomla.html.pagination');
@@ -61,7 +52,8 @@ class JoomElectionModelList extends JModel
 
 	function getElectionList()
 	{
-		$array = JRequest::getVar('cid',  0, '', 'array');
+    $input = JFactory::getApplication()->input;
+		$array = $input->get('cid',  array(), 'array');
 		
 		$query = ' SELECT * FROM #__joomelection_list '.
 				'  WHERE list_id = '.(int)$array[0];
@@ -82,10 +74,10 @@ class JoomElectionModelList extends JModel
 
 
 	function store()	{
-		global $mainframe;
+    $input = JFactory::getApplication()->input;
 		$row =& $this->getTable();
 
-		$data = JRequest::get( 'post' );
+		$data = $input->getArray(); //Get all input
 
 		// Bind the form fields to the table
 		if (!$row->bind($data)) {
@@ -94,7 +86,7 @@ class JoomElectionModelList extends JModel
 		}
 		
 		if ($row->election_id > 0) {
-			$row->description = JRequest::getVar( 'description', '', 'post', 'string', JREQUEST_ALLOWHTML );
+			$row->description = $input->getHtml( 'description', '');
 	
 			// Make sure the record is valid
 			if (!$row->check()) {
@@ -111,7 +103,7 @@ class JoomElectionModelList extends JModel
 			return true;
 		}
 		else {
-			$mainframe->enqueueMessage('You have to create at least one election first before you can create a list. You can not save list with no election.', 'message');
+			JFactory::getApplication()->enqueueMessage('You have to create at least one election first before you can create a list. You can not save list with no election.', 'message');
 			return false;
 		}
 	}
@@ -119,8 +111,8 @@ class JoomElectionModelList extends JModel
 
 	function delete()
 	{
-		//Get list ids from form POST variable
-		$list_ids 		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$input = JFactory::getApplication()->input;
+		$list_ids 		= $input->get('cid',  array(), 'array');
 		$row 			=& $this->getTable();
 		$optionModel 	=& $this->getInstance('option', 'JoomElectionModel');
 
@@ -172,8 +164,9 @@ class JoomElectionModelList extends JModel
 	
 	
 	function publish()	{
-		$cid		= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$task		= JRequest::getCmd( 'task' );
+    $input = JFactory::getApplication()->input;
+		$cid		= $input->get('cid',  array(), 'array');
+		$task		= $input->getCmd( 'task' );
 		$publish	= ($task == 'publish');
 		$n			= count( $cid );
 		
@@ -199,16 +192,12 @@ class JoomElectionModelList extends JModel
 	
 	
 	function getElectionListsForElection($election_id) {
-		// Initialize variables
-		$db	=& $this->getDBO();
-		
 		//List lists for election
 		$query = ' SELECT list.* '
 		. ' FROM #__joomelection_list AS list'
 		. ' WHERE list.election_id = '. (int)$election_id
 		;
-		$db->setQuery( $query );
-		return $db->loadObjectList();
+		$this->_db->setQuery( $query );
+		return $this->_db->loadObjectList();
 	}
 }
-?>
