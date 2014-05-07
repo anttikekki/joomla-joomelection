@@ -108,4 +108,3 @@ class JoomElectionController extends JControllerLegacy {
 	}
 
 }
-?>

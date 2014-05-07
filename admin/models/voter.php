@@ -230,7 +230,7 @@ class JoomElectionModelVoter extends JModelLegacy
 			// check for existing username
 			$query = 'SELECT id'
 			. ' FROM #__users '
-			. ' WHERE username = ' . $this->_db->Quote($userData['username'])
+			. ' WHERE username = ' . $this->_db->quote($userData['username'])
 			. ' AND id != '. (int) $user_id;
 			;
 			$this->_db->setQuery( $query );
@@ -252,7 +252,7 @@ class JoomElectionModelVoter extends JModelLegacy
 			// check for existing email
 			$query = 'SELECT id'
 				. ' FROM #__users '
-				. ' WHERE email = '. $this->_db->Quote($userData['email'])
+				. ' WHERE email = '. $this->_db->quote($userData['email'])
 				. ' AND id != '. (int) $user_id
 				;
 			$this->_db->setQuery( $query );

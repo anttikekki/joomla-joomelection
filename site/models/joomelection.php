@@ -6,7 +6,7 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.model' );
 
 
-class JoomElectionModelJoomElection extends JModel
+class JoomElectionModelJoomElection extends JModelLegacy
 {
 	function getElections()
 	{
@@ -72,7 +72,8 @@ class JoomElectionModelJoomElection extends JModel
 	
 	function getOptions($electionId)
 	{
-		$orderBy = JRequest::getVar('orderBy', 'number', 'GET', 'string');
+		$input = JFactory::getApplication()->input;
+    $orderBy = $input->getString('orderBy', 'number');
 		$orderBySql = '';
 		
 		if($orderBy == 'number') {
@@ -165,29 +166,22 @@ class JoomElectionModelJoomElection extends JModel
 	
 	
 	function validOption($optionId)
-	{	
-		global $mainframe;
-		
-		$now	= $mainframe->get('requestTime');
+	{
 		$election_id = $this->getElectionIdFromOption($optionId);
 		$valid_election = $this->validElection($election_id);
 		
 		return $valid_election;
-		
-		
 	}
 	
 	
 	function validElection($election_id)
 	{	
-		global $mainframe;
-		
-		$now	= $mainframe->get('requestTime');
+		$now	= JFactory::getApplication()->get('requestTime');
 
 		$query = 'SELECT election_id FROM #__joomelection_election'
 		. ' WHERE published = 1'
-		. ' AND date_to_open <= '.$this->_db->Quote($now)
-		. ' AND date_to_close >= '.$this->_db->Quote($now)
+		. ' AND date_to_open <= '.$this->_db->quote($now)
+		. ' AND date_to_close >= '.$this->_db->quote($now)
 		. ' AND election_id = ' . (int) $election_id
 		;
 		$this->_db->setQuery( $query );

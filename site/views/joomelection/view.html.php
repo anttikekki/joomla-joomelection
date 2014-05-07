@@ -1,17 +1,22 @@
 <?php
 
+// no direct access
+defined('_JEXEC') or die('Restricted access');
+
 jimport( 'joomla.application.component.view');
 
-class JoomElectionViewJoomElection extends JView
+class JoomElectionViewJoomElection extends JViewLegacy
 {
 	function display($tpl = null)
 	{
+    $input = JFactory::getApplication()->input;
+    
 		$model 			= $this->getModel('joomelection');
 		$elections 		= $model->getElections();
 		$voter_name 	= $model->getVoterName();
 		$LoggedInStatus = $model->getLoggedInStatus();
-		$orderBy 		= JRequest::getVar('orderBy', 'number', 'GET', 'string');
-		$selectedViewTab = JRequest::getVar('selectedViewTab', 'view_election_candidates', 'GET', 'string');
+		$orderBy 		= $input->getString('orderBy', 'number');
+		$selectedViewTab = $input->getString('selectedViewTab', 'view_election_candidates');
 		
 		for($i = 0; $i < count($elections); $i++) 
 		{ 
@@ -46,4 +51,3 @@ class JoomElectionViewJoomElection extends JView
 		parent::display($tpl);
 	}
 }
-?>
