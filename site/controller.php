@@ -11,8 +11,8 @@ class JoomElectionController extends JControllerLegacy {
 		$user	=& JFactory::getUser();
     $input = JFactory::getApplication()->input;
 		
-		//If gid = 18 then registered User, meaning Voter
-		if( $user->get('gid') == 18 ) {
+		//Guest is unregistered user
+		if( !$user->guest ) {
 			
 			$model = $this->getModel('joomelection');
 			$voted_option = $model->getOptionIdDecrypted($input->getCmd('vote_option', 0));
@@ -51,8 +51,8 @@ class JoomElectionController extends JControllerLegacy {
     $input = JFactory::getApplication()->input;
 		$confirm_vote 	= $input->getInt('confirm_vote', 0);
 		
-		//If gid = 18 then registered User, meaning Voter
-		if( $user->get('gid') == 18 ) {
+		//Guest is unregistered user
+		if( !$user->guest ) {
 			
 			$model = $this->getModel('joomelection');
 			$voted_option = $model->getOptionIdDecrypted($input->getCmd('vote_option', 0));

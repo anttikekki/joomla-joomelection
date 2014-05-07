@@ -10,5 +10,5 @@ class JoomElectionController extends JControllerLegacy {
 	 * @var string
 	 * @since 12.2
 	 */
-	protected $default_view = 'elections';
+	//protected $default_view = 'elections';
 }

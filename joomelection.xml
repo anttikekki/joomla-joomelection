@@ -8,19 +8,19 @@
 	<copyright>Antti Kekki</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>2.0.0</version>
-	<description>JoomElection on Joomla 1.5 komponentti jonka avulla voi järjestää vaaleja. 
+	<description>JoomElection on Joomla! 3 komponentti jonka avulla voi järjestää vaaleja. 
 	Komponentti tukee suoria ehdokasvaaleja ja avoimia listavaaleja.Tämä komponentti on julkaistu GPL 2 lisenssillä. 
 	Se tarkoittaa että sitä voi käyttää vapaasti ja ilmaiseksi. Siihen saa tehdä muutoksia ja sitä saa levittää eteenpäin.
 	</description>
   
 	<install>
 		<sql>
-			<file charset="utf8" driver="mysql">sql/install.sql</file>
+			<file charset="utf8" driver="mysql">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
 	<uninstall>
 		<sql>
-			<file charset="utf8" driver="mysql">sql/uninstall.sql</file>
+			<file charset="utf8" driver="mysql">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
 	
@@ -40,10 +40,10 @@
 	<administration>
 		<menu>Vaalijärjestelmä</menu>
 		<submenu>
-      <menu controller="election" task="showList">Vaalit</menu>
-      <menu controller="list" task="showList">Ehdokaslistat</menu>
-      <menu controller="option" task="showList">Ehdokkaat</menu>
-      <menu controller="voter" task="showList">Äänestäjät</menu>
+      <menu task="election.showList">Vaalit</menu>
+      <menu task="list.showList">Ehdokaslistat</menu>
+      <menu task="option.showList">Ehdokkaat</menu>
+      <menu task="voter.showList">Äänestäjät</menu>
     </submenu>
 		
 	  <languages folder="admin/language">
@@ -53,7 +53,7 @@
 	
 		<files folder="admin">
 			<filename>index.html</filename>
-			<filename>admin.joomelection.php</filename>
+			<filename>joomelection.php</filename>
 			<filename>controller.php</filename>
 			
 			<folder>sql</folder>

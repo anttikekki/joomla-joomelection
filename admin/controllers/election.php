@@ -85,13 +85,15 @@ class JoomElectionControllerElection extends JControllerLegacy
 
 	function cancel()
 	{
-		$task_opened_from = JRequest::getVar( 'task_opened_from', '', 'post', 'string' );
+    $input = JFactory::getApplication()->input;
+    
+		$task_opened_from = $input->getString( 'task_opened_from', '');
 		$msg = JText::_( 'Operation Cancelled' );
 		if($task_opened_from == '') {
 			$this->setRedirect( 'index.php?option=com_joomelection&controller=election&task=showList', $msg );
 		}
 		else if ($task_opened_from == 'edit') {
-			$election_id = JRequest::getVar( 'election_id', '', 'post', 'int' );
+			$election_id = $input->getInt( 'election_id', 0);
 			$this->setRedirect( 'index.php?option=com_joomelection&controller=election&task=edit&cid[]=' .$election_id, $msg );
 		}
 	}
