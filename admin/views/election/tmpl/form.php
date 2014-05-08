@@ -4,8 +4,7 @@ $editor =& JFactory::getEditor();
 JHTML::_('behavior.calendar');
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
-<div class="col100">
+<form action="index.php?option=com_joomelection" method="post" name="adminForm" id="adminForm">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_( 'Details' ); ?></legend>
 
@@ -63,7 +62,7 @@ JHTML::_('behavior.calendar');
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="time_to_open" id="time_to_open" size="10" maxlength="8" value="<?php echo JHTML::_('date',  $this->election->date_to_open, '%H:%M:%S') ;?>" />
+				<input class="inputbox" type="text" name="time_to_open" id="time_to_open" size="10" maxlength="8" value="<?php echo JHTML::_('date',  $this->election->date_to_open, 'H:i:s') ;?>" />
 			</td>
 		</tr>
 			
@@ -85,7 +84,7 @@ JHTML::_('behavior.calendar');
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="time_to_close" id="time_to_close" size="10" maxlength="8" value="<?php echo JHTML::_('date',  $this->election->date_to_close, '%H:%M:%S') ;?>" />
+				<input class="inputbox" type="text" name="time_to_close" id="time_to_close" size="10" maxlength="8" value="<?php echo JHTML::_('date',  $this->election->date_to_close, 'H:i:s') ;?>" />
 			</td>
 		</tr>
 		
@@ -173,12 +172,7 @@ JHTML::_('behavior.calendar');
 		</tr>
 	</table>
 	</fieldset>
-</div>
-<div class="clr"></div>
-
-<input type="hidden" name="option" value="com_joomelection" />
-<input type="hidden" name="election_id" value="<?php echo $this->election->election_id; ?>" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="election" />
-<input type="hidden" name="opener_task" value="<?php echo $this->task; ?>" />
+  
+  <input type="hidden" name="election_id" value="<?php echo $this->election->election_id; ?>" />
+  <input type="hidden" name="task" value="" />
 </form>

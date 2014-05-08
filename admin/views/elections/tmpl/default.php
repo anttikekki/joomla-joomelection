@@ -1,7 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 
-<form action="index.php?option=com_joomelection&view=elections" method="post" name="adminForm" id="adminForm">
-<div id="j-main-container">
+<form action="index.php?option=com_joomelection" method="post" name="adminForm" id="adminForm">
 	<table class="table table-striped">
     <thead>
       <tr>
@@ -52,7 +51,7 @@
       $row = &$this->elections[$i];
       $checked 	= JHTML::_('grid.id',   $i, $row->election_id );
       $published 	= JHTML::_('grid.published', $row, $i );
-      $link 		= JRoute::_( 'index.php?option=com_joomelection&controller=election&task=edit&cid[]='. $row->election_id );
+      $link 		= JRoute::_( 'index.php?option=com_joomelection&task=election.edit&cid[]='. $row->election_id );
 
       ?>
       <tr class="<?php echo "row$k"; ?>">
@@ -66,16 +65,16 @@
           <a href="<?php echo $link; ?>"><?php echo $row->election_name; ?></a>
         </td>
         <td align="center">
-          <?php echo JHTML::_('date',  $row->date_to_open, '%d.%m.%Y'); ?>
+          <?php echo JHTML::_('date',  $row->date_to_open, 'd.m.Y'); ?>
         </td>
         <td align="center">
-          <?php echo JHTML::_('date',  $row->date_to_open, '%H:%M:%S'); ?>
+          <?php echo JHTML::_('date',  $row->date_to_open, 'H:i:s'); ?>
         </td>
         <td align="center">
-          <?php echo JHTML::_('date',  $row->date_to_close, '%d.%m.%Y'); ?>
+          <?php echo JHTML::_('date',  $row->date_to_close, 'd.m.Y'); ?>
         </td>
         <td align="center">
-          <?php echo JHTML::_('date',  $row->date_to_close, '%H:%M:%S'); ?>
+          <?php echo JHTML::_('date',  $row->date_to_close, 'H:i:s'); ?>
         </td>
         <td align="center">
           <?php
@@ -87,7 +86,7 @@
             <?php } ?>
         </td>
         <td align="center">
-          <?php echo "<a href='index.php?option=com_joomelection&controller=election&task=showResult&election_id=" .$row->election_id. "'>" .JText::_( 'Result' ). "</a>"; ?>
+          <?php echo "<a href='index.php?option=com_joomelection&task=election.showResult&election_id=" .$row->election_id. "'>" .JText::_( 'Result' ). "</a>"; ?>
         </td>
         <td align="center">
           <?php echo $published; ?>
@@ -99,10 +98,8 @@
     ?>
     </tbody>
 	</table>
-</div>
-
-<input type="hidden" name="option" value="com_joomelection" />
-<input type="hidden" name="task" value="showList" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="controller" value="election" />
+  
+  <input type="hidden" name="task" value=""/>
+  <input type="hidden" name="boxchecked" value="0" />
+  <input type="hidden" name="opener_task" value="<?php echo $this->task; ?>" />
 </form>
