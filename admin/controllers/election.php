@@ -87,7 +87,7 @@ class JoomElectionControllerElection extends JControllerLegacy
     $task_opened_from = $this->input->getString( 'task_opened_from', '');
     $msg = JText::_( 'Operation Cancelled' );
     
-    if($task_opened_from == '') {
+    if($task_opened_from == 'showList' || $task_opened_from == '') {
       $this->setRedirect( 'index.php?option=com_joomelection&task=election.showList', $msg );
     }
     else if ($task_opened_from == 'edit') {
