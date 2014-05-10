@@ -1,29 +1,28 @@
 <?php
 
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
-
-jimport( 'joomla.application.component.view' );
 
 
 class JoomElectionViewLists extends JViewLegacy
 {
 
-	function display($tpl = null)
-	{
-		JToolBarHelper::title(   JText::_( 'Candidate Lists' ), 'generic.png' );
-		JToolBarHelper::deleteList();
-		JToolBarHelper::editListX();
-		JToolBarHelper::addNewX();
-		
-		$listModel 		= $this->getModel('list');
-		$lists			= & $listModel->getElectionLists();
-		$pagination 	= & $listModel->getPagination();
+  function display($tpl = null)
+  {
+    JToolBarHelper::title(   JText::_( 'Candidate Lists' ), 'generic.png' );
+    JToolBarHelper::addNew('list.add');
+    JToolBarHelper::editList('list.edit');
+    JToolBarHelper::deleteList('', 'list.remove');
+    
+    $listModel        = &$this->getModel('list');
+    $this->lists      = &$listModel->getElectionLists();
+    $this->pagination = &$listModel->getPagination();
+    
+    //Pass table sort parameters from last request
+    $input = JFactory::getApplication()->input;
+    $this->sortColumn = $input->getString('filter_order', '');
+    $this->sortDirection = $input->getString('filter_order_Dir', '');
 
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('pagination',	$pagination);
-
-		parent::display($tpl);
-	}
+    parent::display($tpl);
+  }
 }

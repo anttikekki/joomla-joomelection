@@ -18,6 +18,8 @@ class JoomElectionModelList extends JModelLegacy
     $input = JFactory::getApplication()->input;
 		$limit 		= $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
 		$limitstart = $input->getInt('limitstart', 0);
+    $orderByColumn = $this->_db->escape($input->getString('filter_order', 'list.election_id'));
+    $orderByDirection = $this->_db->escape($input->getString('filter_order_Dir', 'ASC'));
 		
 		// Get the total number of records
 		$query = 'SELECT COUNT(*)'
@@ -26,14 +28,13 @@ class JoomElectionModelList extends JModelLegacy
 		$total = $this->_db->loadResult();
 		
 		// Create the pagination object
-		jimport('joomla.html.pagination');
 		$this->_page = new JPagination($total, $limitstart, $limit);
 		
 		//Get list data
-		$query = ' SELECT list.*, e.election_name '
+		$query = ' SELECT list.*, e.election_name, e.election_id '
 		. ' FROM #__joomelection_list AS list'
 		. ' LEFT JOIN #__joomelection_election AS e ON e.election_id = list.election_id'
-		. ' ORDER BY list.election_id'
+    . ' ORDER BY ' .$orderByColumn. ' ' . $orderByDirection;
 		;
 		$this->_list = $this->_getList( $query, $limitstart, $limit );
 		

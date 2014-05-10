@@ -12,8 +12,6 @@ class JoomElectionViewElections extends JViewLegacy
 
   function display($tpl = null)
   {
-    jimport('joomla.utilities.date');
-    
     JToolBarHelper::title(   JText::_( 'Elections' ), 'generic.png' );
     JToolBarHelper::addNew('election.add');
     JToolBarHelper::editList('election.edit');

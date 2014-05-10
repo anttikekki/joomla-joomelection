@@ -10,7 +10,7 @@ JHTML::_('behavior.calendar');
   }
 </style>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form method="post" name="adminForm" id="adminForm">
 <div class="col100">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_( 'Details' ); ?></legend>
