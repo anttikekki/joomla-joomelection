@@ -52,7 +52,7 @@ class JoomElectionControllerList extends JControllerLegacy
       $msg = JText::_( 'Error Saving List' );
     }
 
-    $link = 'index.php?option=com_joomelection&controller=list&task=showList';
+    $link = 'index.php?option=com_joomelection&task=list.showList';
     $this->setRedirect($link, $msg);
   }
 

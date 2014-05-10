@@ -104,7 +104,7 @@ class JoomElectionModelList extends JModelLegacy
 			return true;
 		}
 		else {
-			JFactory::getApplication()->enqueueMessage('You have to create at least one election first before you can create a list. You can not save list with no election.', 'message');
+			JFactory::getApplication()->enqueueMessage('You have to create at least one election first before you can create a list. You can not save list with no election.', 'error');
 			return false;
 		}
 	}

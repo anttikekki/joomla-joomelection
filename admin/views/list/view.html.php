@@ -1,7 +1,7 @@
 <?php
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();d
+defined('_JEXEC') or die();
 
 
 class JoomElectionViewList extends JViewLegacy
@@ -13,18 +13,9 @@ class JoomElectionViewList extends JViewLegacy
     $listModel      = &$this->getModel('list');
     $electionModel  = &$this->getModel('election');
     
-    $list          = $listModel->getElectionList();
-    $electionList  = $electionModel->getListElections();
-    $isNew         = ($list->list_id < 1);
-    
-    //Add '-- Select Election--' text to be first value in list of elections so its going to be Combo box default value
-    $emptyElection = new stdClass();
-    $emptyElection->election_id = 0;
-    $emptyElection->election_name = JText::_( '--' .JText::_( 'Select election' ). '--' );
-    $electionList = array_merge(array($emptyElection), $electionList);
-    
-    $list->published     = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $list->published);
-    $electionComboBox    = JHTML::_('select.genericlist', $electionList, 'election_id', 'class="inputbox" ', 'election_id', 'election_name', $list->election_id );
+    $list       = $listModel->getElectionList();
+    $elections  = $electionModel->getListElections();
+    $isNew      = ($list->list_id < 1);
 
     $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
     JToolBarHelper::title(   JText::_( 'Candidate List' ).': <small><small>[ ' . $text.' ]</small></small>' );
@@ -37,14 +28,14 @@ class JoomElectionViewList extends JViewLegacy
       JToolBarHelper::cancel( 'list.showList', 'Close' );
     }
     
-    $electionListEmpty = false;
-    if(count($electionList) == 0) {
-      $electionListEmpty = true;
+    //Elections with type list election is required
+    if(count($elections) == 0) {
+      $error = JText::_( 'You have to create at least one election first before you can create a list. You can not save list with no election.' );
+      JFactory::getApplication()->enqueueMessage($error, 'error');
     }
 
-    $this->assignRef('electionList',     $list);
-    $this->assignRef('electionComboBox',   $electionComboBox);
-    $this->assignRef('electionListEmpty',   $electionListEmpty);
+    $this->elections    = $elections;
+    $this->electionList = $list;
     
     parent::display($tpl);
   }

@@ -11,73 +11,67 @@ JHTML::_('behavior.calendar');
 </style>
 
 <form method="post" name="adminForm" id="adminForm">
-<div class="col100">
-	<fieldset class="adminform">
-		<legend><?php echo JText::_( 'Details' ); ?></legend>
-
-		<table class="admintable">
-			<tr>
-				<td width="100" align="right" class="key">
-					<label for="name">
-						<?php echo JText::_( 'Candidate List name' ); ?>:
-					</label>
-				</td>
-				<td>
-					<input class="inputbox" type="text" name="name" id="name" size="32" maxlength="250" value="<?php echo $this->electionList->name;?>" />
-				</td>
-			</tr>
-			
-			
-			<tr>
-				<td width="100" align="right" class="key">
-					<label for="election_id">
-						<?php echo JText::_( 'Election' ); ?>:
-					</label>
-				</td>
-				<td>
-						<?php 
-							if($this->electionListEmpty == true) {
-								?><span class="error"><?php
-								echo JText::_( 'You have to create at least one election first before you can create a list. You can not save list with no election.' );
-								?></span><?php
-							}
-							else {
-								echo $this->electionComboBox;
-							}
-						?>
-				</td>
-			</tr>
-				
-				
-			<tr>	
-				<td width="100" align="right" class="key">
-					<label for="description">
-						<?php echo JText::_( 'Candidate List description' ); ?>:
-					</label>
-				</td>
-				<td>
-					<?php echo $editor->display( 'description', $this->option->description, '100%', '350', '60', '35' ); ?>
-				</td>
-			</tr>	
-				
-			
-			<tr>
-				<td width="100" align="right" class="key">
-					<label for="result_published">
-						<?php echo JText::_( 'Published' ); ?>:
-					</label>
-				</td>
-				<td>
-					<?php echo $this->electionList->published; ?>
-				</td>
-			</tr>
-		</table>
-	</fieldset>
-</div>
-<div class="clr"></div>
-
-<input type="hidden" name="option" value="com_joomelection" />
-<input type="hidden" name="list_id" value="<?php echo $this->electionList->list_id; ?>" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="list" />
+  <div class="form-horizontal">
+    <div class="row-fluid">
+      <div class="span9">
+        <fieldset class="form-vertical">
+        
+          <!-- Candidate List name -->
+          <div class="control-group ">
+            <div class="control-label">
+              <label id="name-lbl" for="name" class="required" title="">
+                <?php echo JText::_( 'Candidate List name' ); ?>
+                <span class="star">&nbsp;*</span>
+              </label>
+            </div>
+            <div class="controls">
+              <input type="text" name="name" id="name" size="32" maxlength="250" value="<?php echo $this->electionList->name;?>" />
+            </div>
+          </div>
+        
+          <!-- Election -->
+          <div class="control-group ">
+            <div class="control-label">
+              <label id="election_id-lbl" for="election_id" class="required" title="">
+                <?php echo JText::_( 'Election' ); ?>
+                <span class="star">&nbsp;*</span>
+              </label>
+            </div>
+            <div class="controls">
+              <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name', $this->electionList->election_id );?>
+            </div>
+          </div>
+        
+          <!-- Published -->
+          <div class="control-group ">
+            <div class="control-label">
+              <label id="published-lbl" for="published" class="required" title="">
+                <?php echo JText::_( 'Published' ); ?>
+                <span class="star">&nbsp;*</span>
+              </label>
+            </div>
+            <div class="controls">
+              <?php echo JHTML::_('select.booleanlist', 'published', null, $this->electionList->published); ?>
+            </div>
+          </div>
+        
+          <!-- Candidate List description -->
+          <div class="control-group ">
+            <div class="control-label">
+              <label id="description-lbl" for="description" class="" title="">
+                <?php echo JText::_( 'Candidate List description' ); ?>
+              </label>
+            </div>
+            <div class="controls">
+              <?php echo $editor->display( 'description', $this->electionList->description, '100%', '150', '60', '35' ); ?>
+            </div>
+          </div>
+          
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  
+  <input type="hidden" name="list_id" value="<?php echo $this->electionList->list_id; ?>" />
+  <input type="hidden" name="task" value="" />
 </form>
