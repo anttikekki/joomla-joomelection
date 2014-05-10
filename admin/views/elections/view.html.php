@@ -28,16 +28,7 @@ class JoomElectionViewElections extends JViewLegacy
     
     if (count( $this->elections ))    {
       foreach($this->elections as $election) {
-        $date_to_open   = new JDate($election->date_to_open);
-        $date_to_close  = new JDate($election->date_to_close);
-        $now            = new JDate();
-        
-        if($date_to_open->toUnix() <= $now->toUnix() && $date_to_close->toUnix() >= $now->toUnix()) {
-          $election->election_open = true;
-        }
-        else {
-          $election->election_open = false;
-        }
+        $election->election_open = $electionModel->isElectionOpen($election);
       }
     }
     
