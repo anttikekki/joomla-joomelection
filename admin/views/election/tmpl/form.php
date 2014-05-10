@@ -247,5 +247,6 @@ JHTML::_('behavior.calendar');
   </div> <!-- form-horizontal -->
   
   <input type="hidden" name="election_id" value="<?php echo $this->election->election_id; ?>" />
+  <input type="hidden" name="opener_task" value="<?php echo $this->task; ?>" /> <!-- For results page so that Back button returns to right page-->
   <input type="hidden" name="task" value="" />
 </form>
