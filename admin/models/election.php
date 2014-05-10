@@ -16,10 +16,13 @@ class JoomElectionModelElection extends JModelLegacy
 		$input = JFactory::getApplication()->input;
 		$limit = $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
 		$limitstart = $input->getInt('limitstart', 0);
+    $orderByColumn = $this->_db->escape($input->getString('filter_order', 'election_name'));
+    $orderByDirection = $this->_db->escape($input->getString('filter_order_Dir', 'ASC'));
 		
 		// Get the total number of records
 		$query = 'SELECT COUNT(*)'
 		. ' FROM #__joomelection_election';
+    
 		$this->_db->setQuery($query);
 		$total = $this->_db->loadResult();
 		
@@ -30,6 +33,7 @@ class JoomElectionModelElection extends JModelLegacy
 		//Get list data
 		$query = ' SELECT * '
 		. ' FROM #__joomelection_election'
+    . ' ORDER BY ' .$orderByColumn. ' ' . $orderByDirection;
 		;
 		$this->_list = $this->_getList( $query, $limitstart, $limit );
 		

@@ -113,9 +113,8 @@ class JoomElectionControllerElection extends JControllerLegacy
     } else {
       $msg = JText::_( 'Error when publishing election(s)' );
     }
-
-    $link = 'index.php?option=com_joomelection&controller=election&task=showList';
-    $this->setRedirect($link, $msg);
+    
+    $this->setRedirect('index.php?option=com_joomelection&task=election.showList', $msg);
   }
   
   function unpublish()
@@ -127,9 +126,8 @@ class JoomElectionControllerElection extends JControllerLegacy
     } else {
       $msg = JText::_( 'Error when unpublishing election(s)' );
     }
-
-    $link = 'index.php?option=com_joomelection&controller=election&task=showList';
-    $this->setRedirect($link, $msg);
+    
+    $this->setRedirect('index.php?option=com_joomelection&task=election.showList', $msg);
   }
 }
 ?>
