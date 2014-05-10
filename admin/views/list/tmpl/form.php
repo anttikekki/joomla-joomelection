@@ -4,12 +4,6 @@ $editor =& JFactory::getEditor();
 JHTML::_('behavior.calendar');
 ?>
 
-<style type="text/css">
-  span.error { 
-	  color: red;
-  }
-</style>
-
 <form method="post" name="adminForm" id="adminForm">
   <div class="form-horizontal">
     <div class="row-fluid">

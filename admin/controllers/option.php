@@ -50,7 +50,7 @@ class JoomElectionControllerOption extends JControllerLegacy
 
 		if ($model->store()) {
 			$msg = JText::_( 'Option Saved' );
-			$link = 'index.php?option=com_joomelection&controller=option&task=showList';
+			$link = 'index.php?option=com_joomelection&task=option.showList';
 			$this->setRedirect($link, $msg);
 		} else {
       $input = JFactory::getApplication()->input;
@@ -69,14 +69,14 @@ class JoomElectionControllerOption extends JControllerLegacy
 			$msg = JText::_( 'Option(s) Deleted' );
 		}
 
-		$this->setRedirect( 'index.php?option=com_joomelection&controller=option&task=showList', $msg );
+		$this->setRedirect( 'index.php?option=com_joomelection&task=option.showList', $msg );
 	}
 
 
 	function cancel()
 	{
 		$msg = JText::_( 'Operation Cancelled' );
-		$this->setRedirect( 'index.php?option=com_joomelection&controller=option&task=showList', $msg );
+		$this->setRedirect( 'index.php?option=com_joomelection&task=option.showList', $msg );
 	}
 	
 	
@@ -90,7 +90,7 @@ class JoomElectionControllerOption extends JControllerLegacy
 			$msg = JText::_( 'Error when publishing option(s)' );
 		}
 
-		$link = 'index.php?option=com_joomelection&controller=option&task=showList';
+		$link = 'index.php?option=com_joomelection&task=option.showList';
 		$this->setRedirect($link, $msg);
 	}
 	
@@ -104,7 +104,7 @@ class JoomElectionControllerOption extends JControllerLegacy
 			$msg = JText::_( 'Error when unpublishing option(s)' );
 		}
 
-		$link = 'index.php?option=com_joomelection&controller=option&task=showList';
+		$link = 'index.php?option=com_joomelection&task=option.showList';
 		$this->setRedirect($link, $msg);
 	}
 	

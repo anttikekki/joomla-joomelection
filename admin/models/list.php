@@ -49,6 +49,16 @@ class JoomElectionModelList extends JModelLegacy
 		}
 		return $this->_page;
 	}
+  
+  function &getAllElectionLists()
+	{
+		$query = ' SELECT list.*, e.election_name, e.election_id '
+		. ' FROM #__joomelection_list AS list'
+		. ' LEFT JOIN #__joomelection_election AS e ON e.election_id = list.election_id'
+		;
+		$this->_db->setQuery( $query );
+    return $this->_db->loadObjectList();
+	}
 	
 
 	function getElectionList()
