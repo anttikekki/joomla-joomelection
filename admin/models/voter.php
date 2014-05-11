@@ -135,13 +135,18 @@ class JoomElectionModelVoter extends JModelLegacy
 
   function store()  {
     $input = JFactory::getApplication()->input;
-    $electionModel   =& $this->getInstance('election', 'JoomElectionModel');
-    $voter       =& $this->getTable();
+    $electionModel =& $this->getInstance('election', 'JoomElectionModel');
+    $voter         =& $this->getTable();
   
-     // Create a new voter
-     $user_id_from_post   = $input->getInt( 'id', 0);
+    $user_id_from_post   = $input->getInt( 'id', 0);
     $sendEmailToVoter   = $input->getInt( 'sendEmailToVoter', 0);
     $election_id     = $input->getInt( 'election_id', 0);
+    
+    /*
+    * 0 is not good for "no user" status. 
+    * $voter->load(0) return true because 0 means "no primary key, nothing to load"
+    */
+    $user_id_from_post = $user_id_from_post == 0 ? -1 : $user_id_from_post;
   
     $user           = new JUser($user_id_from_post);
     $userData         = array();
@@ -197,6 +202,7 @@ class JoomElectionModelVoter extends JModelLegacy
       $query = "INSERT INTO #__joomelection_voter (voter_id, email_sent) "
       . "\n VALUES ('" .(int) $user->id . "', '" . (int) $email_sent . "')"
       ;
+      
       $this->_db->setQuery( $query );
       if (!$this->_db->query()) {
         JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
