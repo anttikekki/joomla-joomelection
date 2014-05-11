@@ -5,11 +5,28 @@ JHTML::_('behavior.calendar');
 
 $document =& Jfactory::getDocument();  
 $optionJSON = json_encode($this->option);
-$electionLists = json_encode($this->electionLists);
+$electionsJSON = json_encode($this->elections);
+$electionListsJSON = json_encode($this->electionLists);
+$electionListNotNeededMsg = JText::_( 'Election is not list election. Candidate list is not needed.' );
+$noElectionListsForElectionMsg = JText::_( 'There are no candidate lists for selected list election. Please create one first.' );
+
 $document->addScriptDeclaration("
   var JoomElection = {};
   JoomElection.option = $optionJSON;
-  JoomElection.electionLists = $electionLists;
+  JoomElection.elections = $electionsJSON;
+  JoomElection.electionLists = $electionListsJSON;
+  JoomElection.electionListNotNeededMsg = '$electionListNotNeededMsg';
+  JoomElection.noElectionListsForElectionMsg = '$noElectionListsForElectionMsg';
+  
+  JoomElection.isListElection = function(electionId) {
+    for(var i=0; i<JoomElection.elections.length; i++) {
+      var election = JoomElection.elections[i];
+      if(election.election_id == electionId) {
+        return election.election_type_id == 2;
+      }
+    }
+    throw 'No election for given id ' + electionId;
+  };
   
   JoomElection.getElectionListsForElection = function(electionId) {
     var lists = [];
@@ -35,8 +52,28 @@ $document->addScriptDeclaration("
   jQuery(document).ready(function() {
     jQuery('#election_id').on('change', function() {
       var electionId = this.value;
-      var electionLists = JoomElection.getElectionListsForElection(electionId);
-      JoomElection.populateElectionListSelect(electionLists);
+      var listSelect = jQuery('#list_id');
+      var listSelectMessageElement = jQuery('#list_id_message');
+      
+      if(JoomElection.isListElection(electionId)) {
+        var electionLists = JoomElection.getElectionListsForElection(electionId);
+        JoomElection.populateElectionListSelect(electionLists);
+        
+        if(electionLists.length > 0) {
+          listSelect.show();
+          listSelectMessageElement.hide();
+        }
+        else {
+          listSelectMessageElement.html(JoomElection.noElectionListsForElectionMsg);
+          listSelect.hide();
+          listSelectMessageElement.show();
+        }
+      }
+      else {
+        listSelectMessageElement.html(JoomElection.electionListNotNeededMsg);
+        listSelect.hide();
+        listSelectMessageElement.show();
+      }
     });
     jQuery('#election_id').change();
   });
@@ -98,6 +135,7 @@ $document->addScriptDeclaration("
             </div>
             <div class="controls">
               <?php echo JHTML::_('select.genericlist', array(), 'list_id', null, 'list_id', 'name', $this->option->list_id );?>
+              <div class="alert alert-info" id="list_id_message"></div>
             </div>
           </div>
         
