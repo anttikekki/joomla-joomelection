@@ -47,6 +47,8 @@ $sortCallbackTask = 'option.showList';
       $row = &$this->options[$i];
       $optionEditLink = JRoute::_( 'index.php?option=com_joomelection&task=option.edit&cid[]='. $row->option_id );
       $electionEditLink = JRoute::_( 'index.php?option=com_joomelection&task=election.edit&cid[]='. $row->election_id );
+      $description = strip_tags($row->description);
+      $description = strlen($description) > 100 ? substr($description, 0, 100) ."..." : $description;
 
       ?>
       <tr class="<?php echo "row$k"; ?>">
@@ -60,10 +62,10 @@ $sortCallbackTask = 'option.showList';
           <?php echo $row->option_number; ?>
         </td>
         <td align="center">
-          <a href="<?php echo $link; ?>"><?php echo $row->name; ?></a>
+          <a href="<?php echo $optionEditLink; ?>"><?php echo $row->name; ?></a>
         </td>
         <td>
-          <?php echo substr(strip_tags($row->description), 0, 100) ."..."; ?>
+          <?php echo $description; ?>
         </td>
         <td align="center">
           <a href="<?php echo $electionEditLink; ?>"><?php echo $row->election_name; ?></a>

@@ -26,7 +26,8 @@ $document->addScriptDeclaration("
     var html = '';
     for(var i=0; i<electionLists.length; i++) {
       var list = electionLists[i];
-      html += '<option value=\"' + list.list_id + '\">' + list.name + '</option>';
+      var selected = (JoomElection.option.list_id == list.list_id) ? 'selected' : '';
+      html += '<option value=\"' + list.list_id + '\" ' + selected + '>' + list.name + '</option>';
     }
     jQuery('#list_id').html(html);
   };

@@ -107,25 +107,4 @@ class JoomElectionControllerOption extends JControllerLegacy
 		$link = 'index.php?option=com_joomelection&task=option.showList';
 		$this->setRedirect($link, $msg);
 	}
-	
-	function listElectionListsForElection()
-	{
-    $input = JFactory::getApplication()->input;
-		$election_id = $input->getInt( 'election_id', 0);
-		$electionListModel = $this->getModel('list');
-		$electionLists = $electionListModel->getElectionListsForElection($election_id);
-		
-		if(count($electionLists) > 0) {
-			$electionListsComboBox	= JHTML::_('select.genericlist', $electionLists, 'list_id', 'class="inputbox" ', 'list_id', 'name', 0 );
-		}
-		else {
-			$electionListsComboBox = JText::_( 'Election is not list election. Candidate list is not needed.' );
-		}
-		
-		//Print select box
-    echo $electionListsComboBox;
-    
-    // Return to keep the application from going anywhere else. Echoed content returns to browser.
-    return;
-	}
 }
