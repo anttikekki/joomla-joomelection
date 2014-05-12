@@ -162,9 +162,21 @@ class JoomElectionModelVoter extends JModelLegacy
       return false;
     }
     
-    if(!$user->save()) {
+    /*
+    * User validation and creation needs to done with UserTable instead of JUser. 
+    * JUser save() sends onUserAfterSave event. This causes Joomla! to send welcome email on default User - Joomla! plugin settings.
+    */
+    $userTable =& JUser::getTable();
+    $userTable->bind($user->getProperties());
+    if(!$userTable->check()) {
       JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $userData['username'], 'message');
-      JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
+      JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
+      return false;
+    }
+    
+    if(!$userTable->store()) {
+      JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $userData['username'], 'message');
+      JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
       return false;
     }
     
@@ -172,7 +184,7 @@ class JoomElectionModelVoter extends JModelLegacy
     if($sendEmailToVoter) {
       if($election_id > 0) {
         $election = $electionModel->getElection($election_id);
-        $this->sendPasswordEmail($user, $clearPassword, $election);
+        $this->sendPasswordEmail($userTable, $clearPassword, $election);
         $email_sent = 1;
       }
       else {
@@ -182,7 +194,7 @@ class JoomElectionModelVoter extends JModelLegacy
     }
     
     //Update or create voter
-    $voter->voter_id = $user->id;
+    $voter->voter_id = $userTable->id;
     $voter->email_sent = $email_sent;
     
     if (!$voter->store()) {
@@ -331,26 +343,39 @@ class JoomElectionModelVoter extends JModelLegacy
               continue;
             }
             
-            //Save user to database
-            if (!$user->save()) {
+            /*
+            * User validation and creation needs to done with UserTable instead of JUser. 
+            * JUser save() sends onUserAfterSave event. This causes Joomla! to send welcome email on default User - Joomla! plugin settings.
+            */
+            $userTable =& JUser::getTable();
+            $userTable->bind($user->getProperties());
+            if(!$userTable->check()) {
               JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
-              JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
+              JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
+              $import_success = false;
+              continue;
+            }
+            
+            //Save user to database
+            if (!$userTable->store()) {
+              JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
+              JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
               $import_success = false;
               continue;
             }
             
             //Store new Joomla user id
-            $created_user->id = $user->id;
+            $created_user->id = $userTable->id;
             $created_users[] = $created_user;
             
             //Create voter
             $voter->reset();
-            $voter->voter_id = $user->id;
+            $voter->voter_id = $userTable->id;
             $voter->email_sent = 0;
             
             if (!$voter->store()) {
               JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $user_data['username'], 'message');
-              JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
+              JFactory::getApplication()->enqueueMessage($voter->getError(), 'error');
               $import_success = false;
             }
           }
