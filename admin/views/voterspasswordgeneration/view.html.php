@@ -13,26 +13,16 @@ class JoomElectionViewVoterspasswordgeneration extends JViewLegacy
 	function display($tpl = null)
 	{
     $input = JFactory::getApplication()->input;
-		$selectedVoters	= $input->get( 'cid', array(), 'array' );
-		if(((int) $selectedVoters[0]) == 0) {
-			$selectedVoutersCount = 0;
-		}
-		else {
-			$selectedVoutersCount = sizeof($selectedVoters);
-		}
-		
+		$selectedVoterIds	= $input->get( 'cid', array(), 'array' );
 		$electionModel 	= $this->getModel('election');
-		$elections		= $electionModel->getAllElections();
-		$elections_list	= JHTML::_('select.genericlist', $elections, 'election_id', 'class="inputbox" ', 'election_id', 'election_name' );
+    
+		$this->selectedVoutersCount = count($selectedVoterIds);
+		$this->elections		= $electionModel->getAllElections();
+    $this->selectedVotersStringList = implode(",", $selectedVoterIds);
 		
 		JToolBarHelper::title(   JText::_( 'Generate passwords' ), 'generic.png' );
-		JToolBarHelper::custom('generatePasswords', 'apply.png', 'apply.png', $alt = JText::_( 'Generate and send' ), $listSelect = false);
-		JToolBarHelper::cancel();
-		
-		$this->assignRef( 'elections_list',	$elections_list );
-		$this->assignRef( 'selectedVoutersCount', $selectedVoutersCount);
-		$this->assignRef( 'selectedVotersStringList', implode(",", $selectedVoters));
-		$this->assignRef( 'elections_count', count($elections));
+		JToolBarHelper::custom('voter.generatePasswords', 'apply.png', 'apply.png', $alt = JText::_( 'Generate and send' ), $listSelect = false);
+		JToolBarHelper::cancel('voter.cancel');
 		
 		parent::display($tpl);
 	}

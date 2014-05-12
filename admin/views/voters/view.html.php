@@ -18,9 +18,9 @@ class JoomElectionViewVoters extends JViewLegacy
     JToolBarHelper::addNew('voter.add');
     JToolBarHelper::editList('voter.edit');
     JToolBarHelper::deleteList('', 'voter.remove');
-    JToolBarHelper::custom('showVotersImport', 'upload.png', 'upload.png', $alt = JText::_( 'Import voters' ), $listSelect = false);
-    JToolBarHelper::custom('showGeneratePasswordForm', 'send.png', 'send.png', $alt = JText::_( 'Generate passwords' ), $listSelect = false);
-    JToolBarHelper::custom('removeAll', 'trash.png', 'trash.png', $alt = JText::_( 'Delete all' ), $listSelect = false);
+    JToolBarHelper::custom('voter.showVotersImport', 'upload.png', 'upload.png', $alt = JText::_( 'Import voters' ), $listSelect = false);
+    JToolBarHelper::custom('voter.showGeneratePasswordForm', 'envelope', 'envelope', $alt = JText::_( 'Generate passwords' ), $listSelect = false);
+    JToolBarHelper::custom('voter.removeAll', 'trash.png', 'trash.png', $alt = JText::_( 'Delete all' ), $listSelect = false);
     
     //Get models
     $electionModel =& $this->getModel('election');
@@ -40,8 +40,8 @@ class JoomElectionViewVoters extends JViewLegacy
     $this->election_id  = $input->getInt('election_id', $default_election_id);
     
     //Pass table sort parameters from last request
-    $this->sortColumn = $input->getString('filter_order', '');
-    $this->sortDirection = $input->getString('filter_order_Dir', '');
+    $this->sortColumn = $input->getString('filter_order', 'u.name');
+    $this->sortDirection = $input->getString('filter_order_Dir', 'ASC');
 
     parent::display($tpl);
   }

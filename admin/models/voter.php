@@ -281,16 +281,16 @@ class JoomElectionModelVoter extends JModelLegacy
   
   function deleteAll()
   {
-    $query = ' SELECT v.voter_id '
-    . ' FROM #__joomelection_voter AS v'
-    . ' LEFT JOIN #__users AS u ON u.id = v.voter_id'
-    ;
+    $query = "
+      SELECT v.voter_id
+      FROM #__joomelection_voter AS v
+    ";
     $this->_db->setQuery( $query );
-    $cids = $this->_db->loadResultArray();
+    $voterIds = $this->_db->loadColumn();
     
-    if (count( $cids ))    {
-      foreach($cids as $cid) {
-        $user =& JUser::getInstance($cid);
+    if (count( $voterIds ) > 0)    {
+      foreach($voterIds as $voterId) {
+        $user =& JUser::getInstance($voterId);
         $user->delete();
       }            
     }
@@ -469,8 +469,9 @@ class JoomElectionModelVoter extends JModelLegacy
     $mailfrom     = JFactory::getApplication()->getCfg( 'mailfrom' );
     $fromname     = JFactory::getApplication()->getCfg( 'fromname' );
     
-    $markers   = array("[name]", "[username]", "[password]", "[election_name]", "[www]");
-    $data     = array($name, $username, $password, $election->election_name, JFactory::getApplication()->getSiteURL());
+    $markers  = array("[name]", "[username]", "[password]", "[election_name]", "[www]");
+    $uri      = JFactory::getURI();
+    $data     = array($name, $username, $password, $election->election_name, $uri->base());
     
     $subject  = str_replace($markers, $data, $election->election_voter_email_header);
     $subject   = html_entity_decode($subject, ENT_QUOTES);
@@ -478,7 +479,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $message   = str_replace($markers, $data, $election->election_voter_email_text);
     $message   = html_entity_decode($message, ENT_QUOTES);
     
-    JUtility::sendMail($mailfrom, $fromname, $email, $subject, $message);  
+    JMail::getInstance()->sendMail($mailfrom, $fromname, $email, $subject, $message);  
   }
   
   
@@ -504,7 +505,7 @@ class JoomElectionModelVoter extends JModelLegacy
       . ' FROM #__joomelection_voter AS v'
       . ' LEFT JOIN #__users AS u ON u.id = v.voter_id';
       $this->_db->setQuery( $query );
-      $selectedVotersIdsArray = $this->_db->loadResultArray();
+      $selectedVotersIdsArray = $this->_db->loadColumn();
     }
     
     if (count( $selectedVotersIdsArray )) {
