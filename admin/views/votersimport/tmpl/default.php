@@ -2,93 +2,93 @@
 
 
 ?>
-			
-			
 
-<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-<div class="col100">
-	<fieldset class="adminform">
-		<legend><?php echo JText::_( 'Import Voters' ); ?></legend>
+<form method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 
-		<table class="admintable">
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="fileUpload">
-					<?php echo JText::_( 'Filename' ); ?>:
-				</label>
-			</td>
-			<td>
-				<input type="file" id="fileUpload" name="fileUpload" />
-			</td>
-		</tr>
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="separator">
-					<?php echo JText::_( 'CSV file data separator' ); ?>:
-				</label>
-			</td>
-			<td>
-				<select id="separator" class="inputbox" name="separator">
-					<option value=","> , </option>
-					<option value=";"> ; </option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="importType">
-					<?php echo JText::_( 'Import info' ); ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo JText::_('Import info text'); ?>
-				<br /><br />
-				<?php $link = JRoute::_('components/com_joomelection/importExample/test_user_import.csv'); ?>
-				<a href="<?php echo $link; ?>"><?php echo JText::_('Example import file'); ?></a>
-			</td>
-		</tr>
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="generatePassword">
-					<?php echo JText::_( 'Generate random passwords' ); ?>?
-				</label>
-			</td>
-			<td>
-				<input type="radio" name="generatePassword" id="generatePasswordyes" value="1" class="inputbox" />
-				<label for="generatePasswordyes"><?php echo JText::_( 'Yes' ); ?></label>
-				
-				<input type="radio" name="generatePassword" id="generatePasswordno" value="0" checked="checked" class="inputbox" />
-				<label for="generatePasswordno"><?php echo JText::_( 'No' ); ?></label>
-			</td>
-		</tr>
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="sendEmailToVoter">
-					<?php echo JText::_( 'Send username and password to users email' ); ?>?
-				</label>
-			</td>
-			<td>
-				<?php if($this->elections_count > 0) { ?>
-					<input type="radio" name="sendEmailToVoter" id="sendEmailToVoteryes" value="1" class="inputbox" />
-					<label for="sendEmailToVoteryes"><?php echo JText::_( 'Yes' ); ?></label>
-					
-					<input type="radio" name="sendEmailToVoter" id="sendEmailToVoterno" value="0" checked="checked" class="inputbox" />
-					<label for="sendEmailToVoterno"><?php echo JText::_( 'No' ); ?></label>
-					<br /><br />
-					<?php echo JText::_( 'Select election thats email message is used' ); ?>:
-					<br />
-					<?php echo $this->elections_list; ?>
-				<?php } else { ?>
-					<?php echo JText::_( 'No elections available, impossible to send email. Create at least one election  first.' ); ?>
-				<?php } ?>
-			</td>
-		</tr>
-	</table>
-	</fieldset>
-</div>
-<div class="clr"></div>
+  <!-- File -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label for="fileUpload" class="required" title="">
+        <?php echo JText::_( 'Filename' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <input type="file" id="fileUpload" name="fileUpload" />
+    </div>
+  </div>
 
-<input type="hidden" name="option" value="com_joomelection" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="controller" value="voter" />
+  <!-- CSV file data separator -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label for="separator" class="required" title="">
+        <?php echo JText::_( 'CSV file data separator' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <select id="separator" name="separator">
+        <option value=","> , </option>
+        <option value=";"> ; </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <?php echo JText::_('Import info text'); ?>
+    <br /><br />
+    <a href="<?php echo JRoute::_('components/com_joomelection/importExample/test_user_import.csv'); ?>"><?php echo JText::_('Example import file'); ?></a>
+  </div>
+
+  <!-- Generate random passwords -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label for="generatePassword" class="required" title="">
+        <?php echo JText::_( 'Generate random passwords' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <?php echo JHTML::_('select.booleanlist', 'generatePassword', null, 0); ?>
+    </div>
+  </div>
+
+  <!-- Send username and password to users email -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label for="sendEmailToVoter" class="required" title="">
+        <?php echo JText::_( 'Send username and password to users email' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
+    </div>
+  </div>
+
+  <!-- Select election thats email message is used -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label for="sendEmailToVoter" class="required" title="">
+        <?php echo JText::_( 'Select election thats email message is used' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <?php 
+        if(count($this->elections) > 0) {
+          echo JHTML::_('select.genericlist', $this->elections, 'election_id', 'class="inputbox" ', 'election_id', 'election_name' );
+        }
+        else {
+          ?>
+          <div class="alert alert-error">
+           <?php echo JText::_( 'No elections available, impossible to send email. Create at least one election  first.' ); ?>
+          </div>
+          <?php
+        }
+      ?>
+    </div>
+  </div>
+
+  <input type="hidden" name="task" value="" />
 </form>

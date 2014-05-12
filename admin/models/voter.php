@@ -141,7 +141,6 @@ class JoomElectionModelVoter extends JModelLegacy
     $user_id_from_post   = $input->getInt( 'id', 0);
     $sendEmailToVoter   = $input->getInt( 'sendEmailToVoter', 0);
     $election_id     = $input->getInt( 'election_id', 0);
-    $isNew = $user_id_from_post > 0;
   
     $user           = new JUser($user_id_from_post);
     $userData         = array();
@@ -150,8 +149,13 @@ class JoomElectionModelVoter extends JModelLegacy
     $userData['password']  = $input->getRaw('password', '');
     $userData['password2']  = $userData['password'];
     $userData['email']    = $input->getString('email', '');
-    $userData['gid']    = 18; //Userlevel
     $clearPassword       = $userData['password'];
+    
+    /*
+    * Registered - This group allows the user to login to the Frontend interface. Registered users can't contribute content, but this may allow them access to other areas, like a 
+    * forum or download section if your site has one. 
+    */
+    $userData['groups'] = array('Registered' => 2);
     
     if (!$user->bind($userData)) {
       JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
@@ -185,64 +189,6 @@ class JoomElectionModelVoter extends JModelLegacy
       JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
       JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
       return false;
-    }
-    
-    return true;
-  }
-  
-  
-  
-  
-  
-  function validateUser($userData, $user_id) {
-    //Validate name is not empty
-    if ((strlen(trim($userData['name'])) > 0) == false) {
-      JFactory::getApplication()->enqueueMessage('Voter name can not be empty', 'error');
-      return false;
-    }
-    
-    
-    //Validate username is not empty
-    if ((strlen(trim($userData['username'])) > 0) == false) {
-      JFactory::getApplication()->enqueueMessage('Voter username can not be empty', 'error');
-      return false;
-    }
-    else {
-      //copyed from \libraries\joomla\database\table\user.php
-      // check for existing username
-      $query = 'SELECT id'
-      . ' FROM #__users '
-      . ' WHERE username = ' . $this->_db->quote($userData['username'])
-      . ' AND id != '. (int) $user_id;
-      ;
-      $this->_db->setQuery( $query );
-      $id_from_db = intval( $this->_db->loadResult() );
-      if ($id_from_db && $id_from_db != intval( $user_id )) {
-        JFactory::getApplication()->enqueueMessage('Username is allready in use. Username have to be unique', 'error');
-        return false;
-      }
-    }
-    
-    
-    //Validate email is not empty
-    if ((strlen(trim($userData['email'])) > 0) == false) {
-      JFactory::getApplication()->enqueueMessage('Voter email can not be empty', 'error');
-      return false;
-    }
-    else {
-      //copyed from \libraries\joomla\database\table\user.php
-      // check for existing email
-      $query = 'SELECT id'
-        . ' FROM #__users '
-        . ' WHERE email = '. $this->_db->quote($userData['email'])
-        . ' AND id != '. (int) $user_id
-        ;
-      $this->_db->setQuery( $query );
-      $id_from_db = intval( $this->_db->loadResult() );
-      if ($id_from_db && $id_from_db != intval( $user_id )) {
-        JFactory::getApplication()->enqueueMessage('Email is allready in use. Email has to be unique.', 'error');
-        return false;
-      }
     }
     
     return true;
@@ -314,13 +260,13 @@ class JoomElectionModelVoter extends JModelLegacy
     jimport('joomla.user.helper');
     $input = JFactory::getApplication()->input;
     
-    $voter         =& $this->getTable();
-    $electionModel     =& $this->getInstance('election', 'JoomElectionModel');
-    $file         = $input->files->get( 'fileUpload');
+    $voter              =& $this->getTable();
+    $electionModel      =& $this->getInstance('election', 'JoomElectionModel');
+    $file               = $input->files->get( 'fileUpload');
     $generatePassword   = $input->getInt( 'generatePassword', 0);
     $sendEmailToVoter   = $input->getInt( 'sendEmailToVoter', 0);
-    $election_id     = $input->getInt( 'election_id', 0);
-    $separator       = $input->getString( 'separator', ';');
+    $election_id        = $input->getInt( 'election_id', 0);
+    $separator          = $input->getString( 'separator', ';');
     
     if($sendEmailToVoter == 1) {
       if(!$election_id > 0) {
@@ -357,7 +303,11 @@ class JoomElectionModelVoter extends JModelLegacy
               $user_data['email']   = trim(utf8_encode($data[3]));
             }
 
-            $user_data['gid']     = 18; //Registered-usergroup
+            /*
+            * Registered - This group allows the user to login to the Frontend interface. Registered users can't contribute content, but this may allow them access to other areas, like a 
+            * forum or download section if your site has one. 
+            */
+            $user_data['groups']     = array('Registered' => 2);
             
             //Generates random password ifrequired
             if($generatePassword == true) {
@@ -365,48 +315,43 @@ class JoomElectionModelVoter extends JModelLegacy
               $user_data['password2'] = $user_data['password'];
             }
             
-            //Validate data
-            if($this->validateUser($user_data, 0) == false) {
-              JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct? Usernames and emails have to be unique!'), 'error');
+            //Create backupp user-object to be used in email sending
+            $created_user = new stdClass();
+            $created_user->name = $user_data['name'];
+            $created_user->username = $user_data['username'];
+            $created_user->password = $user_data['password'];
+            $created_user->email = $user_data['email'];
+            
+            //Create Joomla userobject
+            $user = new JUser();
+            
+            //Bind data to user object
+            if(!$user->bind($user_data)) {
               $import_success = false;
+              continue;
             }
-            else {
-              //Create backupp user-object to be used in email sending
-              $created_user = new stdClass();
-              $created_user->name = $user_data['name'];
-              $created_user->username = $user_data['username'];
-              $created_user->password = $user_data['password'];
-              $created_user->email = $user_data['email'];
-              
-              //Create Joomla userobject
-              $user = new JUser();
-              
-              //Bind data to user object
-              if(!$user->bind($user_data)) {
-                $import_success = false;
-              }
-              
-              //Save user to database
-              if (!$user->save()) {
-                JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
-                JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
-                $import_success = false;
-              }
-              else {
-                $created_user->id = $user->id;
-                $created_users[] = $created_user;
-                
-                //Manual insert because voter->store tryes to update existing voter
-                $query = "INSERT INTO #__joomelection_voter (voter_id, email_sent) "
-                . "\n VALUES ('" .(int) $user->id . "', '" . 0 . "')"
-                ;
-                $this->_db->setQuery( $query );
-                if (!$this->_db->query()) {
-                  JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $user_data['username'], 'message');
-                  JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
-                  $import_success = false;
-                }
-              }
+            
+            //Save user to database
+            if (!$user->save()) {
+              JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
+              JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
+              $import_success = false;
+              continue;
+            }
+            
+            //Store new Joomla user id
+            $created_user->id = $user->id;
+            $created_users[] = $created_user;
+            
+            //Create voter
+            $voter->reset();
+            $voter->voter_id = $user->id;
+            $voter->email_sent = 0;
+            
+            if (!$voter->store()) {
+              JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $user_data['username'], 'message');
+              JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
+              $import_success = false;
             }
           }
           //Close file connection
@@ -495,15 +440,15 @@ class JoomElectionModelVoter extends JModelLegacy
     $user_data          = array();
     $updated_users         = array();
     
-    //1 = generate and send email to selected
     if($selectedGenerationGroup == 1) {
+      //1 = generate and send email to selected
       $selectedVotersIdsString   = $input->getString( 'selectedVoters', '');
       $selectedVotersIdsArray = explode(",", $selectedVotersIdsString);
     }
-    else if($selectedGenerationGroup == 0) { //Generate password and sen email to all voters
+    else if($selectedGenerationGroup == 0) {
+      //0 = generate password and send email to all voters
       $query = ' SELECT v.voter_id '
-      . ' FROM #__joomelection_voter AS v'
-      . ' LEFT JOIN #__users AS u ON u.id = v.voter_id';
+      . ' FROM #__joomelection_voter AS v';
       $this->_db->setQuery( $query );
       $selectedVotersIdsArray = $this->_db->loadColumn();
     }
@@ -569,21 +514,21 @@ class JoomElectionModelVoter extends JModelLegacy
   /**
   * Returns true if $string is valid UTF-8 and false otherwise.
   */
-    function is_utf8($string) {
-      
-        // From http://w3.org/International/questions/qa-forms-utf-8.html
-        return preg_match('%^(?:
-              [\x09\x0A\x0D\x20-\x7E]            # ASCII
-            | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-            |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
-            | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-            |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
-            |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
-            | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-            |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
-        )*$%xs', $string);
-      
-    }
+  function is_utf8($string) {
+    
+      // From http://w3.org/International/questions/qa-forms-utf-8.html
+      return preg_match('%^(?:
+            [\x09\x0A\x0D\x20-\x7E]            # ASCII
+          | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+          |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
+          | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+          |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
+          |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+          | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+          |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+      )*$%xs', $string);
+    
+  }
   
   
 
