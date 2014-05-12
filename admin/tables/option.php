@@ -8,13 +8,13 @@ defined('_JEXEC') or die('Restricted access');
 
 class TableOption extends JTable
 {
-	var $option_id = null;
-	var $election_id = null;
-	var $list_id = null;
-	var $name = null;
-	var $description = null;
-	var $option_number = null;
-	var $published = null;
+	public $option_id = null;
+	public $election_id = null;
+	public $list_id = null;
+	public $name = null;
+	public $description = null;
+	public $option_number = null;
+	public $published = null;
 
 
 	function TableOption(& $db) {

@@ -8,11 +8,11 @@ defined('_JEXEC') or die('Restricted access');
 
 class TableList extends JTable
 {
-	var $list_id = null;
-	var $election_id = null;
-	var $name = null;
-	var $description = null;
-	var $published = null;
+	public $list_id = null;
+	public $election_id = null;
+	public $name = null;
+	public $description = null;
+	public $published = null;
 
 
 	function TableList(& $db) {

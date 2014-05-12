@@ -8,8 +8,8 @@ defined('_JEXEC') or die('Restricted access');
 
 class TableVote extends JTable
 {
-	var $vote_id = null;
-	var $option_id = null;
+	public $vote_id = null;
+	public $option_id = null;
 
 
 	function TableVote(& $db) {

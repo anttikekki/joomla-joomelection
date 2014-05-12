@@ -141,12 +141,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $user_id_from_post   = $input->getInt( 'id', 0);
     $sendEmailToVoter   = $input->getInt( 'sendEmailToVoter', 0);
     $election_id     = $input->getInt( 'election_id', 0);
-    
-    /*
-    * 0 is not good for "no user" status. 
-    * $voter->load(0) return true because 0 means "no primary key, nothing to load"
-    */
-    $user_id_from_post = $user_id_from_post == 0 ? -1 : $user_id_from_post;
+    $isNew = $user_id_from_post > 0;
   
     $user           = new JUser($user_id_from_post);
     $userData         = array();
@@ -157,11 +152,6 @@ class JoomElectionModelVoter extends JModelLegacy
     $userData['email']    = $input->getString('email', '');
     $userData['gid']    = 18; //Userlevel
     $clearPassword       = $userData['password'];
-    
-    //Validate data
-    if($this->validateUser($userData, $user->id) == false) {
-      return false;
-    }
     
     if (!$user->bind($userData)) {
       JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
@@ -187,28 +177,14 @@ class JoomElectionModelVoter extends JModelLegacy
       }
     }
     
-    if($voter->load($user_id_from_post)) {
-      //Existing voter
-      $voter->email_sent = $email_sent;
-      if (!$voter->store()) {
-        JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
-        JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
-        return false;
-      }
-    }
-    else {
-      //New voter
-      //Manual insert because voter->store tryes to update existing voter
-      $query = "INSERT INTO #__joomelection_voter (voter_id, email_sent) "
-      . "\n VALUES ('" .(int) $user->id . "', '" . (int) $email_sent . "')"
-      ;
-      
-      $this->_db->setQuery( $query );
-      if (!$this->_db->query()) {
-        JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
-        JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
-        return false;
-      }
+    //Update or create voter
+    $voter->voter_id = $user->id;
+    $voter->email_sent = $email_sent;
+    
+    if (!$voter->store()) {
+      JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
+      JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
+      return false;
     }
     
     return true;
