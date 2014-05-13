@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.2.0" method="upgrade">
+<extension type="component" version="3.3.0" method="upgrade">
 	<name>JoomElection</name>
-	<creationDate>21.04.2014</creationDate>
+	<creationDate>13.05.2014</creationDate>
 	<author>Antti Kekki</author>
 	<authorEmail>antti.kekki@gmail.com</authorEmail>
 	<authorUrl>http://code.google.com/p/joomelection/</authorUrl>
 	<copyright>Antti Kekki</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>2.0.0</version>
-	<description>JoomElection on Joomla! 3 komponentti jonka avulla voi järjestää vaaleja. 
-	Komponentti tukee suoria ehdokasvaaleja ja avoimia listavaaleja.Tämä komponentti on julkaistu GPL 2 lisenssillä. 
-	Se tarkoittaa että sitä voi käyttää vapaasti ja ilmaiseksi. Siihen saa tehdä muutoksia ja sitä saa levittää eteenpäin.
-	</description>
+	<description>COM_JOOMELECTION_DESCRIPTION</description>
   
 	<install>
 		<sql>
@@ -38,17 +35,19 @@
 	</languages>
 	
 	<administration>
-		<menu>Vaalijärjestelmä</menu>
+		<menu>COM_JOOMELECTION</menu>
 		<submenu>
-      <menu task="election.showList">Vaalit</menu>
-      <menu task="list.showList">Ehdokaslistat</menu>
-      <menu task="option.showList">Ehdokkaat</menu>
-      <menu task="voter.showList">Äänestäjät</menu>
+      <menu task="election.showList">COM_JOOMELECTION_ELECTIONS</menu>
+      <menu task="list.showList">COM_JOOMELECTION_LISTS</menu>
+      <menu task="option.showList">COM_JOOMELECTION_CANDIDATES</menu>
+      <menu task="voter.showList">COM_JOOMELECTION_VOTERS</menu>
     </submenu>
 		
 	  <languages folder="admin/language">
 			<language tag="fi-FI">fi-FI/fi-FI.com_joomelection.ini</language>
+			<language tag="fi-FI">fi-FI/fi-FI.com_joomelection.sys.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_joomelection.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_joomelection.sys.ini</language>
 		</languages>
 	
 		<files folder="admin">
