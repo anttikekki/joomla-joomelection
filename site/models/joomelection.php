@@ -118,8 +118,8 @@ class JoomElectionModelJoomElection extends JModelLegacy
 		$user	=& JFactory::getUser();
 		$valid_voter = false;
 		
-		//If gid = 18 then registered User, meaning Voter
-		if( $user->get('gid') == 18 ) {
+		//All logged in users can vote
+		if( !$user->guest ) {
 			
 			//Check if election is valid
 			$valid_election = $this->validElection($electionId);
@@ -176,12 +176,12 @@ class JoomElectionModelJoomElection extends JModelLegacy
 	
 	function validElection($election_id)
 	{	
-		$now	= JFactory::getApplication()->get('requestTime');
+		$now = JFactory::getDate();
 
 		$query = 'SELECT election_id FROM #__joomelection_election'
 		. ' WHERE published = 1'
-		. ' AND date_to_open <= '.$this->_db->quote($now)
-		. ' AND date_to_close >= '.$this->_db->quote($now)
+		. ' AND date_to_open <= '.$this->_db->quote($now->toSql())
+		. ' AND date_to_close >= '.$this->_db->quote($now->toSql())
 		. ' AND election_id = ' . (int) $election_id
 		;
 		$this->_db->setQuery( $query );
@@ -249,7 +249,7 @@ class JoomElectionModelJoomElection extends JModelLegacy
 	function getLoggedInStatus()
 	{
 		$user	=& JFactory::getUser();
-		return $user->id;
+		return !$user->guest;
 	}
 	
 	function getOptionIdEncrypted($option_id)

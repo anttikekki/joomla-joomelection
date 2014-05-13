@@ -33,7 +33,7 @@ class JoomElectionViewVoter extends JViewLegacy
     $this->elections          = &$electionModel->getAllElections();
     
     $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Voter' ).': <small><small>[ ' . $text.' ]</small></small>' );
+    JToolBarHelper::title(   JText::_( 'Voter' ).': ' . $text, 'user' );
     JToolBarHelper::save('voter.save');
     if ($isNew)  {
       JToolBarHelper::cancel('voter.cancel');

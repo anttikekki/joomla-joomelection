@@ -41,7 +41,7 @@
     <div class="controls">
       <?php
         if(count($this->elections) > 0) {
-          echo JHTML::_('select.genericlist', $this->elections, 'election_id', 'class="inputbox" ', 'election_id', 'election_name' );
+          echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name' );
         } else {
           ?>
             <div class="alert alert-error">

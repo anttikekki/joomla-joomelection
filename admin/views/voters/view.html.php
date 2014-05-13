@@ -14,12 +14,12 @@ class JoomElectionViewVoters extends JViewLegacy
   {
     $input = JFactory::getApplication()->input;
   
-    JToolBarHelper::title(   JText::_( 'Voters' ), 'generic.png' );
+    JToolBarHelper::title(   JText::_( 'Voters' ), 'users' );
     JToolBarHelper::addNew('voter.add');
     JToolBarHelper::editList('voter.edit');
     JToolBarHelper::deleteList('', 'voter.remove');
     JToolBarHelper::custom('voter.showVotersImport', 'upload.png', 'upload.png', $alt = JText::_( 'Import voters' ), $listSelect = false);
-    JToolBarHelper::custom('voter.showGeneratePasswordForm', 'envelope', 'envelope', $alt = JText::_( 'Generate passwords' ), $listSelect = false);
+    JToolBarHelper::custom('voter.showGeneratePasswordForm', 'wand', 'wand', $alt = JText::_( 'Generate passwords' ), $listSelect = false);
     JToolBarHelper::custom('voter.removeAll', 'trash.png', 'trash.png', $alt = JText::_( 'Delete all' ), $listSelect = false);
     
     //Get models

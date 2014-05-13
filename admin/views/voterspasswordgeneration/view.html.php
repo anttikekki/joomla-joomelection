@@ -20,8 +20,8 @@ class JoomElectionViewVoterspasswordgeneration extends JViewLegacy
 		$this->elections		= $electionModel->getAllElections();
     $this->selectedVotersStringList = implode(",", $selectedVoterIds);
 		
-		JToolBarHelper::title(   JText::_( 'Generate passwords' ), 'generic.png' );
-		JToolBarHelper::custom('voter.generatePasswords', 'apply.png', 'apply.png', $alt = JText::_( 'Generate and send' ), $listSelect = false);
+		JToolBarHelper::title(   JText::_( 'Generate passwords' ), 'wand' );
+		JToolBarHelper::custom('voter.generatePasswords', 'wand', 'wand', $alt = JText::_( 'Generate and send' ), $listSelect = false);
 		JToolBarHelper::cancel('voter.cancel');
 		
 		parent::display($tpl);

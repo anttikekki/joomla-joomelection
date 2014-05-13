@@ -18,7 +18,7 @@ class JoomElectionViewList extends JViewLegacy
     $isNew      = ($list->list_id < 1);
 
     $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Candidate List' ).': <small><small>[ ' . $text.' ]</small></small>' );
+    JToolBarHelper::title(   JText::_( 'Candidate List' ).': <small><small>[ ' . $text.' ]</small></small>', 'list' );
     JToolBarHelper::save('list.save');
     
     if ($isNew)  {

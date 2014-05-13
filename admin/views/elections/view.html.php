@@ -12,7 +12,7 @@ class JoomElectionViewElections extends JViewLegacy
 
   function display($tpl = null)
   {
-    JToolBarHelper::title(   JText::_( 'Elections' ), 'generic.png' );
+    JToolBarHelper::title(   JText::_( 'Elections' ), 'box-add' );
     JToolBarHelper::addNew('election.add');
     JToolBarHelper::editList('election.edit');
     JToolBarHelper::deleteList('', 'election.remove');

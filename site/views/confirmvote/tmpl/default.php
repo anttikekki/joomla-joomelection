@@ -41,11 +41,11 @@ $document->addStyleSheet( JURI::base() . 'components/com_joomelection/css/styles
 		<table cellspacing="10">
 			<tr>
 				<td>
-					<a class='vote_logo' href='javascript: document.adminForm.submit();'><img src='administrator/images/apply_f2.png' border='0' alt='<?php echo JText::_( 'Vote'); ?>' /></a><br />
+					<a class='vote_logo' href='javascript: document.adminForm.submit();'><img src='<?php echo JURI::root(true); ?>/components/com_joomelection/img/ok.png' border='0' alt='<?php echo JText::_( 'Vote'); ?>' /></a><br />
 					<b><a href='javascript: document.adminForm.submit();'><?php echo JText::_( 'Vote'); ?></a></b>
 				</td>
 				<td>
-					<a class='vote_logo' href='javascript: history.back();'><img src='administrator/images/cancel_f2.png' border='0' alt='<?php echo JText::_( 'Cancel'); ?>' /></a><br />
+					<a class='vote_logo' href='javascript: history.back();'><img src='<?php echo JURI::root(true); ?>/components/com_joomelection/img/cancel.png' border='0' alt='<?php echo JText::_( 'Cancel'); ?>' /></a><br />
 					<b><a href='javascript: history.back();'><?php echo JText::_( 'Cancel'); ?></a></b>
 				</td>
 			</tr>

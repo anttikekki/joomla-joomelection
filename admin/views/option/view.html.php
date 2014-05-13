@@ -33,7 +33,7 @@ class JoomElectionViewOption extends JViewLegacy
     
     //Create toolbar
     $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Option' ).': <small><small>[ ' . $text.' ]</small></small>' );
+    JToolBarHelper::title(   JText::_( 'Option' ).': <small><small>[ ' . $text.' ]</small></small>', 'user' );
     JToolBarHelper::save('option.save');
     
     if ($isNew)  {

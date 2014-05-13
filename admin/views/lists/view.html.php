@@ -9,7 +9,7 @@ class JoomElectionViewLists extends JViewLegacy
 
   function display($tpl = null)
   {
-    JToolBarHelper::title(   JText::_( 'Candidate Lists' ), 'generic.png' );
+    JToolBarHelper::title(   JText::_( 'Candidate Lists' ), 'list' );
     JToolBarHelper::addNew('list.add');
     JToolBarHelper::editList('list.edit');
     JToolBarHelper::deleteList('', 'list.remove');

@@ -23,10 +23,10 @@ for ($i=0, $n=count( $this->elections ); $i < $n; $i++) {
 				</td>
 				<td>
 					<?php 
-						echo JHTML::_('date',  $election->date_to_open, '%d.%m.%Y') ." ". JText::_( 'at') ." ". 
-						JHTML::_('date',  $election->date_to_open, '%H.%M') ." - ". 
-						JHTML::_('date',  $election->date_to_close, '%d.%m.%Y') ." ". JText::_( 'at') ." ". 
-						JHTML::_('date',  $election->date_to_close, '%H.%M'); 
+						echo JHTML::_('date',  $election->date_to_open, 'd.m.Y') ." ". JText::_( 'at') ." ". 
+						JHTML::_('date',  $election->date_to_open, 'H.i') ." - ". 
+						JHTML::_('date',  $election->date_to_close, 'd.m.Y') ." ". JText::_( 'at') ." ". 
+						JHTML::_('date',  $election->date_to_close, 'H.i'); 
 					?>
 				</td>
 			</tr>
@@ -174,8 +174,10 @@ for ($i=0, $n=count( $this->elections ); $i < $n; $i++) {
 						<?php
 						
 						if($election->valid_voter) {
-							echo "<a class='vote_logo' href='" .$option->vote_link. "'><img src='administrator/images/checkin.png' border='0' alt='" .JText::_( 'Vote number'). " " .$option->option_number. "' /></a><br />"
-							. "<b><a href='" .$option->vote_link. "'>" .JText::_( 'Vote number'). " " .$option->option_number. "</a></b>";
+              $voteLinkText = JText::_( 'Vote number'). " " .$option->option_number;
+              $imgUrl = JURI::root(true) . '/components/com_joomelection/img/ok.png';
+              $img = "<img src='$imgUrl' />";
+							echo "<a class='vote_logo' href='" .$option->vote_link. "'>$img</a><br /><b><a href='" .$option->vote_link. "'>$voteLinkText</a></b>";
 						}
 						else {
 							echo "&nbsp;";
