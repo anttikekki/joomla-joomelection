@@ -16,28 +16,28 @@ $sortCallbackTask = 'election.showList';
           <?php echo JHtml::_('grid.checkall');?>
         </th>			
         <th>
-          <?php echo JHtml::_('grid.sort', 'Election name', 'election_name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_ELECTION_NAME', 'election_name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Date to open', 'date_to_open', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_ELECTION_DATE_TO_OPEN', 'date_to_open', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JText::_( 'Time to open' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_TIME_TO_OPEN' ); ?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Date to close', 'date_to_close', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_ELECTION_DATE_TO_CLOSE', 'date_to_close', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JText::_( 'Time to close' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_TIME_TO_CLOSE' ); ?>
         </th>
         <th>
-          <?php echo JText::_( 'Election open' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS' ); ?>
         </th>
         <th>
-          <?php echo JText::_( 'Result' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_ELETCION_RESULT' ); ?>
         </th>
         <th width="5%">
-          <?php echo JText::_( 'Published' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
         </th>
       </tr>			
     </thead>
@@ -82,14 +82,14 @@ $sortCallbackTask = 'election.showList';
         <td align="center">
           <?php
             if($row->election_open) {
-              echo JHtml::_('image', 'admin/tick.png', JText::_( 'Election is open' ), null, true);
+              echo JHtml::_('image', 'admin/tick.png', JText::_( 'COM_JOOMELECTION_ELECTION_IS_OPEN' ), null, true);
             }
             else {
-              echo JHtml::_('image', 'admin/publish_x.png', JText::_( 'Election is closed' ), null, true);
+              echo JHtml::_('image', 'admin/publish_x.png', JText::_( 'COM_JOOMELECTION_ELECTION_IS_CLOSED' ), null, true);
             } ?>
         </td>
         <td align="center">
-          <?php echo "<a href='index.php?option=com_joomelection&task=election.showResult&election_id=" .$row->election_id. "'>" .JText::_( 'Result' ). "</a>"; ?>
+          <?php echo "<a href='index.php?option=com_joomelection&task=election.showResult&election_id=" .$row->election_id. "'>" .JText::_( 'COM_JOOMELECTION_ELETCION_RESULT' ). "</a>"; ?>
         </td>
         <td align="center">
           <?php echo JHTML::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'election.' ); ?>

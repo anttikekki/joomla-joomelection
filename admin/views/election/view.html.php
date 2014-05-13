@@ -12,8 +12,6 @@ class JoomElectionViewElection extends JViewLegacy
   function display($tpl = null)
   {
     $input = JFactory::getApplication()->input;
-  
-    //Get model
     $electionModel     = &$this->getModel('election');
     $electionTypeModel = &$this->getModel('electionType');
     
@@ -29,25 +27,25 @@ class JoomElectionViewElection extends JViewLegacy
     }
 
     //Create toolbar
-    $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Election' ).': <small><small>[ ' . $text.' ]</small></small>', 'box-add' );
+    $text = $isNew ? JText::_( 'COM_JOOMELECTION_NEW' ) : JText::_( 'COM_JOOMELECTION_EDIT' );
+    JToolBarHelper::title( JText::_( 'COM_JOOMELECTION_ELECTION' ).': ' . $text, 'box-add' );
     
     if ($isNew)  {
       JToolBarHelper::save('election.save');
       JToolBarHelper::cancel('election.showList');
     } else {
       // for existing items the button is renamed `close`, also do not allow to check election result if election not saved yet
-      JToolBarHelper::custom('election.showResult', 'upload.png', 'upload.png', $alt = JText::_( 'Result' ), $listSelect = false);
+      JToolBarHelper::custom('election.showResult', 'upload.png', 'upload.png', $alt = JText::_( 'COM_JOOMELECTION_ELETCION_RESULT' ), $listSelect = false);
       JToolBarHelper::save('election.save');
-      JToolBarHelper::cancel('election.showList', 'Close');
+      JToolBarHelper::cancel('election.showList', 'COM_JOOMELECTION_CLOSE');
     }
     
     if ($isNew)  {
-      $election->confirm_vote_by_sign_description = JText::_( 'I confirm that I have not beign under any outside influence when executing this vote');
-      $election->confirm_vote_by_sign_error       = JText::_( 'Vote failed because you didnt aprove that you were not under influence');
-      $election->vote_success_description         = JText::_( 'Your vote has been registered. Remember to clear browser cache to ensure secresy of vote' );
-      $election->election_voter_email_text        = JText::_( 'VOTER_EMAIL_EXAMPLE');
-      $election->election_voter_email_header      = JText::_( 'VOTER_EMAIL_SUBJECT_EXAMPLE');
+      $election->confirm_vote_by_sign_description = JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_DESCRIPTION_EXAMPLE');
+      $election->confirm_vote_by_sign_error       = JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_ERROR_EXAMPLE');
+      $election->vote_success_description         = JText::_( 'COM_JOOMELECTION_ELECTION_VOTE_SUCCESS_DESCRIPTION_EXAMPLE' );
+      $election->election_voter_email_text        = JText::_( 'COM_JOOMELECTION_VOTER_EMAIL_EXAMPLE');
+      $election->election_voter_email_header      = JText::_( 'COM_JOOMELECTION_VOTER_EMAIL_SUBJECT_EXAMPLE');
     }
     
     $this->electionTypes = $electionTypes;

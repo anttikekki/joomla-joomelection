@@ -4,11 +4,11 @@
 	<creationDate>13.05.2014</creationDate>
 	<author>Antti Kekki</author>
 	<authorEmail>antti.kekki@gmail.com</authorEmail>
-	<authorUrl>http://code.google.com/p/joomelection/</authorUrl>
+	<authorUrl>https://github.com/anttikekki/joomla-joomelection</authorUrl>
 	<copyright>Antti Kekki</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>2.0.0</version>
-	<description>COM_JOOMELECTION_DESCRIPTION</description>
+	<description>COM_JOOMELECTION_COMPONENT_DESCRIPTION</description>
   
 	<install>
 		<sql>
@@ -26,21 +26,23 @@
 		<filename>joomelection.php</filename>
 		<filename>controller.php</filename>
 		<folder>css</folder>
+		<folder>img</folder>
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
 	
 	<languages folder="site/language">
 		<language tag="fi-FI">fi-FI/fi-FI.com_joomelection.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_joomelection.ini</language>
 	</languages>
 	
 	<administration>
 		<menu>COM_JOOMELECTION</menu>
 		<submenu>
-      <menu task="election.showList">COM_JOOMELECTION_ELECTIONS</menu>
-      <menu task="list.showList">COM_JOOMELECTION_LISTS</menu>
-      <menu task="option.showList">COM_JOOMELECTION_CANDIDATES</menu>
-      <menu task="voter.showList">COM_JOOMELECTION_VOTERS</menu>
+      <menu task="election.showList">COM_JOOMELECTION_MENU_ELECTIONS</menu>
+      <menu task="list.showList">COM_JOOMELECTION_MENU_CANDIDATE_LISTS</menu>
+      <menu task="option.showList">COM_JOOMELECTION_MENU_CANDIDATES</menu>
+      <menu task="voter.showList">COM_JOOMELECTION_MENU_VOTERS</menu>
     </submenu>
 		
 	  <languages folder="admin/language">

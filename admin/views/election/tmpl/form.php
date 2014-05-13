@@ -8,12 +8,23 @@ JHTML::_('behavior.calendar');
   <div class="form-horizontal">
     <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
     
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('General')); ?>
+    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_JOOMELECTION_GENERAL')); ?>
 		<div class="row-fluid">
 			<div class="span9">
-				<fieldset class="adminform">
-					<?php echo $editor->display( 'election_description', $this->election->election_description, '100%', '300', '60', '35' ); ?>
-				</fieldset>
+      
+        <!-- Election description -->
+        <div class="control-group ">
+          <div class="control-label">
+            <label id="election_name-lbl" for="election_description" class="required" title="">
+              <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_DESCRIPTION' ); ?>
+              <span class="star">&nbsp;*</span>
+            </label>
+          </div>
+          <div class="controls">
+            <?php echo $editor->display( 'election_description', $this->election->election_description, '100%', '300', '60', '35' ); ?>
+          </div>
+        </div>
+        
 			</div>
 			<div class="span3">
 				<fieldset class="form-vertical">
@@ -22,7 +33,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="election_name-lbl" for="election_name" class="required" title="">
-                <?php echo JText::_( 'Election name' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_NAME' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -35,7 +46,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="election_type_id-lbl" for="election_type_id" class="required" title="">
-                <?php echo JText::_( 'Election type' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_TYPE' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -48,7 +59,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="date_to_open-lbl" for="date_to_open" class="required" title="">
-                <?php echo JText::_( 'Date to open' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_DATE_TO_OPEN' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -61,7 +72,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="time_to_open-lbl" for="time_to_open" class="required" title="">
-                <?php echo JText::_( 'Time to open' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_TIME_TO_OPEN' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -74,7 +85,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="date_to_close-lbl" for="date_to_close" class="required" title="">
-                <?php echo JText::_( 'Date to close' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_DATE_TO_CLOSE' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -87,7 +98,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="time_to_close-lbl" for="time_to_close" class="required" title="">
-                <?php echo JText::_( 'Time to close' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_TIME_TO_CLOSE' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -100,7 +111,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="published-lbl" for="published" class="required" title="">
-                <?php echo JText::_( 'Published' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -116,7 +127,7 @@ JHTML::_('behavior.calendar');
     
     
     
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'vote_confirmation', JText::_('Vote confirmation')); ?>
+    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'vote_confirmation', JText::_('COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_HEADER')); ?>
 		<div class="row-fluid">
 			<div class="span9">
 				<fieldset class="form-vertical">
@@ -125,7 +136,7 @@ JHTML::_('behavior.calendar');
             <!-- Vote confirmation message -->
             <div class="control-label">
               <label id="confirm_vote_by_sign_description-lbl" for="confirm_vote_by_sign_description" class="" title="">
-                <?php echo JText::_( 'Confirm message' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_DESCRIPTION_TITLE' ); ?>
               </label>
             </div>
             <div class="controls">
@@ -135,7 +146,7 @@ JHTML::_('behavior.calendar');
             <!-- Vote confirmation message -->
             <div class="control-label">
               <label id="confirm_vote_by_sign_error-lbl" for="confirm_vote_by_sign_error" class="" title="">
-                <?php echo JText::_( 'Confirm error message' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_ERROR_TITLE' ); ?>
               </label>
             </div>
             <div class="controls">
@@ -152,7 +163,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="confirm_vote-lbl" for="confirm_vote" class="required" title="">
-                <?php echo JText::_( 'Voters has to confirm selection' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -165,7 +176,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="confirm_vote-lbl" for="confirm_vote" class="required" title="">
-                <?php echo JText::_( 'Voters has to confirm selection by signing it' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -181,7 +192,7 @@ JHTML::_('behavior.calendar');
     
     
     
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'vote_success', JText::_('Vote success')); ?>
+    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'vote_success', JText::_('COM_JOOMELECTION_ELECTION_VOTE_SUCCESS')); ?>
     <div class="row-fluid">
 			<div class="span9">
 				<fieldset class="form-vertical">
@@ -190,7 +201,7 @@ JHTML::_('behavior.calendar');
             <!-- Vote confirmation message -->
             <div class="control-label">
               <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
-                <?php echo JText::_( 'Vote success message' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTE_SUCCESS_DESCRIPTION_TITLE' ); ?>
               </label>
             </div>
             <div class="controls">
@@ -205,11 +216,11 @@ JHTML::_('behavior.calendar');
     
     
     
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'email', JText::_('Email')); ?>
+    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'email', JText::_('COM_JOOMELECTION_EMAIL')); ?>
     <div class="row-fluid">
 			<div class="span9">
       
-        <h3> <?php echo JText::_( 'Voter email message that includes username and password' ); ?></h3>
+        <h3> <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_EMAIL' ); ?></h3>
       
 				<fieldset class="form-vertical">
           <div class="control-group ">
@@ -217,7 +228,7 @@ JHTML::_('behavior.calendar');
             <!-- Email subject -->
             <div class="control-label">
               <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
-                <?php echo JText::_( 'Email subject' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_EMAIL_SUBJECT' ); ?>
               </label>
             </div>
             <div class="controls">
@@ -227,7 +238,7 @@ JHTML::_('behavior.calendar');
             <!-- Email message -->
             <div class="control-label">
               <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
-                <?php echo JText::_( 'Email message' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_EMAIL_MESSAGE' ); ?>
               </label>
             </div>
             <div class="controls">
@@ -237,7 +248,7 @@ JHTML::_('behavior.calendar');
           </div>
 				</fieldset>
         
-        <p><?php echo JText::_( 'VOTER_EMAIL_FIELD_LEGEND' ); ?></p>
+        <p><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_FIELD_LEGEND' ); ?></p>
 			</div>
 		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
