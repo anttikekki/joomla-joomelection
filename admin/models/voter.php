@@ -440,8 +440,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $fromname     = JFactory::getApplication()->getCfg( 'fromname' );
     
     $markers  = array("[name]", "[username]", "[password]", "[election_name]", "[www]");
-    $uri      = JFactory::getURI();
-    $data     = array($name, $username, $password, $election->election_name, $uri->base());
+    $data     = array($name, $username, $password, $election->election_name, JURI::root());
     
     $subject  = str_replace($markers, $data, $election->election_voter_email_header);
     $subject   = html_entity_decode($subject, ENT_QUOTES);
