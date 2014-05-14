@@ -14,7 +14,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="name-lbl" for="name" class="required" title="">
-                <?php echo JText::_( 'Candidate List name' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_NAME' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -27,7 +27,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="election_id-lbl" for="election_id" class="required" title="">
-                <?php echo JText::_( 'Election' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -40,7 +40,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="published-lbl" for="published" class="required" title="">
-                <?php echo JText::_( 'Published' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -53,7 +53,7 @@ JHTML::_('behavior.calendar');
           <div class="control-group ">
             <div class="control-label">
               <label id="description-lbl" for="description" class="" title="">
-                <?php echo JText::_( 'Candidate List description' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_DESCRIPTION' ); ?>
               </label>
             </div>
             <div class="controls">

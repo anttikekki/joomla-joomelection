@@ -17,8 +17,8 @@ class JoomElectionViewList extends JViewLegacy
     $elections  = $electionModel->getListElections();
     $isNew      = ($list->list_id < 1);
 
-    $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Candidate List' ).': <small><small>[ ' . $text.' ]</small></small>', 'list' );
+    $text = $isNew ? JText::_( 'COM_JOOMELECTION_NEW' ) : JText::_( 'COM_JOOMELECTION_EDIT' );
+    JToolBarHelper::title(   JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST' ).': ' . $text, 'list' );
     JToolBarHelper::save('list.save');
     
     if ($isNew)  {
@@ -30,7 +30,7 @@ class JoomElectionViewList extends JViewLegacy
     
     //Elections with type list election is required
     if(count($elections) == 0) {
-      $error = JText::_( 'You have to create at least one election first before you can create a list. You can not save list with no election.' );
+      $error = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_NO_ELECTIONS' );
       JFactory::getApplication()->enqueueMessage($error, 'error');
     }
 

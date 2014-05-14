@@ -15,16 +15,16 @@ $sortCallbackTask = 'list.showList';
           <?php echo JHtml::_('grid.checkall'); ?>
         </th>  
         <th>
-          <?php echo JHtml::_('grid.sort', 'Candidate List name', 'list.name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_CANDIDATE_LIST_NAME', 'list.name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JText::_( 'Candidate List description' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_DESCRIPTION' ); ?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Election', 'e.election_name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_ELECTION', 'e.election_name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th width="5%">
-          <?php echo JText::_( 'Published' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
         </th>
       </tr>      
     </thead>

@@ -30,9 +30,9 @@ class JoomElectionViewResult extends JViewLegacy
     }
     
 
-    JToolBarHelper::title( JText::_( 'Result' ) );
-    JToolBarHelper::custom('election.resultsInCsv', 'upload.png', 'upload.png', $alt = JText::_( 'Result to CSV' ), $listSelect = false);
-    JToolBarHelper::cancel('election.cancel', 'Close');
+    JToolBarHelper::title( JText::_( 'COM_JOOMELECTION_ELECTION_RESULT' ) );
+    JToolBarHelper::custom('election.resultsInCsv', 'upload.png', 'upload.png', $alt = JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_TO_CSV' ), $listSelect = false);
+    JToolBarHelper::cancel('election.cancel', JText::_( 'COM_JOOMELECTION_CLOSE'));
 
     $this->assignRef('results',        $results);
     $this->assignRef('election_type_id',  $election->election_type_id);

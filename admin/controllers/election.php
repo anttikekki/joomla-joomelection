@@ -60,9 +60,9 @@ class JoomElectionControllerElection extends JControllerLegacy
     $model = $this->getModel('election');
 
     if ($model->store()) {
-      $msg = JText::_( 'Election Saved' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_SAVE_OK' );
     } else {
-      $msg = JText::_( 'Error Saving Election' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_SAVE_ERROR' );
     }
     
     $this->setRedirect('index.php?option=com_joomelection&task=election.showList', $msg);
@@ -73,9 +73,9 @@ class JoomElectionControllerElection extends JControllerLegacy
   {
     $model = $this->getModel('election');
     if(!$model->delete()) {
-      $msg = JText::_( 'Error: One or More Election Could not be Deleted' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_DELETE_ERROR' );
     } else {
-      $msg = JText::_( 'Election(s) Deleted' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_DELETE_OK' );
     }
 
     $this->setRedirect( 'index.php?option=com_joomelection&task=election.showList', $msg );
@@ -85,7 +85,7 @@ class JoomElectionControllerElection extends JControllerLegacy
   function cancel()
   {
     $task_opened_from = $this->input->getString( 'task_opened_from', '');
-    $msg = JText::_( 'Operation Cancelled' );
+    $msg = JText::_( 'COM_JOOMELECTION_OPERATION_CANCELLED' );
     
     if($task_opened_from == 'showList' || $task_opened_from == '') {
       $this->setRedirect( 'index.php?option=com_joomelection&task=election.showList', $msg );
@@ -109,9 +109,9 @@ class JoomElectionControllerElection extends JControllerLegacy
     $model = &$this->getModel('election');
 
     if ($model->publish()) {
-      $msg = JText::_( 'Election(s) published' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_PUBLISH_OK' );
     } else {
-      $msg = JText::_( 'Error when publishing election(s)' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_PUBLISH_ERROR' );
     }
     
     $this->setRedirect('index.php?option=com_joomelection&task=election.showList', $msg);
@@ -122,9 +122,9 @@ class JoomElectionControllerElection extends JControllerLegacy
     $model = $this->getModel('election');
 
     if ($model->publish()) {
-      $msg = JText::_( 'Election(s) unpublished' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_UNPUBLISH_OK' );
     } else {
-      $msg = JText::_( 'Error when unpublishing election(s)' );
+      $msg = JText::_( 'COM_JOOMELECTION_ELECTION_UNPUBLISH_ERROR' );
     }
     
     $this->setRedirect('index.php?option=com_joomelection&task=election.showList', $msg);

@@ -47,9 +47,9 @@ class JoomElectionControllerList extends JControllerLegacy
     $model = $this->getModel('list');
 
     if ($model->store()) {
-      $msg = JText::_( 'List Saved' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_SAVE_OK' );
     } else {
-      $msg = JText::_( 'Error Saving List' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_SAVE_ERROR' );
     }
 
     $link = 'index.php?option=com_joomelection&task=list.showList';
@@ -61,9 +61,9 @@ class JoomElectionControllerList extends JControllerLegacy
   {
     $model = $this->getModel('list');
     if(!$model->delete()) {
-      $msg = JText::_( 'Error: One or More Lists Could not be Deleted' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_DELETE_ERROR' );
     } else {
-      $msg = JText::_( 'List(s) Deleted' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_DELETE_OK' );
     }
 
     $this->setRedirect( 'index.php?option=com_joomelection&task=list.showList', $msg );
@@ -72,7 +72,7 @@ class JoomElectionControllerList extends JControllerLegacy
 
   function cancel()
   {
-    $msg = JText::_( 'Operation Cancelled' );
+    $msg = JText::_( 'COM_JOOMELECTION_OPERATION_CANCELLED' );
     $this->setRedirect( 'index.php?option=com_joomelection&task=list.showList', $msg );
   }
   
@@ -82,9 +82,9 @@ class JoomElectionControllerList extends JControllerLegacy
     $model = $this->getModel('list');
 
     if ($model->publish()) {
-      $msg = JText::_( 'List(s) published' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_PUBLISH_OK' );
     } else {
-      $msg = JText::_( 'Error when publishing list(s)' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_PUBLISH_ERROR' );
     }
 
     $link = 'index.php?option=com_joomelection&task=list.showList';
@@ -96,9 +96,9 @@ class JoomElectionControllerList extends JControllerLegacy
     $model = $this->getModel('list');
 
     if ($model->publish()) {
-      $msg = JText::_( 'List(s) unpublished' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_UNPUBLISH_OK' );
     } else {
-      $msg = JText::_( 'Error when unpublishing list(s)' );
+      $msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_UNPUBLISH_ERROR' );
     }
 
     $link = 'index.php?option=com_joomelection&task=list.showList';

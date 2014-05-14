@@ -35,7 +35,7 @@ class JoomElectionViewElection extends JViewLegacy
       JToolBarHelper::cancel('election.showList');
     } else {
       // for existing items the button is renamed `close`, also do not allow to check election result if election not saved yet
-      JToolBarHelper::custom('election.showResult', 'upload.png', 'upload.png', $alt = JText::_( 'COM_JOOMELECTION_ELETCION_RESULT' ), $listSelect = false);
+      JToolBarHelper::custom('election.showResult', 'upload.png', 'upload.png', $alt = JText::_( 'COM_JOOMELECTION_ELECTION_RESULT' ), $listSelect = false);
       JToolBarHelper::save('election.save');
       JToolBarHelper::cancel('election.showList', 'COM_JOOMELECTION_CLOSE');
     }
