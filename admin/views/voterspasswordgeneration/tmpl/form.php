@@ -6,14 +6,14 @@
 <form class="form-horizontal" method="post" name="adminForm" id="adminForm">
 
   <div class="alert alert-info">
-    <?php echo JText::_( 'First select to whom you want to generate new password. Then select election that email template you want to use  in email.' ); ?>
+    <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_INFO_TEXT' ); ?>
   </div>
 
   <!-- Select voters -->
   <div class="control-group ">
     <div class="control-label">
       <label id="name-lbl" for="name" class="required" title="">
-        <?php echo JText::_( 'Select voters' ); ?>
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_SELECT_VOTERS' ); ?>
         <span class="star">&nbsp;*</span>
       </label>
     </div>
@@ -22,11 +22,11 @@
         <?php if($this->selectedVoutersCount == 0) { ?>disabled="disabled"<?php } ?>
       />
       <label for="selectedGenerationGroupSelected">
-        <?php echo JText::_( 'Selected voters' ); ?>  (<?php echo $this->selectedVoutersCount .' '. JText::_( 'selected' );?>)
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_SELECTED_VOTERS' ); ?>  (<?php echo $this->selectedVoutersCount .' '. JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_SELECTED' );?>)
       </label>
       
       <input type="radio" name="selectedGenerationGroup" id="selectedGenerationGroupAll" value="0" checked="checked" />
-      <label for="selectedGenerationGroupAll"><?php echo JText::_( 'All Voters' ); ?></label>
+      <label for="selectedGenerationGroupAll"><?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_ALL_VOTERS' ); ?></label>
     </div>
   </div>
         
@@ -45,7 +45,7 @@
         } else {
           ?>
             <div class="alert alert-error">
-              <?php echo JText::_( 'No elections available, impossible to send email. Create at least one election  first.' ); ?>
+              <?php echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' ); ?>
             </div>
           <?php
         } 

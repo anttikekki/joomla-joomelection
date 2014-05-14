@@ -28,7 +28,7 @@ $document->addScriptDeclaration("
         <div class="clearfix">
           <div class="js-stools-container-bar">
             <div class="btn-wrapper input-append">
-              <input id="searchInput" class="js-stools-search-string" type="text" placeholder="<?php echo JText::_('Search by name'); ?>" value="<?php echo $this->search;?>" name="search">
+              <input id="searchInput" class="js-stools-search-string" type="text" placeholder="<?php echo JText::_('COM_JOOMELECTION_VOTER_SEARCH_LABEL'); ?>" value="<?php echo $this->search;?>" name="search">
               <button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>">
                 <i class="icon-search"></i>
               </button>
@@ -45,7 +45,7 @@ $document->addScriptDeclaration("
     </div>
     <div class="span6">
       <div class="pull-right">
-        <?php echo JText::_('Show voters voted information by election'); ?>
+        <?php echo JText::_('COM_JOOMELECTION_VOTER_SHOW_VOTED_INFO'); ?>
         <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name', $this->election_id ); ?>
       </div>
     </div>
@@ -61,19 +61,19 @@ $document->addScriptDeclaration("
           <?php echo JHtml::_('grid.checkall');?>
         </th>      
         <th>
-          <?php echo JHtml::_('grid.sort', 'Name', 'u.name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_VOTER_NAME', 'u.name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Username', 'u.username', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_VOTER_USERNAME', 'u.username', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Email', 'u.email', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_VOTER_EMAIL', 'u.email', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th width="20%">
-          <?php echo JHtml::_('grid.sort', 'Username and password sent to user email?', 'v.email_sent', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_VOTER_LOGINS_EMAIL_SENT', 'v.email_sent', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th width="3%">
-          <?php echo JHtml::_('grid.sort', 'Voted?', 'evs.voted', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_VOTER_VOTED', 'evs.voted', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
       </tr>      
     </thead>

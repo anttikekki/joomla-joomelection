@@ -37,7 +37,7 @@ class JoomElectionViewElection extends JViewLegacy
       // for existing items the button is renamed `close`, also do not allow to check election result if election not saved yet
       JToolBarHelper::custom('election.showResult', 'upload.png', 'upload.png', $alt = JText::_( 'COM_JOOMELECTION_ELECTION_RESULT' ), $listSelect = false);
       JToolBarHelper::save('election.save');
-      JToolBarHelper::cancel('election.showList', 'COM_JOOMELECTION_CLOSE');
+      JToolBarHelper::cancel('election.showList', JText::_( 'COM_JOOMELECTION_CLOSE' ));
     }
     
     if ($isNew)  {

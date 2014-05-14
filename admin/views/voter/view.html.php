@@ -32,14 +32,14 @@ class JoomElectionViewVoter extends JViewLegacy
     $this->stored_search      = $input->getString('search', '');
     $this->elections          = &$electionModel->getAllElections();
     
-    $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Voter' ).': ' . $text, 'user' );
+    $text = $isNew ? JText::_( 'COM_JOOMELECTION_NEW' ) : JText::_( 'COM_JOOMELECTION_EDIT' );
+    JToolBarHelper::title(   JText::_( 'COM_JOOMELECTION_VOTER' ).': ' . $text, 'user' );
     JToolBarHelper::save('voter.save');
     if ($isNew)  {
       JToolBarHelper::cancel('voter.cancel');
     } else {
       // for existing items the button is renamed `close`
-      JToolBarHelper::cancel( 'voter.cancel', 'Close' );
+      JToolBarHelper::cancel( 'voter.cancel', JText::_( 'COM_JOOMELECTION_CLOSE' ) );
     }
 
     parent::display($tpl);

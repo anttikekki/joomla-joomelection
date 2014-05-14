@@ -169,13 +169,13 @@ class JoomElectionModelVoter extends JModelLegacy
     $userTable =& JUser::getTable();
     $userTable->bind($user->getProperties());
     if(!$userTable->check()) {
-      JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $userData['username'], 'message');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_CREATE_USER_ERROR') . $userData['username'], 'message');
       JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
       return false;
     }
     
     if(!$userTable->store()) {
-      JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $userData['username'], 'message');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_CREATE_USER_ERROR') . $userData['username'], 'message');
       JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
       return false;
     }
@@ -188,7 +188,7 @@ class JoomElectionModelVoter extends JModelLegacy
         $email_sent = 1;
       }
       else {
-        JFactory::getApplication()->enqueueMessage(JText::_( 'Cannot send password to voter because you didnt select election that email is used' ), 'message');
+        JFactory::getApplication()->enqueueMessage(JText::_( 'COM_JOOMELECTION_VOTER_LOGIN_EMAIL_SEND_ERROR_NO_ELECTION' ), 'message');
         return false;
       }
     }
@@ -198,7 +198,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $voter->email_sent = $email_sent;
     
     if (!$voter->store()) {
-      JFactory::getApplication()->enqueueMessage(JText::_('Cannot create voter information for voter ') . $userData['username'], 'message');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_CREATE_ERROR') . $userData['username'], 'message');
       JFactory::getApplication()->enqueueMessage($this->_db->getErrorMsg(), 'error');
       return false;
     }
@@ -282,7 +282,7 @@ class JoomElectionModelVoter extends JModelLegacy
     
     if($sendEmailToVoter == 1) {
       if(!$election_id > 0) {
-        JFactory::getApplication()->enqueueMessage(JText::_('Cannot send password to voter because you didnt select election that email is used'), 'message');
+        JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_LOGIN_EMAIL_SEND_ERROR_NO_ELECTION'), 'message');
         return false;
       }
     }
@@ -350,7 +350,7 @@ class JoomElectionModelVoter extends JModelLegacy
             $userTable =& JUser::getTable();
             $userTable->bind($user->getProperties());
             if(!$userTable->check()) {
-              JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
+              JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_IMPORT_CREATE_USER_ERROR') . $user_data['username'], 'error');
               JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
               $import_success = false;
               continue;
@@ -358,7 +358,7 @@ class JoomElectionModelVoter extends JModelLegacy
             
             //Save user to database
             if (!$userTable->store()) {
-              JFactory::getApplication()->enqueueMessage(JText::_('Invalid CSV data. Are columns and csv data separator correct?  Username that failed: ') . $user_data['username'], 'error');
+              JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_IMPORT_CREATE_USER_ERROR') . $user_data['username'], 'error');
               JFactory::getApplication()->enqueueMessage($userTable->getError(), 'error');
               $import_success = false;
               continue;
@@ -374,7 +374,7 @@ class JoomElectionModelVoter extends JModelLegacy
             $voter->email_sent = 0;
             
             if (!$voter->store()) {
-              JFactory::getApplication()->enqueueMessage(JText::_('Cannot save the user information for user ') . $user_data['username'], 'message');
+              JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_CREATE_ERROR') . $user_data['username'], 'error');
               JFactory::getApplication()->enqueueMessage($voter->getError(), 'error');
               $import_success = false;
             }
@@ -410,18 +410,18 @@ class JoomElectionModelVoter extends JModelLegacy
           return $import_success;
         }
         else {
-          JFactory::getApplication()->enqueueMessage('Tiedosto ei ole CSV-tiedosto', 'message');
+          JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_IMPORT_FILE_IS_NOT_CSV'), 'error');
           return false;
         }
       }
       else {
-        JFactory::getApplication()->enqueueMessage('Epäkelpo tiedosto', 'message');
+        JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_IMPORT_FILE_INVALID'), 'error');
         return false;
       }
       
     }
     else {
-      JFactory::getApplication()->enqueueMessage('Valitse tiedosto ladataksesi sen', 'message');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_IMPORT_FILE_MISSING'), 'error');
       return false;
     }
     
@@ -500,7 +500,7 @@ class JoomElectionModelVoter extends JModelLegacy
         
         //Update user data to database
         if (!$user->save()) {
-          JFactory::getApplication()->enqueueMessage(JText::_('Cannot update the user information for user ') . $user->username, 'message');
+          JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_USER_SAVE_ERROR') . $user->username, 'error');
           JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
           return false;
         }
@@ -526,7 +526,7 @@ class JoomElectionModelVoter extends JModelLegacy
       return true;
     }
     else {
-      JFactory::getApplication()->enqueueMessage('No election created. You need to create at least one election to send emails.', 'message');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_LOGIN_EMAIL_SEND_ERROR_NO_ELECTION'), 'error');
       return false;
     }
   }

@@ -12,7 +12,7 @@ class JoomElectionViewOptions extends JViewLegacy
 
   function display($tpl = null)
   {
-    JToolBarHelper::title( JText::_( 'Options' ), 'users' );
+    JToolBarHelper::title( JText::_( 'COM_JOOMELECTION_CANDIDATES' ), 'users' );
     JToolBarHelper::addNew('option.add');
     JToolBarHelper::editList('option.edit');
     JToolBarHelper::deleteList('', 'option.remove');

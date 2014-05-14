@@ -49,7 +49,7 @@ class JoomElectionControllerOption extends JControllerLegacy
 		$model = $this->getModel('option');
 
 		if ($model->store()) {
-			$msg = JText::_( 'Option Saved' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_SAVE_OK' );
 			$link = 'index.php?option=com_joomelection&task=option.showList';
 			$this->setRedirect($link, $msg);
 		} else {
@@ -64,9 +64,9 @@ class JoomElectionControllerOption extends JControllerLegacy
 	{
 		$model = $this->getModel('option');
 		if(!$model->delete()) {
-			$msg = JText::_( 'Error: One or More Option Could not be Deleted' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_DELETE_ERROR' );
 		} else {
-			$msg = JText::_( 'Option(s) Deleted' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_DELETE_OK' );
 		}
 
 		$this->setRedirect( 'index.php?option=com_joomelection&task=option.showList', $msg );
@@ -75,7 +75,7 @@ class JoomElectionControllerOption extends JControllerLegacy
 
 	function cancel()
 	{
-		$msg = JText::_( 'Operation Cancelled' );
+		$msg = JText::_( 'COM_JOOMELECTION_OPERATION_CANCELLED' );
 		$this->setRedirect( 'index.php?option=com_joomelection&task=option.showList', $msg );
 	}
 	
@@ -85,9 +85,9 @@ class JoomElectionControllerOption extends JControllerLegacy
 		$model = $this->getModel('option');
 
 		if ($model->publish()) {
-			$msg = JText::_( 'Option(s) published' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_PUBLISH_OK' );
 		} else {
-			$msg = JText::_( 'Error when publishing option(s)' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_PUBLISH_ERROR' );
 		}
 
 		$link = 'index.php?option=com_joomelection&task=option.showList';
@@ -99,9 +99,9 @@ class JoomElectionControllerOption extends JControllerLegacy
 		$model = $this->getModel('option');
 
 		if ($model->publish()) {
-			$msg = JText::_( 'Option(s) unpublished' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_UNPUBLISH_OK' );
 		} else {
-			$msg = JText::_( 'Error when unpublishing option(s)' );
+			$msg = JText::_( 'COM_JOOMELECTION_CANDIDATE_UNPUBLISH_ERROR' );
 		}
 
 		$link = 'index.php?option=com_joomelection&task=option.showList';

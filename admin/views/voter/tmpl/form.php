@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
       <div class="control-group ">
         <div class="control-label">
           <label id="name-lbl" for="name" class="required" title="">
-            <?php echo JText::_( 'Name' ); ?>
+            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_NAME' ); ?>
             <span class="star">&nbsp;*</span>
           </label>
         </div>
@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
       <div class="control-group ">
         <div class="control-label">
           <label id="username-lbl" for="username" class="required" title="">
-            <?php echo JText::_( 'Username' ); ?>
+            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_USERNAME' ); ?>
             <span class="star">&nbsp;*</span>
           </label>
         </div>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
       <div class="control-group ">
         <div class="control-label">
           <label id="email-lbl" for="email" class="required" title="">
-            <?php echo JText::_( 'Email' ); ?>
+            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_EMAIL' ); ?>
             <span class="star">&nbsp;*</span>
           </label>
         </div>
@@ -53,10 +53,10 @@ defined('_JEXEC') or die('Restricted access');
           <label id="password-lbl" for="password" class="required" title="">
             <?php 
               if($this->voter->voter_id > 0) { 
-                echo JText::_( 'New Password' ) . ":";
+                echo JText::_( 'COM_JOOMELECTION_VOTER_NEW_PASSWORD' );
               }
               else {
-                echo JText::_( 'Password' ) . ":";
+                echo JText::_( 'COM_JOOMELECTION_VOTER_PASSWORD' );
               }
             ?>
             <span class="star">&nbsp;*</span>
@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
       <div class="control-group ">
         <div class="control-label">
           <label id="email-lbl" for="email" title="">
-            <?php echo JText::_( 'Send username and password to users email' ); ?>?
+            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SEND_LOGINS_TO_EMAIL' ); ?>?
           </label>
         </div>
         <div class="controls">
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
           <?php 
             if(count($this->elections) == 0) {
             ?><div class="alert alert-error"><?php
-              echo JText::_( 'No elections available, impossible to send email. Create at least one election  first.' );
+              echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );
             ?></div><?php
             }
           ?>
@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
       <div class="control-group ">
         <div class="control-label">
           <label id="election_id-lbl" for="election_id" class="required" title="">
-            <?php echo JText::_( 'Select election thats email message is used' ); ?>
+            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SELECT_ELECTION' ); ?>
             <span class="star">&nbsp;*</span>
           </label>
         </div>
@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
   
   <input type="hidden" name="id" value="<?php echo $this->voter->voter_id; ?>" />
   <input type="hidden" name="task" value="" />
-  <input type="hidden" name="limit" value="<?php echo $this->stored_limit; ?>" /> <!-- limit and limitstart is used when returning to listing -->
+  <input type="hidden" name="limit" value="<?php echo $this->stored_limit; ?>" /> <!-- limit, limitstart and search is used when returning to voter listing -->
   <input type="hidden" name="limitstart" value="<?php echo $this->stored_limitstart; ?>" />
   <input type="hidden" name="search" value="<?php echo $this->stored_search; ?>" />
 </form>

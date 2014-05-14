@@ -13,7 +13,7 @@ class JoomElectionControllerVoter extends JControllerLegacy
     parent::__construct();
 
     // Register Extra tasks
-    $this->registerTask( 'add'  ,   'edit' );
+    $this->registerTask( 'add', 'edit' );
   }
   
   
@@ -49,7 +49,7 @@ class JoomElectionControllerVoter extends JControllerLegacy
     $model = $this->getModel('voter');
 
     if ($model->store()) {
-      $msg = JText::_( 'Voter Saved' );
+      $msg = JText::_( 'COM_JOOMELECTION_VOTER_SAVE_OK' );
       $link = 'index.php?option=com_joomelection&task=voter.showList';
       $this->setRedirect($link, $msg);
     } else {
@@ -76,9 +76,9 @@ class JoomElectionControllerVoter extends JControllerLegacy
   {
     $model = $this->getModel('voter');
     if(!$model->deleteAll()) {
-      $msg = JText::_( 'Error: One or More Voter Could not be Deleted' );
+      $msg = JText::_( 'COM_JOOMELECTION_VOTER_DELETE_ERROR' );
     } else {
-      $msg = JText::_( 'Voter(s) Deleted' );
+      $msg = JText::_( 'COM_JOOMELECTION_VOTER_DELETE_OK' );
     }
 
     $this->setRedirect( 'index.php?option=com_joomelection&task=voter.showList', $msg );
@@ -87,7 +87,7 @@ class JoomElectionControllerVoter extends JControllerLegacy
 
   function cancel()
   {
-    $msg = JText::_( 'Operation Cancelled' );
+    $msg = JText::_( 'COM_JOOMELECTION_OPERATION_CANCELLED' );
     $this->setRedirect( 'index.php?option=com_joomelection&task=voter.showList', $msg );
   }
   
@@ -110,7 +110,7 @@ class JoomElectionControllerVoter extends JControllerLegacy
     $result = $model->importVotersFromCsv();
     
     if($result) {
-      $msg = JText::_( 'Voters Imported' );
+      $msg = JText::_( 'COM_JOOMELECTION_VOTER_IMPORT_OK' );
       $this->setRedirect( 'index.php?option=com_joomelection&task=voter.showList', $msg );
     }
     else {
@@ -140,9 +140,9 @@ class JoomElectionControllerVoter extends JControllerLegacy
     $model = $this->getModel('voter');
     
     if(!$model->generatePasswordAndSendEmail()) {
-      $msg = JText::_( 'Error: One or More Emails could not be sent' );
+      $msg = JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_ERROR' );
     } else {
-      $msg = JText::_( 'New passwords generated and email(s) sent' );
+      $msg = JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_OK' );
     }
 
     $this->setRedirect( 'index.php?option=com_joomelection&task=voter.showList', $msg );

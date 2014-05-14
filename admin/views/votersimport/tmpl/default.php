@@ -9,7 +9,7 @@
   <div class="control-group ">
     <div class="control-label">
       <label for="fileUpload" class="required" title="">
-        <?php echo JText::_( 'Filename' ); ?>
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_IMPORT_FILENAME' ); ?>
         <span class="star">&nbsp;*</span>
       </label>
     </div>
@@ -22,7 +22,7 @@
   <div class="control-group ">
     <div class="control-label">
       <label for="separator" class="required" title="">
-        <?php echo JText::_( 'CSV file data separator' ); ?>
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_IMPORT_CSV_FILE_SEPARATOR' ); ?>
         <span class="star">&nbsp;*</span>
       </label>
     </div>
@@ -35,16 +35,16 @@
   </div>
 
   <div class="alert alert-info">
-    <?php echo JText::_('Import info text'); ?>
+    <?php echo JText::_('COM_JOOMELECTION_VOTER_IMPORT_INFO_TEXT'); ?>
     <br /><br />
-    <a href="<?php echo JRoute::_('components/com_joomelection/importExample/test_user_import.csv'); ?>"><?php echo JText::_('Example import file'); ?></a>
+    <a href="<?php echo JRoute::_('components/com_joomelection/importExample/test_user_import.csv'); ?>"><?php echo JText::_('COM_JOOMELECTION_VOTER_IMPORT_EXAMPLE_FILE'); ?></a>
   </div>
 
   <!-- Generate random passwords -->
   <div class="control-group ">
     <div class="control-label">
       <label for="generatePassword" class="required" title="">
-        <?php echo JText::_( 'Generate random passwords' ); ?>
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_RANDOM' ); ?>
         <span class="star">&nbsp;*</span>
       </label>
     </div>
@@ -57,7 +57,7 @@
   <div class="control-group ">
     <div class="control-label">
       <label for="sendEmailToVoter" class="required" title="">
-        <?php echo JText::_( 'Send username and password to users email' ); ?>
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SEND_LOGINS_TO_EMAIL' ); ?>
         <span class="star">&nbsp;*</span>
       </label>
     </div>
@@ -70,7 +70,7 @@
   <div class="control-group ">
     <div class="control-label">
       <label for="sendEmailToVoter" class="required" title="">
-        <?php echo JText::_( 'Select election thats email message is used' ); ?>
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SELECT_ELECTION' ); ?>
         <span class="star">&nbsp;*</span>
       </label>
     </div>
@@ -82,7 +82,7 @@
         else {
           ?>
           <div class="alert alert-error">
-           <?php echo JText::_( 'No elections available, impossible to send email. Create at least one election  first.' ); ?>
+           <?php echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' ); ?>
           </div>
           <?php
         }

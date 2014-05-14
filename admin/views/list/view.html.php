@@ -25,7 +25,7 @@ class JoomElectionViewList extends JViewLegacy
       JToolBarHelper::cancel('list.showList');
     } else {
       // for existing items the button is renamed `close`
-      JToolBarHelper::cancel( 'list.showList', 'Close' );
+      JToolBarHelper::cancel( 'list.showList', JText::_( 'COM_JOOMELECTION_CLOSE' ) );
     }
     
     //Elections with type list election is required

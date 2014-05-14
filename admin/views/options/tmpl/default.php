@@ -16,19 +16,19 @@ $sortCallbackTask = 'option.showList';
           <?php echo JHtml::_('grid.checkall');?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Option number', 'o.option_number', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_CANDIDATE_NUMBER', 'o.option_number', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>    
         <th>
-          <?php echo JHtml::_('grid.sort', 'Option name', 'o.name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_CANDIDATE_NAME', 'o.name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th>
-          <?php echo JText::_( 'Option description' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_DESCRIPTION' ); ?>
         </th>
         <th>
-          <?php echo JHtml::_('grid.sort', 'Election', 'e.election_name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
+          <?php echo JHtml::_('grid.sort', 'COM_JOOMELECTION_ELECTION', 'e.election_name', $this->sortDirection, $this->sortColumn, $sortCallbackTask);?>
         </th>
         <th width="5%">
-          <?php echo JText::_( 'Published' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
         </th>
       </tr>      
     </thead>

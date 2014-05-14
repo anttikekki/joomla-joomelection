@@ -101,8 +101,7 @@ class JoomElectionModelResult extends JModelLegacy
   {
     jimport('joomla.utilities.date');
     
-    $tzoffset       = JFactory::getApplication()->getCfg('config.offset');
-    $now            = new JDate('now', $tzoffset);    
+    $now            = new JDate('now');    
     $statistics     = $this->getStatistics();
     $electionModel  =& $this->getInstance('election', 'JoomElectionModel');
     $election       = $electionModel->getElection($statistics->election_id);
@@ -122,23 +121,23 @@ class JoomElectionModelResult extends JModelLegacy
     
     
     //Write election statistics to csv
-    $csvData .= utf8_decode(JText::_( 'Result for' ))             .$sep. utf8_decode($statistics->election_name) . $cr;
-    $csvData .= utf8_decode(JText::_( 'Results printed' ))        .$sep. utf8_decode(JHTML::_('date',  $now, 'd-m-Y H:i:s')) . $cr;
-    $csvData .= utf8_decode(JText::_( 'Total number of voters' )) .$sep. utf8_decode($statistics->voter_total) . $cr;
-    $csvData .= utf8_decode(JText::_( 'Voters who voted' ))       .$sep. $statistics->voters_who_voted . $cr;
-    $csvData .= utf8_decode(JText::_( 'Voter percentage' ))       .$sep. $statistics->voted_percentage . $cr;
+    $csvData .= utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_FOR' ))                     .$sep. utf8_decode($statistics->election_name) . $cr;
+    $csvData .= utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_EXPORTED' ))                .$sep. utf8_decode(JHTML::_('date',  $now, 'd-m-Y H:i:s')) . $cr;
+    $csvData .= utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_NUMBER_OF_VOTERS' ))        .$sep. utf8_decode($statistics->voter_total) . $cr;
+    $csvData .= utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_NUMBER_VOTERS_WHO_VOTED' )) .$sep. $statistics->voters_who_voted . $cr;
+    $csvData .= utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_TURNOUT' ))                 .$sep. $statistics->voted_percentage . $cr;
     
     //Separator
     $csvData .= $cr;
     
     //Write headers to csv
-    $csvData .= utf8_decode(JText::_( 'Option number' )) 
-    . $sep . utf8_decode(JText::_( 'Option name' )) 
-    . $sep . utf8_decode(JText::_( 'Option votes' ));
+    $csvData .= utf8_decode(JText::_( 'COM_JOOMELECTION_CANDIDATE_NUMBER' )) 
+    . $sep . utf8_decode(JText::_( 'COM_JOOMELECTION_CANDIDATE_NAME' )) 
+    . $sep . utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_CANDIDATE_VOTES' ));
     
     if($election->election_type_id == 2) {
-      $csvData .= $sep . utf8_decode(JText::_( 'Election list name' )) 
-      . $sep . utf8_decode(JText::_( 'Election list votes' ));
+      $csvData .= $sep . utf8_decode(JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_NAME' )) 
+      . $sep . utf8_decode(JText::_( 'COM_JOOMELECTION_ELECTION_RESULT_CANDIDATE_LIST_VOTES' ));
     }
     $csvData .= $cr;
     

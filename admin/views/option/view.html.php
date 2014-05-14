@@ -13,7 +13,7 @@ class JoomElectionViewOption extends JViewLegacy
   {
     $input = JFactory::getApplication()->input;
   
-    //Get models stored to view in controller
+    //Get models stored into view in controller
     $optionModel    = &$this->getModel('option');
     $electionModel    = &$this->getModel('election');
     $electionListModel  = &$this->getModel('list');
@@ -32,15 +32,15 @@ class JoomElectionViewOption extends JViewLegacy
     $isNew          = ($option->option_id < 1);
     
     //Create toolbar
-    $text = $isNew ? JText::_( 'New' ) : JText::_( 'Edit' );
-    JToolBarHelper::title(   JText::_( 'Option' ).': <small><small>[ ' . $text.' ]</small></small>', 'user' );
+    $text = $isNew ? JText::_( 'COM_JOOMELECTION_NEW' ) : JText::_( 'COM_JOOMELECTION_EDIT' );
+    JToolBarHelper::title(   JText::_( 'COM_JOOMELECTION_CANDIDATE' ).': ' . $text, 'user' );
     JToolBarHelper::save('option.save');
     
     if ($isNew)  {
       JToolBarHelper::cancel('option.cancel');
     } else {
       // for existing items the button is renamed `close`
-      JToolBarHelper::cancel( 'option.cancel', 'Close' );
+      JToolBarHelper::cancel( 'option.cancel', JText::_( 'COM_JOOMELECTION_CLOSE' ) );
     }
     
     $this->option =  $option;

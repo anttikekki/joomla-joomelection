@@ -107,19 +107,19 @@ class JoomElectionModelOption extends JModelLegacy
     
     //Validate option name is not empty
     if ((strlen($option->name) > 0) == false) {
-      JFactory::getApplication()->enqueueMessage('You have to give a name to option', 'error');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_NO_NAME_ERROR'), 'error');
       return false;
     }
     
     //Validate option number is number and not 0
     if ((((int) $option->option_number) > 0) == false) {
-      JFactory::getApplication()->enqueueMessage('Option number have to valid number (zero is not valid)', 'error');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_INVALID_NUMBER_ERROR'), 'error');
       return false;
     }
     
     //Validate that election isa selected
     if (($option->election_id > 0) == false) {
-      JFactory::getApplication()->enqueueMessage('You have to select election for option', 'error');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_NO_ELECTION_ERROR'), 'error');
       return false;
     }
     
@@ -127,7 +127,7 @@ class JoomElectionModelOption extends JModelLegacy
     if($election->election_type_id == 2) {
       //List election. Validate that list is selected
       if (($option->list_id > 0) == false) {
-        JFactory::getApplication()->enqueueMessage('You have to select election list for option. Create one first i there is none', 'error');
+        JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_NO_LIST_SELECTED_ERROR'), 'error');
         return false;
       }
     }
@@ -137,7 +137,7 @@ class JoomElectionModelOption extends JModelLegacy
     // Store the table to the database
     if (!$option->store()) {
       $this->setError( $row->getErrorMsg());
-      JFactory::getApplication()->enqueueMessage('Unable to save option', 'error');
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_SAVE_ERROR'), 'error');
       return false;
     }
 

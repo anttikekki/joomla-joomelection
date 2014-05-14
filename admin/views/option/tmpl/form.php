@@ -7,8 +7,8 @@ $document =& Jfactory::getDocument();
 $optionJSON = json_encode($this->option);
 $electionsJSON = json_encode($this->elections);
 $electionListsJSON = json_encode($this->electionLists);
-$electionListNotNeededMsg = JText::_( 'Election is not list election. Candidate list is not needed.' );
-$noElectionListsForElectionMsg = JText::_( 'There are no candidate lists for selected list election. Please create one first.' );
+$electionListNotNeededMsg = JText::_( 'COM_JOOMELECTION_CANDIDATE_CANDIDATE_LIST_NOT_NEEDED' );
+$noElectionListsForElectionMsg = JText::_( 'COM_JOOMELECTION_CANDIDATE_NO_LISTS_EXIST' );
 
 $document->addScriptDeclaration("
   var JoomElection = {};
@@ -90,7 +90,7 @@ $document->addScriptDeclaration("
           <div class="control-group ">
             <div class="control-label">
               <label id="name-lbl" for="name" class="required" title="">
-                <?php echo JText::_( 'Option name' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_NAME' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -103,7 +103,7 @@ $document->addScriptDeclaration("
           <div class="control-group ">
             <div class="control-label">
               <label id="option_number-lbl" for="option_number" class="required" title="">
-                <?php echo JText::_( 'Option number' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_NUMBER' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -116,7 +116,7 @@ $document->addScriptDeclaration("
           <div class="control-group ">
             <div class="control-label">
               <label id="election_id-lbl" for="election_id" class="required" title="">
-                <?php echo JText::_( 'Election' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -129,7 +129,7 @@ $document->addScriptDeclaration("
           <div class="control-group ">
             <div class="control-label">
               <label id="election_id-lbl" for="election_id" class="required" title="">
-                <?php echo JText::_( 'Election list' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -143,7 +143,7 @@ $document->addScriptDeclaration("
           <div class="control-group ">
             <div class="control-label">
               <label id="published-lbl" for="published" class="required" title="">
-                <?php echo JText::_( 'Published' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -156,7 +156,7 @@ $document->addScriptDeclaration("
           <div class="control-group ">
             <div class="control-label">
               <label id="description-lbl" for="description" class="required" title="">
-                <?php echo JText::_( 'Option description' ); ?>
+                <?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_DESCRIPTION' ); ?>
                 <span class="star">&nbsp;*</span>
               </label>
             </div>
@@ -170,9 +170,7 @@ $document->addScriptDeclaration("
       </div>
     </div>
   </div>
-
-  <input type="hidden" name="option" value="com_joomelection" />
+  
   <input type="hidden" name="option_id" value="<?php echo $this->option->option_id; ?>" />
   <input type="hidden" name="task" value="" />
-  <input type="hidden" name="controller" value="option" />
 </form>

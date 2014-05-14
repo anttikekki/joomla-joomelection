@@ -14,13 +14,13 @@ class JoomElectionViewVoters extends JViewLegacy
   {
     $input = JFactory::getApplication()->input;
   
-    JToolBarHelper::title(   JText::_( 'Voters' ), 'users' );
+    JToolBarHelper::title(   JText::_( 'COM_JOOMELECTION_VOTERS' ), 'users' );
     JToolBarHelper::addNew('voter.add');
     JToolBarHelper::editList('voter.edit');
     JToolBarHelper::deleteList('', 'voter.remove');
-    JToolBarHelper::custom('voter.showVotersImport', 'upload.png', 'upload.png', $alt = JText::_( 'Import voters' ), $listSelect = false);
-    JToolBarHelper::custom('voter.showGeneratePasswordForm', 'wand', 'wand', $alt = JText::_( 'Generate passwords' ), $listSelect = false);
-    JToolBarHelper::custom('voter.removeAll', 'trash.png', 'trash.png', $alt = JText::_( 'Delete all' ), $listSelect = false);
+    JToolBarHelper::custom('voter.showVotersImport', 'upload.png', 'upload.png', $alt = JText::_( 'COM_JOOMELECTION_VOTER_IMPORT' ), $listSelect = false);
+    JToolBarHelper::custom('voter.showGeneratePasswordForm', 'wand', 'wand', $alt = JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS' ), $listSelect = false);
+    JToolBarHelper::custom('voter.removeAll', 'trash.png', 'trash.png', $alt = JText::_( 'COM_JOOMELECTION_VOTER_DELETE_ALL' ), $listSelect = false);
     
     //Get models
     $electionModel =& $this->getModel('election');

@@ -15,8 +15,8 @@ class JoomElectionViewVotersImport extends JViewLegacy
 		$model 		= $this->getModel('election');
 		$this->elections	= $model->getAllElections();
 		
-		JToolBarHelper::title(   JText::_( 'Voters Import' ), 'upload' );
-		JToolBarHelper::custom('voter.importVoters', 'save.png', 'save.png', $alt = JText::_( 'Upload' ), $listSelect = false);
+		JToolBarHelper::title(   JText::_( 'COM_JOOMELECTION_VOTER_IMPORT' ), 'upload' );
+		JToolBarHelper::custom('voter.importVoters', 'save.png', 'save.png', $alt = JText::_( 'COM_JOOMELECTION_VOTER_IMPORT_UPLOAD' ), $listSelect = false);
 		JToolBarHelper::cancel('voter.cancel');
 
 		parent::display($tpl);
