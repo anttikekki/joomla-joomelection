@@ -157,6 +157,11 @@ class JoomElectionModelVoter extends JModelLegacy
     */
     $userData['groups'] = array('Registered' => 2);
     
+    if($user->id > 0 && $sendEmailToVoter && empty($clearPassword)) {
+      JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_VOTER_LOGIN_EMAIL_SEND_ERROR_NO_NEW_PASSWORD'), 'error');
+      return false;
+    }
+    
     if (!$user->bind($userData)) {
       JFactory::getApplication()->enqueueMessage($user->getError(), 'error');
       return false;

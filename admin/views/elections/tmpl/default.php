@@ -34,7 +34,7 @@ $sortCallbackTask = 'election.showList';
           <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS' ); ?>
         </th>
         <th>
-          <?php echo JText::_( 'COM_JOOMELECTION_ELETCION_RESULT' ); ?>
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_RESULT' ); ?>
         </th>
         <th width="5%">
           <?php echo JText::_( 'COM_JOOMELECTION_PUBLISHED' ); ?>
@@ -89,7 +89,7 @@ $sortCallbackTask = 'election.showList';
             } ?>
         </td>
         <td align="center">
-          <?php echo "<a href='index.php?option=com_joomelection&task=election.showResult&election_id=" .$row->election_id. "'>" .JText::_( 'COM_JOOMELECTION_ELETCION_RESULT' ). "</a>"; ?>
+          <?php echo "<a href='index.php?option=com_joomelection&task=election.showResult&election_id=" .$row->election_id. "'>" .JText::_( 'COM_JOOMELECTION_ELECTION_RESULT' ). "</a>"; ?>
         </td>
         <td align="center">
           <?php echo JHTML::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'election.' ); ?>

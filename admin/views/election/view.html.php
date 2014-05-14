@@ -44,8 +44,8 @@ class JoomElectionViewElection extends JViewLegacy
       $election->confirm_vote_by_sign_description = JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_DESCRIPTION_EXAMPLE');
       $election->confirm_vote_by_sign_error       = JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_ERROR_EXAMPLE');
       $election->vote_success_description         = JText::_( 'COM_JOOMELECTION_ELECTION_VOTE_SUCCESS_DESCRIPTION_EXAMPLE' );
-      $election->election_voter_email_text        = JText::_( 'COM_JOOMELECTION_VOTER_EMAIL_EXAMPLE');
-      $election->election_voter_email_header      = JText::_( 'COM_JOOMELECTION_VOTER_EMAIL_SUBJECT_EXAMPLE');
+      $election->election_voter_email_text        = JText::_( 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_EXAMPLE');
+      $election->election_voter_email_header      = JText::_( 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_SUBJECT_EXAMPLE');
     }
     
     $this->electionTypes = $electionTypes;
