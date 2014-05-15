@@ -140,8 +140,10 @@ class JoomElectionModelElection extends JModelLegacy
       return false;
     }
     
-    $row->election_description      = $input->getHtml( 'election_description', '');
-    $row->vote_success_description  = $input->getHtml( 'vote_success_description', '');
+    $row->election_description              = $input->getRaw( 'election_description', '');
+    $row->vote_success_description          = $input->getRaw( 'vote_success_description', '');
+    $row->confirm_vote_by_sign_description  = $input->getRaw( 'confirm_vote_by_sign_description', '');
+    $row->confirm_vote_by_sign_error        = $input->getRaw( 'confirm_vote_by_sign_error', '');
     
     //Append time to date
     $row->date_to_open   = substr($input->getString( 'date_to_open', ''), 0, 10) ." ". $input->getString( 'time_to_open', '');

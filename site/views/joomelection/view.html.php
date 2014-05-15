@@ -11,11 +11,11 @@ class JoomElectionViewJoomElection extends JViewLegacy
   {
     $input = JFactory::getApplication()->input;
     
-    $model       = $this->getModel('joomelection');
-    $elections     = $model->getElections();
-    $voter_name   = $model->getVoterName();
+    $model          = $this->getModel('joomelection');
+    $elections      = $model->getElections();
+    $voter_name     = $model->getVoterName();
     $LoggedInStatus = $model->getLoggedInStatus();
-    $orderBy     = $input->getString('orderBy', 'number');
+    $orderBy        = $input->getString('orderBy', 'number');
     $selectedViewTab = $input->getString('selectedViewTab', 'view_election_candidates');
     
     for($i = 0; $i < count($elections); $i++) 
@@ -42,11 +42,11 @@ class JoomElectionViewJoomElection extends JViewLegacy
       }
     }
 
-    $this->assignRef( 'elections',  $elections );
-    $this->assignRef( 'voter_name',  $voter_name );
-    $this->assignRef( 'user_logged_in',  $LoggedInStatus );
-    $this->assignRef( 'orderBy', $orderBy );
-    $this->assignRef( 'selectedViewTab', $selectedViewTab );
+    $this->elections        = $elections;
+    $this->voter_name       = $voter_name;
+    $this->user_logged_in   = $LoggedInStatus;
+    $this->orderBy          = $orderBy;
+    $this->selectedViewTab  = $selectedViewTab;
     
     parent::display($tpl);
   }

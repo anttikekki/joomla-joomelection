@@ -97,7 +97,7 @@ class JoomElectionModelList extends JModelLegacy
 		}
 		
 		if ($row->election_id > 0) {
-			$row->description = $input->getHtml( 'description', '');
+			$row->description = $input->getRaw( 'description', '');
 	
 			// Make sure the record is valid
 			if (!$row->check()) {

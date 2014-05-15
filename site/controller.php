@@ -30,18 +30,18 @@ class JoomElectionController extends JControllerLegacy {
 				}
 				else {
 					//User has allready voted
-					JError::raiseError( 403, JText::_('You Have Allready Voted In This Election') );
+					JError::raiseError( 403, JText::_('COM_JOOMELECTION_ALLREADY_VOTED_ERROR') );
 				}
 			}
 			else {
 				//Invalid option is voted
-				JError::raiseError( 403, JText::_('You Have Allready Voted In This Election') );
+				JError::raiseError( 403, JText::_('COM_JOOMELECTION_ALLREADY_VOTED_ERROR') );
 			}
 			
 		}
 		else {
 			//Invalid user group and if user is not logged in
-			JError::raiseError( 403, JText::_('You Have Not Logged In. You Have To Log-In To Vote') );
+			JError::raiseError( 403, JText::_('COM_JOOMELECTION_NOT_LOGGED_IN_ERROR') );
 		}
 	}
 	
@@ -92,18 +92,18 @@ class JoomElectionController extends JControllerLegacy {
 				}
 				else {
 					//User has allready voted
-					JError::raiseError( 403, JText::_('You Have Allready Voted In This Election') );
+					JError::raiseError( 403, JText::_('COM_JOOMELECTION_ALLREADY_VOTED_ERROR') );
 				}
 			}
 			else {
 				//Invalid option is voted
-				JError::raiseError( 403, JText::_('You Have Allready Voted In This Election') );
+				JError::raiseError( 403, JText::_('COM_JOOMELECTION_ALLREADY_VOTED_ERROR') );
 			}
 			
 		}
 		else {
 			//Invalid user group and if user is not logged in
-			JError::raiseError( 403, JText::_('You Have Not Logged In. You Have To Log-In To Vote') );
+			JError::raiseError( 403, JText::_('COM_JOOMELECTION_NOT_LOGGED_IN_ERROR') );
 		}
 	}
 

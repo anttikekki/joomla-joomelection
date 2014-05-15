@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>
-<?php echo JText::_( 'Thank you for voting' ); ?>!
+<?php echo JText::_( 'COM_JOOMELECTION_THANK_YOU_FOR_VOTING' ); ?>
 </h1>
 
 <p>

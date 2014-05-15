@@ -60,7 +60,7 @@ class JoomElectionModelJoomElection extends JModelLegacy
 		. ' FROM #__joomelection_option'
 		. ' WHERE published = 1'
 		. ' AND list_id = ' . (int) $election_list_Id
-		. ' ORDER BY name DESC'
+		. ' ORDER BY name ASC'
 		;
 		$this->_db->setQuery( $query );
 		$options = $this->_db->loadObjectList();
@@ -80,10 +80,10 @@ class JoomElectionModelJoomElection extends JModelLegacy
 			$orderBySql = 'op.option_number ASC';
 		}
 		else if($orderBy == 'name') {
-			$orderBySql = 'op.name DESC';
+			$orderBySql = 'op.name ASC';
 		}
 		else if($orderBy == 'listName') {
-			$orderBySql = 'election_list.name DESC';
+			$orderBySql = 'election_list.name ASC';
 		}
 
 		

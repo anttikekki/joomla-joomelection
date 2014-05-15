@@ -132,7 +132,7 @@ class JoomElectionModelOption extends JModelLegacy
       }
     }
     
-    $option->description = $input->getHtml( 'description', '');
+    $option->description = $input->getRaw( 'description', '');
     
     // Store the table to the database
     if (!$option->store()) {
