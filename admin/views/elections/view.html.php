@@ -30,6 +30,10 @@ class JoomElectionViewElections extends JViewLegacy
       }
     }
     
+    //Sidebar
+    require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminSidebarHelper.php');
+    $this->sidebar = JoomElectionAdminSidebarHelper::render('election');
+    
     //Pass table sort parameters from last request
     $input = JFactory::getApplication()->input;
     $this->sortColumn = $input->getString('filter_order', 'election_name');

@@ -21,6 +21,10 @@ class JoomElectionViewOptions extends JViewLegacy
     $this->options     = &$optionModel->getOptions();
     $this->pagination = &$optionModel->getPagination();
     
+    //Sidebar
+    require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminSidebarHelper.php');
+    $this->sidebar = JoomElectionAdminSidebarHelper::render('option');
+    
     //Pass table sort parameters from last request
     $input = JFactory::getApplication()->input;
     $this->sortColumn = $input->getString('filter_order', '');

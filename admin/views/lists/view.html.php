@@ -18,6 +18,10 @@ class JoomElectionViewLists extends JViewLegacy
     $this->lists      = &$listModel->getElectionLists();
     $this->pagination = &$listModel->getPagination();
     
+    //Sidebar
+    require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminSidebarHelper.php');
+    $this->sidebar = JoomElectionAdminSidebarHelper::render('list');
+    
     //Pass table sort parameters from last request
     $input = JFactory::getApplication()->input;
     $this->sortColumn = $input->getString('filter_order', '');

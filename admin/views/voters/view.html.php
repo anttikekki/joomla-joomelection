@@ -39,6 +39,10 @@ class JoomElectionViewVoters extends JViewLegacy
     }
     $this->election_id  = $input->getInt('election_id', $default_election_id);
     
+    //Sidebar
+    require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminSidebarHelper.php');
+    $this->sidebar = JoomElectionAdminSidebarHelper::render('voter');
+    
     //Pass table sort parameters from last request
     $this->sortColumn = $input->getString('filter_order', 'u.name');
     $this->sortDirection = $input->getString('filter_order_Dir', 'ASC');
