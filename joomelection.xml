@@ -55,7 +55,6 @@
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>joomelection.php</filename>
-			<filename>controller.php</filename>
 			
 			<folder>sql</folder>
 			<folder>tables</folder>

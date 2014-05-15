@@ -10,6 +10,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+//Default task is election list
+$input = &JFactory::getApplication()->input;
+$task = $input->getCmd('task');
+if(empty($task)) {
+  $input->set('task', 'election.showList');
+}
+
 // Get an instance of the controller prefixed by JoomElectionController
 $controller = JControllerLegacy::getInstance('JoomElection');
 
