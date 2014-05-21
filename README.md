@@ -1,4 +1,4 @@
-joomla-joomelection
+JoomElection
 ===================
 
 JoomElection is [Joomla!](http://www.joomla.org/) 3 component for arraging small scale elections.
