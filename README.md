@@ -3,7 +3,7 @@ joomla-joomelection
 
 JoomElection is [Joomla!](http://www.joomla.org/) 3 component for arraging small scale elections.
 
-[Documentation](https://github.com/anttikekki/joomla-joomelection/wiki) (currenlty only in Finnish)
+[Documentation](https://github.com/anttikekki/joomla-joomelection/wiki) (currently only in Finnish)
 
 #### Download
 Version 2.0 (for Joomla! 3.x)
