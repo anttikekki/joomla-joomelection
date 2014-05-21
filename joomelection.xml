@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.3.0" method="upgrade">
 	<name>JoomElection</name>
-	<creationDate>13.05.2014</creationDate>
+	<creationDate>21.05.2014</creationDate>
 	<author>Antti Kekki</author>
 	<authorEmail>antti.kekki@gmail.com</authorEmail>
 	<authorUrl>https://github.com/anttikekki/joomla-joomelection</authorUrl>
