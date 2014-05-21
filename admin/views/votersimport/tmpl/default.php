@@ -2,8 +2,21 @@
 
 
 ?>
+<style type="text/css">
 
-<form method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+.form-horizontal .controls {
+    margin-left: 300px;
+}
+
+</style>
+
+<form class="form-horizontal"  method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+      
+  <div class="alert alert-info">
+    <?php echo JText::_('COM_JOOMELECTION_VOTER_IMPORT_INFO_TEXT'); ?>
+    <br /><br />
+    <a href="<?php echo JRoute::_('components/com_joomelection/importExample/test_user_import.csv'); ?>"><?php echo JText::_('COM_JOOMELECTION_VOTER_IMPORT_EXAMPLE_FILE'); ?></a>
+  </div>
 
   <!-- File -->
   <div class="control-group ">
@@ -34,11 +47,7 @@
     </div>
   </div>
 
-  <div class="alert alert-info">
-    <?php echo JText::_('COM_JOOMELECTION_VOTER_IMPORT_INFO_TEXT'); ?>
-    <br /><br />
-    <a href="<?php echo JRoute::_('components/com_joomelection/importExample/test_user_import.csv'); ?>"><?php echo JText::_('COM_JOOMELECTION_VOTER_IMPORT_EXAMPLE_FILE'); ?></a>
-  </div>
+  
 
   <!-- Generate random passwords -->
   <div class="control-group ">

@@ -4,102 +4,105 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<form method="post" name="adminForm" id="adminForm">
-  <div class="row-fluid">
-    <div class="span9">
-    
-      <!-- Name -->
-      <div class="control-group ">
-        <div class="control-label">
-          <label id="name-lbl" for="name" class="required" title="">
-            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_NAME' ); ?>
-            <span class="star">&nbsp;*</span>
-          </label>
-        </div>
-        <div class="controls">
-          <input type="text" name="name" id="name" size="50" maxlength="250" value="<?php echo $this->voter->name;?>" />
-        </div>
-      </div>
-    
-      <!-- Username -->
-      <div class="control-group ">
-        <div class="control-label">
-          <label id="username-lbl" for="username" class="required" title="">
-            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_USERNAME' ); ?>
-            <span class="star">&nbsp;*</span>
-          </label>
-        </div>
-        <div class="controls">
-          <input type="text" name="username" id="username" size="50" maxlength="100" value="<?php echo $this->voter->username;?>" />
-        </div>
-      </div>
-    
-      <!-- Email -->
-      <div class="control-group ">
-        <div class="control-label">
-          <label id="email-lbl" for="email" class="required" title="">
-            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_EMAIL' ); ?>
-            <span class="star">&nbsp;*</span>
-          </label>
-        </div>
-        <div class="controls">
-          <input type="text" name="email" id="email" size="50" maxlength="100" value="<?php echo $this->voter->email;?>" />
-        </div>
-      </div>
-    
-      <!-- Password -->
-      <div class="control-group ">
-        <div class="control-label">
-          <label id="password-lbl" for="password" class="required" title="">
-            <?php 
-              if($this->voter->voter_id > 0) { 
-                echo JText::_( 'COM_JOOMELECTION_VOTER_NEW_PASSWORD' );
-              }
-              else {
-                echo JText::_( 'COM_JOOMELECTION_VOTER_PASSWORD' );
-              }
-            ?>
-            <span class="star">&nbsp;*</span>
-          </label>
-        </div>
-        <div class="controls">
-          <input type="text" name="password" id="password" size="50" maxlength="100" value="<?php echo $this->voter->password;?>" />
-        </div>
-      </div>
-    
-      <!-- Send password to user with email -->
-      <div class="control-group ">
-        <div class="control-label">
-          <label id="email-lbl" for="email" title="">
-            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SEND_LOGINS_TO_EMAIL' ); ?>?
-          </label>
-        </div>
-        <div class="controls">
-          <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
-        
-          <?php 
-            if(count($this->elections) == 0) {
-            ?><div class="alert alert-error"><?php
-              echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );
-            ?></div><?php
-            }
-          ?>
-        </div>
-      </div>
-    
-      <!-- Select election thats email message is used -->
-      <div class="control-group ">
-        <div class="control-label">
-          <label id="election_id-lbl" for="election_id" class="required" title="">
-            <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SELECT_ELECTION' ); ?>
-            <span class="star">&nbsp;*</span>
-          </label>
-        </div>
-        <div class="controls">
-          <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name' ); ?>
-        </div>
-      </div>
+<style type="text/css">
 
+.form-horizontal .controls {
+    margin-left: 300px;
+}
+
+</style>
+
+<form class="form-horizontal" method="post" name="adminForm" id="adminForm">
+    
+  <!-- Name -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label id="name-lbl" for="name" class="required" title="">
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_NAME' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <input type="text" name="name" id="name" size="50" maxlength="250" value="<?php echo $this->voter->name;?>" />
+    </div>
+  </div>
+
+  <!-- Username -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label id="username-lbl" for="username" class="required" title="">
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_USERNAME' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <input type="text" name="username" id="username" size="50" maxlength="100" value="<?php echo $this->voter->username;?>" />
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label id="email-lbl" for="email" class="required" title="">
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_EMAIL' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <input type="text" name="email" id="email" size="50" maxlength="100" value="<?php echo $this->voter->email;?>" />
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label id="password-lbl" for="password" class="required" title="">
+        <?php 
+          if($this->voter->voter_id > 0) { 
+            echo JText::_( 'COM_JOOMELECTION_VOTER_NEW_PASSWORD' );
+          }
+          else {
+            echo JText::_( 'COM_JOOMELECTION_VOTER_PASSWORD' );
+          }
+        ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <input type="text" name="password" id="password" size="50" maxlength="100" value="<?php echo $this->voter->password;?>" />
+    </div>
+  </div>
+
+  <!-- Send password to user with email -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label id="email-lbl" for="email" title="">
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SEND_LOGINS_TO_EMAIL' ); ?>?
+      </label>
+    </div>
+    <div class="controls">
+      <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
+    
+      <?php 
+        if(count($this->elections) == 0) {
+        ?><div class="alert alert-error"><?php
+          echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );
+        ?></div><?php
+        }
+      ?>
+    </div>
+  </div>
+
+  <!-- Select election thats email message is used -->
+  <div class="control-group ">
+    <div class="control-label">
+      <label id="election_id-lbl" for="election_id" class="required" title="">
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SELECT_ELECTION' ); ?>
+        <span class="star">&nbsp;*</span>
+      </label>
+    </div>
+    <div class="controls">
+      <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name' ); ?>
     </div>
   </div>
   
