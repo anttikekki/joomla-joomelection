@@ -57,9 +57,7 @@
         <span class="star">&nbsp;*</span>
       </label>
     </div>
-    <div class="controls">
-      <?php echo JHTML::_('select.booleanlist', 'generatePassword', null, 0); ?>
-    </div>
+    <?php echo JHTML::_('select.booleanlist', 'generatePassword', null, 0); ?>
   </div>
 
   <!-- Send username and password to users email -->
@@ -70,9 +68,7 @@
         <span class="star">&nbsp;*</span>
       </label>
     </div>
-    <div class="controls">
-      <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
-    </div>
+    <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
   </div>
 
   <!-- Select election thats email message is used -->

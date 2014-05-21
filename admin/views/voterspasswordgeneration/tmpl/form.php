@@ -18,15 +18,19 @@
       </label>
     </div>
     <div class="controls">
-      <input type="radio" name="selectedGenerationGroup" id="selectedGenerationGroupSelected" value="1"  
-        <?php if($this->selectedVoutersCount == 0) { ?>disabled="disabled"<?php } ?>
-      />
+      
       <label for="selectedGenerationGroupSelected">
+        <input type="radio" name="selectedGenerationGroup" id="selectedGenerationGroupSelected" value="1"  
+          <?php if($this->selectedVoutersCount == 0) { ?>disabled="disabled"<?php } ?>
+        />
         <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_SELECTED_VOTERS' ); ?>  (<?php echo $this->selectedVoutersCount .' '. JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_SELECTED' );?>)
       </label>
       
-      <input type="radio" name="selectedGenerationGroup" id="selectedGenerationGroupAll" value="0" checked="checked" />
-      <label for="selectedGenerationGroupAll"><?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_ALL_VOTERS' ); ?></label>
+      <label for="selectedGenerationGroupAll">
+        <input type="radio" name="selectedGenerationGroup" id="selectedGenerationGroupAll" value="0" checked="checked" />
+        <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_ALL_VOTERS' ); ?>
+      </label>
+      
     </div>
   </div>
         

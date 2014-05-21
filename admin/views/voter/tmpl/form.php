@@ -80,17 +80,19 @@ defined('_JEXEC') or die('Restricted access');
         <?php echo JText::_( 'COM_JOOMELECTION_VOTER_SEND_LOGINS_TO_EMAIL' ); ?>?
       </label>
     </div>
-    <div class="controls">
-      <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
     
-      <?php 
-        if(count($this->elections) == 0) {
-        ?><div class="alert alert-error"><?php
-          echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );
-        ?></div><?php
-        }
-      ?>
-    </div>
+    <?php echo JHTML::_('select.booleanlist', 'sendEmailToVoter', null, 0); ?>
+  
+    <?php 
+      if(count($this->elections) == 0) {?>
+        <div class="controls">
+          <div class="alert alert-error"><?php
+            echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );?>
+          </div>
+        </div>
+      <?php
+      }
+    ?>
   </div>
 
   <!-- Select election thats email message is used -->

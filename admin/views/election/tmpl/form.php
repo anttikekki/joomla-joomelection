@@ -4,6 +4,14 @@ $editor =& JFactory::getEditor();
 JHTML::_('behavior.calendar');
 ?>
 
+<style type="text/css">
+
+.form-horizontal #vote_confirmation .controls {
+    margin-left: 330px;
+}
+
+</style>
+
 <form class="form-horizontal" method="post" name="adminForm" id="adminForm">
   <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
   
@@ -95,9 +103,7 @@ JHTML::_('behavior.calendar');
           <span class="star">&nbsp;*</span>
         </label>
       </div>
-      <div class="controls">
-       <?php echo JHTML::_('select.booleanlist', 'published', null, $this->election->published); ?>
-      </div>
+      <?php echo JHTML::_('select.booleanlist', 'published', 'class="checkbox"', $this->election->published); ?>
     </div>
     
       <!-- Election description -->
@@ -127,9 +133,7 @@ JHTML::_('behavior.calendar');
           <span class="star">&nbsp;*</span>
         </label>
       </div>
-      <div class="controls">
-       <?php echo JHTML::_('select.booleanlist', 'confirm_vote', null, $this->election->confirm_vote); ?>
-      </div>
+      <?php echo JHTML::_('select.booleanlist', 'confirm_vote', null, $this->election->confirm_vote); ?>
     </div>
     
     <!-- Vote confirmation by signing-->
@@ -140,9 +144,7 @@ JHTML::_('behavior.calendar');
           <span class="star">&nbsp;*</span>
         </label>
       </div>
-      <div class="controls">
-       <?php echo JHTML::_('select.booleanlist', 'confirm_vote_by_sign', null, $this->election->confirm_vote_by_sign); ?>
-      </div>
+      <?php echo JHTML::_('select.booleanlist', 'confirm_vote_by_sign', null, $this->election->confirm_vote_by_sign); ?>
     </div>
     
     <!-- Vote confirmation message -->

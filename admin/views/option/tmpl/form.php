@@ -143,9 +143,7 @@ $document->addScriptDeclaration("
           <span class="star">&nbsp;*</span>
         </label>
       </div>
-      <div class="controls">
-        <?php echo JHTML::_('select.booleanlist', 'published', null, $this->option->published); ?>
-      </div>
+      <?php echo JHTML::_('select.booleanlist', 'published', null, $this->option->published); ?>
     </div>
   
     <!-- Option description -->
