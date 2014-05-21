@@ -47,7 +47,7 @@ foreach ($this->elections as $election) { ?>
         </td>
         <td>
           <?php 
-            if($this->user_logged_in > 0) {
+            if($this->user_logged_in) {
               if($election->valid_voter) {
                 echo JText::_( 'COM_JOOMELECTION_WELCOME_TO_VOTE' ) . ", " .$this->voter_name. ". " .JText::_( 'COM_JOOMELECTION_YOU_CAN_VOTE_IN_THIS_ELECTION');
               }
