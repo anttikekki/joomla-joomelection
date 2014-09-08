@@ -1,6 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 
 $editor =& JFactory::getEditor();
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 JHTML::_('behavior.calendar');
 ?>
 
@@ -26,7 +27,7 @@ JHTML::_('behavior.calendar');
         </label>
       </div>
       <div class="controls">
-        <input type="text" name="election_name" id="election_name" size="32" maxlength="250" value="<?php echo $this->election->election_name;?>" />
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml($this->election, "election_name"); ?>
       </div>
     </div>
     

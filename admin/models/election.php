@@ -18,6 +18,12 @@ class JoomElectionModelElection extends JModelLegacy
     $limitstart = $input->getInt('limitstart', 0);
     $orderByColumn = $this->_db->escape($input->getString('filter_order', 'election_name'));
     $orderByDirection = $this->_db->escape($input->getString('filter_order_Dir', 'ASC'));
+    $langTag = JFactory::getLanguage()->getTag();
+
+    //Sort order check
+    if($orderByColumn == 'election_name') {
+      $orderByColumn = '1';
+    }
     
     // Get the total number of records
     $query = 'SELECT COUNT(*)'
@@ -31,11 +37,21 @@ class JoomElectionModelElection extends JModelLegacy
     $this->_page = new JPagination($total, $limitstart, $limit);
     
     //Get list data
-    $query = ' SELECT * '
-    . ' FROM #__joomelection_election'
-    . ' ORDER BY ' .$orderByColumn. ' ' . $orderByDirection;
-    ;
-    $this->_list = $this->_getList( $query, $limitstart, $limit );
+    $query = " 
+      SELECT t.translationText AS election_name, e.*
+      FROM #__joomelection_election AS e
+      LEFT JOIN #__joomelection_translation AS t ON e.election_id = t.entity_id 
+                                                    AND t.entity_type = 'election'
+                                                    AND t.language = " . $this->_db->quote($langTag) . "
+                                                    AND t.entity_field = 'election_name'
+      ORDER BY $orderByColumn $orderByDirection
+    ";
+    $this->_db->setQuery($query, $limitstart, $limit);
+    $this->_list = $this->_db->loadObjectList();
+
+    //Load translations
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+    $translationModel->loadTranslationsToObjects($this->_list, 'election', 'election_id');
     
     return $this->_list;
   }
@@ -53,21 +69,35 @@ class JoomElectionModelElection extends JModelLegacy
   
   function &getAllElections()
   {
-    $query = ' SELECT * '
-    . ' FROM #__joomelection_election'
-    ;
+    $query = " 
+      SELECT * 
+      FROM #__joomelection_election
+    ";
     $this->_db->setQuery( $query );
-    return $this->_db->loadObjectList();
+    $result = $this->_db->loadObjectList();
+
+    //Load translations
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+    $translationModel->loadTranslationsToObjects($result, 'election', 'election_id');
+
+    return $result;
   }
   
   function &getListElections()
   {
-    $query = ' SELECT * '
-    . ' FROM #__joomelection_election'
-    . ' WHERE election_type_id = 2'
-    ;
+    $query = " 
+    SELECT * 
+    FROM #__joomelection_election
+    WHERE election_type_id = 2
+    ";
     $this->_db->setQuery( $query );
-    return $this->_db->loadObjectList();
+    $result = $this->_db->loadObjectList();
+
+    //Load translations
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+    $translationModel->loadTranslationsToObjects($result, 'election', 'election_id');
+
+    return $result;
   }
   
   
@@ -123,6 +153,11 @@ class JoomElectionModelElection extends JModelLegacy
       $election->date_to_close = null;
       $election->election_description = null;
     }
+    else {
+      //Load translations to election
+      $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+      $translationModel->loadTranslationsToObject($election, 'election', (int) $election_id);
+    }
     
     return $election;
   }
@@ -174,6 +209,20 @@ class JoomElectionModelElection extends JModelLegacy
       return false;
     }
 
+    // Strore text field translations
+    $translationModel =& $this->getInstance('translations', 'JoomElectionModel');
+    $languages = JLanguageHelper::getLanguages();
+    foreach($languages as $language) {
+      $langTag = $language->getTag();
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getString('election_name_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('election_description_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('vote_success_description_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('confirm_vote_by_sign_description_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('confirm_vote_by_sign_error_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getString('election_voter_email_header_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getString('election_voter_email_text_'.$langTag, ''));
+    }
+
     return true;
   }
 
@@ -184,6 +233,7 @@ class JoomElectionModelElection extends JModelLegacy
     $election_ids   = $input->get( 'cid', array(), 'array' );
     $listModel     =& $this->getInstance('list', 'JoomElectionModel');
     $optionModel   =& $this->getInstance('option', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translations', 'JoomElectionModel');
     $row       =& $this->getTable();
 
     if (count( $election_ids ))    {
@@ -192,6 +242,9 @@ class JoomElectionModelElection extends JModelLegacy
           $this->setError( $row->getErrorMsg() );
           return false;
         }
+
+        // Delete translations
+        $translationModel->deleteTranslation('election', $election_id);
         
         $query = 'SELECT * FROM #__joomelection_list '.
         ' WHERE election_id = '. (int) $election_id;

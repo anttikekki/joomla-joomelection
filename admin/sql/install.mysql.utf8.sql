@@ -3,18 +3,11 @@ DROP TABLE IF EXISTS `#__joomelection_election`;
 CREATE TABLE `#__joomelection_election` (
   `election_id` int(11) NOT NULL auto_increment,
   `election_type_id` int(11) NOT NULL,
-  `election_name` varchar(255) NOT NULL,
-  `election_description` TEXT NOT NULL DEFAULT '',
   `date_to_open` datetime NOT NULL default '0000-00-00 00:00:00',
   `date_to_close` datetime NOT NULL default '0000-00-00 00:00:00',
   `published` tinyint(1) NOT NULL default '0',
   `confirm_vote` tinyint(1) NOT NULL default '1',
   `confirm_vote_by_sign` tinyint(1) NOT NULL default '1',
-  `confirm_vote_by_sign_description` TEXT NOT NULL DEFAULT '',
-  `confirm_vote_by_sign_error` TEXT NOT NULL DEFAULT '',
-  `vote_success_description` TEXT NOT NULL DEFAULT '',
-  `election_voter_email_header` varchar(500) NOT NULL,
-  `election_voter_email_text` TEXT NOT NULL DEFAULT '',
   PRIMARY KEY  (`election_id`)
 ) CHARACTER SET `utf8`;
 
@@ -87,4 +80,16 @@ CREATE TABLE `#__joomelection_voter` (
   `voter_id` int(11) NOT NULL,
   `email_sent` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`voter_id`)
+) CHARACTER SET `utf8`;
+
+
+DROP TABLE IF EXISTS `#__joomelection_translation`;
+
+CREATE TABLE `#__joomelection_translation` (
+  `language` varchar(5) NOT NULL,
+  `entity_type` varchar(20) NOT NULL,
+  `entity_id` int(11) NOT NULL,
+  `entity_field` varchar(20) NOT NULL,
+  `translationText` TEXT NOT NULL,
+  PRIMARY KEY  (`language`, `entity_type`, `entity_id`, `entity_field`)
 ) CHARACTER SET `utf8`;
