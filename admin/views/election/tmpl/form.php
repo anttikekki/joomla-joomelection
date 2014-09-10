@@ -27,7 +27,7 @@ JHTML::_('behavior.calendar');
         </label>
       </div>
       <div class="controls">
-        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml($this->election, "election_name"); ?>
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->election, "election_name", ['maxlength' => 250]); ?>
       </div>
     </div>
     
@@ -116,7 +116,7 @@ JHTML::_('behavior.calendar');
           </label>
         </div>
         <div class="controls">
-          <?php echo $editor->display( 'election_description', $this->election->election_description, '100%', '300', '60', '35' ); ?>
+          <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "election_description"); ?>
         </div>
       </div>
     
@@ -155,7 +155,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <?php echo $editor->display( 'confirm_vote_by_sign_description', $this->election->confirm_vote_by_sign_description, '100%', '200', '60', '35' ); ?>
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "confirm_vote_by_sign_description"); ?>
     </div>
   
     <!-- Vote confirmation message -->
@@ -165,7 +165,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <?php echo $editor->display( 'confirm_vote_by_sign_error', $this->election->confirm_vote_by_sign_error, '100%', '200', '60', '35' ); ?>
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "confirm_vote_by_sign_error"); ?>
     </div>
           
   <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -181,7 +181,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <?php echo $editor->display( 'vote_success_description', $this->election->vote_success_description, '100%', '200', '60', '35' ); ?>
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "vote_success_description"); ?>
     </div>
           
   <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -199,7 +199,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <input type="text" name="election_voter_email_header" size="150" maxlength="450" value="<?php echo $this->election->election_voter_email_header;?>" />
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->election, "election_voter_email_header", ['maxlength' => 450]); ?>
     </div>
   
     <!-- Email message -->
@@ -209,7 +209,8 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <textarea cols="120" rows="15" name="election_voter_email_text"><?php echo $this->election->election_voter_email_text;?></textarea>
+
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('textarea', $this->election, "election_voter_email_text", ['rows' => 15]); ?>
       <p><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_FIELD_LEGEND' ); ?></p>
     </div>
       

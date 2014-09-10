@@ -11,7 +11,6 @@ class TableElection extends JTable
 	
 	public $election_id = null;
 	public $election_type_id = null;
-	public $election_description = null;
 	public $date_to_open = null;
 	public $date_to_close = null;
 	public $published = null;

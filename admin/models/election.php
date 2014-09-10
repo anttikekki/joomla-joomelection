@@ -11,7 +11,7 @@ class JoomElectionModelElection extends JModelLegacy
   var $_page = null;
   
   
-  function &getElections()
+  function &getPaginatedElections()
   {    
     $input = JFactory::getApplication()->input;
     $limit = $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
@@ -175,11 +175,6 @@ class JoomElectionModelElection extends JModelLegacy
       return false;
     }
     
-    $row->election_description              = $input->getRaw( 'election_description', '');
-    $row->vote_success_description          = $input->getRaw( 'vote_success_description', '');
-    $row->confirm_vote_by_sign_description  = $input->getRaw( 'confirm_vote_by_sign_description', '');
-    $row->confirm_vote_by_sign_error        = $input->getRaw( 'confirm_vote_by_sign_error', '');
-    
     //Append time to date
     $row->date_to_open   = substr($input->getString( 'date_to_open', ''), 0, 10) ." ". $input->getString( 'time_to_open', '');
     $row->date_to_close  = substr($input->getString( 'date_to_close', ''), 0, 10) ." ". $input->getString( 'time_to_close', '');
@@ -210,17 +205,17 @@ class JoomElectionModelElection extends JModelLegacy
     }
 
     // Strore text field translations
-    $translationModel =& $this->getInstance('translations', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
     $languages = JLanguageHelper::getLanguages();
     foreach($languages as $language) {
-      $langTag = $language->getTag();
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getString('election_name_'.$langTag, ''));
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('election_description_'.$langTag, ''));
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('vote_success_description_'.$langTag, ''));
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('confirm_vote_by_sign_description_'.$langTag, ''));
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getRaw('confirm_vote_by_sign_error_'.$langTag, ''));
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getString('election_voter_email_header_'.$langTag, ''));
-      $translationModel->saveTranslation($langTag, 'election', $row->election_id, $input->getString('election_voter_email_text_'.$langTag, ''));
+      $langTag = $language->lang_code;
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'election_name', $input->getString('election_name_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'election_description', $input->getRaw('election_description_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'vote_success_description', $input->getRaw('vote_success_description_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'confirm_vote_by_sign_description', $input->getRaw('confirm_vote_by_sign_description_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'confirm_vote_by_sign_error', $input->getRaw('confirm_vote_by_sign_error_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'election_voter_email_header', $input->getString('election_voter_email_header_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'election', $row->election_id, 'election_voter_email_text', $input->getString('election_voter_email_text_'.$langTag, ''));
     }
 
     return true;

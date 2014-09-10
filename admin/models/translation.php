@@ -14,6 +14,9 @@ class JoomElectionModelTranslation extends JModelLegacy
     $db = $this->_db;
     $entity_ids = array_filter($entity_ids, 'is_numeric');
 
+
+    //JFactory::getApplication()->enqueueMessage('$entity_ids = ' . var_export($entity_ids, true), 'error');
+    
     if(count($entity_ids) == 0) {
       return [];
     }
@@ -22,7 +25,7 @@ class JoomElectionModelTranslation extends JModelLegacy
       SELECT language, entity_field, entity_id, translationText
       FROM #__joomelection_translation 
       WHERE entity_type = " . $db->quote($entity_type) . "
-        AND entity_id IN(" . explode(',', $entity_ids) . ")";
+        AND entity_id IN(" . implode(',', $entity_ids) . ")";
 
     $db->setQuery( $query );
     return $db->loadObjectList();
@@ -68,11 +71,11 @@ class JoomElectionModelTranslation extends JModelLegacy
         translationText
       )
       VALUES (
-        language = " . $db->quote($language) . ",
-        entity_type = " . $db->quote($entity_type) . ",
-        entity_id = " . (int) $entity_id . ",
-        entity_field = " . $db->quote($entity_field) . ",
-        translationText = " . $db->quote($translationText) . "
+        " . $db->quote($language) . ",
+        " . $db->quote($entity_type) . ",
+        " . (int) $entity_id . ",
+        " . $db->quote($entity_field) . ",
+        " . $db->quote($translationText) . "
       )
     ";
 

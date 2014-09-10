@@ -3,44 +3,64 @@
 defined('_JEXEC') or die;
 
 class JoomElectionAdminMultilangHelper {
-  
-  public static function getFieldHtml($dataObject, $fieldName) {
+
+  public static function getFieldHtml($type, $dataObject, $fieldName, $options=[]) {
     $languages = JLanguageHelper::getLanguages();
     $currentLang =& JFactory::getLanguage();
     $html = '';
 
+    //Input
     foreach($languages as $language) { 
       $isCurrentLang = $currentLang->getTag() == $language->lang_code;
       $hideStyle = $isCurrentLang ? '' : 'display: none;';
       $fullFieldName = $fieldName . '_' . $language->lang_code;
 
       $html .= '<div id="'.$fullFieldName.'_container" style="'.$hideStyle.'" class="'.$fieldName.'_input_container">';
-      $html .= '  <input type="text" name="'.$fullFieldName.'" id="'.$fullFieldName.'" size="32" maxlength="250" value="'.$dataObject->$fullFieldName.'" />';
+      $html .= self::getInputElement($type, $fullFieldName, $dataObject, $options);
       $html .= '</div>';
     }
 
+    //Language chooser radio buttons
     $html .= '<div class="joomelection_field_language_chooser_container '.$fieldName.'_language_chooser">';
-      foreach($languages as $language) { 
-        $isCurrentLang = $currentLang->getTag() == $language->lang_code;
-        $checked = $isCurrentLang ? 'checked' : '';
-        
-        $html .= '<label class="radio">';
-        $html .= '  <input type="radio" '.$checked.' value="'.$language->lang_code.'" name="'.$fieldName.'_language">';
-        $html .= $language->title;
-        $html .= '</label>';
-      }
+    foreach($languages as $language) { 
+      $isCurrentLang = $currentLang->getTag() == $language->lang_code;
+      $checked = $isCurrentLang ? 'checked' : '';
+      
+      $html .= '<label class="radio">';
+      $html .= '  <input type="radio" '.$checked.' value="'.$language->lang_code.'" name="'.$fieldName.'_language">';
+      $html .= $language->title;
+      $html .= '</label>';
+    }
 
-      $html .= "<script type=\"text/javascript\">
-        jQuery(document).ready(function() {
-          jQuery('.".$fieldName."_language_chooser input').on('change', function(event) {
-            jQuery('.".$fieldName."_input_container').hide();
+    //Language chooser javascript
+    $html .= "<script type=\"text/javascript\">
+      jQuery(document).ready(function() {
+        jQuery('.".$fieldName."_language_chooser input').on('change', function(event) {
+          jQuery('.".$fieldName."_input_container').hide();
 
-            var selectedLang = jQuery(event.target).val();
-            jQuery('#".$fieldName."_' + selectedLang + '_container').show();
-          });
+          var selectedLang = jQuery(event.target).val();
+          jQuery('#".$fieldName."_' + selectedLang + '_container').show();
         });
-      </script>";
+      });
+    </script>";
     $html .= '</div>';
+
+    return $html;
+  }
+
+  private function getInputElement($type, $fullFieldName, $dataObject, $options) {
+    $html = '';
+
+    if($type == 'text') {
+      $html .= '<input type="text" name="'.$fullFieldName.'" id="'.$fullFieldName.'" size="100" maxlength="'.$options['maxlength'].'" value="'.$dataObject->$fullFieldName.'" />';
+    }
+    else if($type == 'editor') {
+      $editor =& JFactory::getEditor();
+      $html .= $editor->display( $fullFieldName, $dataObject->$fullFieldName, '100%', '300', '60', '35' );
+    }
+    else if($type == 'textarea') {
+      $html .= '<textarea cols="120" rows="'.$options['rows'].'" name="'.$fullFieldName.'">'.$dataObject->$fullFieldName.'</textarea>';
+    }
 
     return $html;
   }

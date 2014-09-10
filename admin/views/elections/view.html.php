@@ -21,7 +21,7 @@ class JoomElectionViewElections extends JViewLegacy
     $electionModel = &$this->getModel('election');
 
     // Get data from the model
-    $this->elections    = &$electionModel->getElections();
+    $this->elections    = &$electionModel->getPaginatedElections();
     $this->pagination   = &$electionModel->getPagination();
     
     if (count( $this->elections ))    {
