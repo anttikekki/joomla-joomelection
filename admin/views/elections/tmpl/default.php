@@ -2,6 +2,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 $sortCallbackTask = 'election.showList';
 ?>
 
@@ -69,7 +70,7 @@ $sortCallbackTask = 'election.showList';
             <?php echo JHTML::_('grid.id',   $i, $row->election_id ); ?>
           </td>
           <td>
-            <a href="<?php echo $link; ?>"><?php echo $row->election_name; ?></a>
+            <a href="<?php echo $link; ?>"><?php echo JoomElectionAdminMultilangHelper::getValue($row, 'election_name'); ?></a>
           </td>
           <td align="center">
             <?php echo JHTML::_('date',  $row->date_to_open, 'd.m.Y'); ?>

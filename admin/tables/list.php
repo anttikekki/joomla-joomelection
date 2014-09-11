@@ -10,8 +10,6 @@ class TableList extends JTable
 {
 	public $list_id = null;
 	public $election_id = null;
-	public $name = null;
-	public $description = null;
 	public $published = null;
 
 

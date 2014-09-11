@@ -31,8 +31,6 @@ DROP TABLE IF EXISTS `#__joomelection_list`;
 CREATE TABLE `#__joomelection_list` (
   `list_id` int(11) NOT NULL auto_increment,
   `election_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` TEXT NOT NULL DEFAULT '',
   `published` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`list_id`)
 ) CHARACTER SET `utf8`;

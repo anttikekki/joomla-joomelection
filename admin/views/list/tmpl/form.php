@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 
-$editor =& JFactory::getEditor(); 
-JHTML::_('behavior.calendar');
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
+$currentLang =& JFactory::getLanguage();
 ?>
 
 <form class="form-horizontal" method="post" name="adminForm" id="adminForm">
@@ -15,7 +15,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <input type="text" name="name" id="name" size="32" maxlength="250" value="<?php echo $this->electionList->name;?>" />
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->electionList, "name", ['maxlength' => 250]); ?>
     </div>
   </div>
 
@@ -28,7 +28,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name', $this->electionList->election_id );?>
+      <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name_'.$currentLang->getTag(), $this->electionList->election_id );?>
     </div>
   </div>
 
@@ -51,7 +51,7 @@ JHTML::_('behavior.calendar');
       </label>
     </div>
     <div class="controls">
-      <?php echo $editor->display( 'description', $this->electionList->description, '100%', '150', '60', '35' ); ?>
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->electionList, "description"); ?>
     </div>
   </div>
   

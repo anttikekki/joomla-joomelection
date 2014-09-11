@@ -2,6 +2,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 $sortCallbackTask = 'list.showList';
 ?>
 <form method="post" name="adminForm" id="adminForm">
@@ -57,10 +58,10 @@ $sortCallbackTask = 'list.showList';
             <?php echo JHTML::_('grid.id', $i, $row->list_id ); ?>
           </td>
           <td align="center">
-            <a href="<?php echo $listEditLink; ?>"><?php echo $row->name; ?></a>
+            <a href="<?php echo $listEditLink; ?>"><?php echo JoomElectionAdminMultilangHelper::getValue($row, 'name'); ?></a>
           </td>
           <td>
-            <?php echo substr(strip_tags($row->description), 0, 100) ."..."; ?>
+            <?php echo substr(strip_tags(JoomElectionAdminMultilangHelper::getValue($row, 'description')), 0, 100) ."..."; ?>
           </td>
           <td align="center">
             <a href="<?php echo $electionEditLink; ?>"><?php echo $row->election_name; ?></a>

@@ -15,7 +15,7 @@ class JoomElectionViewLists extends JViewLegacy
     JToolBarHelper::deleteList('', 'list.remove');
     
     $listModel        = &$this->getModel('list');
-    $this->lists      = &$listModel->getElectionLists();
+    $this->lists      = &$listModel->getPaginatedElectionLists();
     $this->pagination = &$listModel->getPagination();
     
     //Sidebar

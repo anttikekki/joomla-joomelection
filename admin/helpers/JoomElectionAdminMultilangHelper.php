@@ -4,6 +4,13 @@ defined('_JEXEC') or die;
 
 class JoomElectionAdminMultilangHelper {
 
+  public static function getValue($dataObject, $fieldName) {
+    $currentLang =& JFactory::getLanguage();
+    $fullFieldName = $fieldName . '_' . $currentLang->getTag();
+
+    return $dataObject->$fullFieldName;
+  }
+
   public static function getFieldHtml($type, $dataObject, $fieldName, $options=[]) {
     $languages = JLanguageHelper::getLanguages();
     $currentLang =& JFactory::getLanguage();

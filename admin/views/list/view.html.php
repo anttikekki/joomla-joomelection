@@ -28,7 +28,7 @@ class JoomElectionViewList extends JViewLegacy
       JToolBarHelper::cancel( 'list.showList', JText::_( 'COM_JOOMELECTION_CLOSE' ) );
     }
     
-    //Elections with type list election is required
+    //Elections with type of list election is required
     if(count($elections) == 0) {
       $error = JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_NO_ELECTIONS' );
       JFactory::getApplication()->enqueueMessage($error, 'error');

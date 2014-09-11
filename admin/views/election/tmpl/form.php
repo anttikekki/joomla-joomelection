@@ -1,6 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 
-$editor =& JFactory::getEditor();
 require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 JHTML::_('behavior.calendar');
 ?>

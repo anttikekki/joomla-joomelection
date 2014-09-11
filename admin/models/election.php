@@ -20,7 +20,7 @@ class JoomElectionModelElection extends JModelLegacy
     $orderByDirection = $this->_db->escape($input->getString('filter_order_Dir', 'ASC'));
     $langTag = JFactory::getLanguage()->getTag();
 
-    //Sort order check
+    //Sort order check. LEFT JOIN column name to column index
     if($orderByColumn == 'election_name') {
       $orderByColumn = '1';
     }
@@ -133,7 +133,7 @@ class JoomElectionModelElection extends JModelLegacy
     $input = JFactory::getApplication()->input;
     if($election_id == 0) {
       $array = $input->get('cid', array(), 'array');
-      $election_id = $array[0];
+      $election_id = (int) $array[0];
     }
     
     $query = ' SELECT * FROM #__joomelection_election '.
@@ -145,13 +145,11 @@ class JoomElectionModelElection extends JModelLegacy
       $election = new stdClass();
       $election->election_id = 0;
       $election->election_type_id = 0;
-      $election->election_name = null;
       $election->published = 0;
       $election->confirm_vote = 1;
       $election->confirm_vote_by_sign = 0;
       $election->date_to_open = null;
       $election->date_to_close = null;
-      $election->election_description = null;
     }
     else {
       //Load translations to election
@@ -204,7 +202,7 @@ class JoomElectionModelElection extends JModelLegacy
       return false;
     }
 
-    // Strore text field translations
+    // Store text field translations
     $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
     $languages = JLanguageHelper::getLanguages();
     foreach($languages as $language) {
