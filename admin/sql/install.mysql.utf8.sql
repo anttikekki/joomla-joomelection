@@ -87,7 +87,7 @@ CREATE TABLE `#__joomelection_translation` (
   `language` varchar(5) NOT NULL,
   `entity_type` varchar(20) NOT NULL,
   `entity_id` int(11) NOT NULL,
-  `entity_field` varchar(20) NOT NULL,
+  `entity_field` varchar(50) NOT NULL,
   `translationText` TEXT NOT NULL,
   PRIMARY KEY  (`language`, `entity_type`, `entity_id`, `entity_field`)
 ) CHARACTER SET `utf8`;
