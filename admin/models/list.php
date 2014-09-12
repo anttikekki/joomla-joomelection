@@ -85,7 +85,7 @@ class JoomElectionModelList extends JModelLegacy
   
   function &getAllElectionLists()
 	{
-		$query = ' SELECT list.*, e.election_name, e.election_id '
+		$query = ' SELECT list.* '
 		. ' FROM #__joomelection_list AS list'
 		. ' LEFT JOIN #__joomelection_election AS e ON e.election_id = list.election_id'
 		;
@@ -127,6 +127,23 @@ class JoomElectionModelList extends JModelLegacy
 	    }
 		
 		return $list;
+	}
+	
+	
+	function getElectionListsForElection($election_id) {
+		//List lists for election
+		$query = ' SELECT list.* '
+		. ' FROM #__joomelection_list AS list'
+		. ' WHERE list.election_id = '. (int)$election_id
+		;
+		$this->_db->setQuery( $query );
+		$lists = $this->_db->loadObjectList();
+
+	    //Load translations
+	    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+	    $translationModel->loadTranslationsToObjects($lists, 'list', 'list_id');
+
+	    return $lists;
 	}
 
 
@@ -259,17 +276,5 @@ class JoomElectionModelList extends JModelLegacy
 		}
 		
 		return true;
-	}
-	
-	
-	
-	function getElectionListsForElection($election_id) {
-		//List lists for election
-		$query = ' SELECT list.* '
-		. ' FROM #__joomelection_list AS list'
-		. ' WHERE list.election_id = '. (int)$election_id
-		;
-		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
 	}
 }

@@ -43,8 +43,6 @@ CREATE TABLE `#__joomelection_option` (
   `option_id` int(11) NOT NULL auto_increment,
   `election_id` int(11) NOT NULL,
   `list_id` int(11) NOT NULL default '0',
-  `name` varchar(255) NOT NULL,
-  `description` TEXT NOT NULL DEFAULT '',
   `option_number` int(11) NOT NULL default '0',
   `published` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`option_id`)

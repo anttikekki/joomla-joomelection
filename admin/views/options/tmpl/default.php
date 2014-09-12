@@ -2,6 +2,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 $sortCallbackTask = 'option.showList';
 ?>
 
@@ -66,7 +67,7 @@ $sortCallbackTask = 'option.showList';
             <?php echo $row->option_number; ?>
           </td>
           <td align="center">
-            <a href="<?php echo $optionEditLink; ?>"><?php echo $row->name; ?></a>
+            <a href="<?php echo $optionEditLink; ?>"><?php echo JoomElectionAdminMultilangHelper::getValue($row, 'name'); ?></a>
           </td>
           <td>
             <?php echo $description; ?>

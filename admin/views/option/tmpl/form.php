@@ -1,7 +1,8 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 
-$editor =& JFactory::getEditor(); 
-JHTML::_('behavior.calendar');
+
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
+$currentLang =& JFactory::getLanguage();
 
 $document =& Jfactory::getDocument();  
 $optionJSON = json_encode($this->option);
@@ -44,7 +45,7 @@ $document->addScriptDeclaration("
     for(var i=0; i<electionLists.length; i++) {
       var list = electionLists[i];
       var selected = (JoomElection.option.list_id == list.list_id) ? 'selected' : '';
-      html += '<option value=\"' + list.list_id + '\" ' + selected + '>' + list.name + '</option>';
+      html += '<option value=\"' + list.list_id + '\" ' + selected + '>' + list['name_".$currentLang->getTag()."'] + '</option>';
     }
     jQuery('#list_id').html(html);
   };
@@ -91,7 +92,7 @@ $document->addScriptDeclaration("
         </label>
       </div>
       <div class="controls">
-        <input type="text" name="name" id="name" size="32" maxlength="250" value="<?php echo $this->option->name;?>" />
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->option, "name", ['maxlength' => 250]); ?>
       </div>
     </div>
   
@@ -117,7 +118,7 @@ $document->addScriptDeclaration("
         </label>
       </div>
       <div class="controls">
-        <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name', $this->option->election_id );?>
+        <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name_'.$currentLang->getTag(), $this->option->election_id );?>
       </div>
     </div>
   
@@ -130,7 +131,7 @@ $document->addScriptDeclaration("
         </label>
       </div>
       <div class="controls">
-        <?php echo JHTML::_('select.genericlist', array(), 'list_id', null, 'list_id', 'name', $this->option->list_id );?>
+        <?php echo JHTML::_('select.genericlist', array(), 'list_id', null, 'list_id', 'name_'.$currentLang->getTag(), $this->option->list_id );?>
         <div class="alert alert-info" id="list_id_message"></div>
       </div>
     </div>
@@ -155,7 +156,7 @@ $document->addScriptDeclaration("
         </label>
       </div>
       <div class="controls">
-        <?php echo $editor->display( 'description', $this->option->description, '100%', '350', '60', '35' ); ?>
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->option, "description"); ?>
       </div>
     </div>
   

@@ -7,19 +7,18 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelOption extends JModelLegacy
-{
+class JoomElectionModelOption extends JModelLegacy {
   var $_list = null;
   var $_page = null;
 
   
-  function &getOptions()
-  {
+  function &getPaginatedOptions() {
     $input = JFactory::getApplication()->input;
     $limit = $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
     $limitstart = $input->getInt('limitstart', 0);
     $orderByColumn = $this->_db->escape($input->getString('filter_order', 'o.option_number'));
     $orderByDirection = $this->_db->escape($input->getString('filter_order_Dir', 'ASC'));
+    $langTag = JFactory::getLanguage()->getTag();
     
     // Get the total number of records
     $query = 'SELECT COUNT(*)'
@@ -30,22 +29,53 @@ class JoomElectionModelOption extends JModelLegacy
     // Create the pagination object
     jimport('joomla.html.pagination');
     $this->_page = new JPagination($total, $limitstart, $limit);
+
+    //Sort order check. LEFT JOIN column name to column index
+    if($orderByColumn == 'e.election_name') {
+      $orderByColumn = '1';
+    }
+    else if($orderByColumn == 'o.name') {
+      $orderByColumn = '5';
+    }
     
-    //Get list data
-    $query = ' SELECT o.*, e.election_name, e.election_id '
-    . ' FROM #__joomelection_option AS o'
-    . ' LEFT JOIN #__joomelection_election AS e ON e.election_id = o.election_id'
-    . ' ORDER BY ' .$orderByColumn. ' ' . $orderByDirection;
-    ;
+    //Get candidates
+    $query = " 
+      SELECT 
+        election_t.translationText AS election_name, 
+        o.option_id,
+        o.election_id, 
+        o.list_id,  
+        option_name_t.translationText AS name,
+        option_desc_t.translationText AS description,
+        o.option_number,
+        o.published
+      FROM #__joomelection_option AS o
+      LEFT JOIN #__joomelection_translation AS election_t ON o.election_id = election_t.entity_id 
+                                                    AND election_t.entity_type = 'election'
+                                                    AND election_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND election_t.entity_field = 'election_name'
+      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
+                                                    AND option_name_t.entity_type = 'option'
+                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND option_name_t.entity_field = 'name'
+      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
+                                                    AND option_desc_t.entity_type = 'option'
+                                                    AND option_desc_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND option_desc_t.entity_field = 'description'
+      ORDER BY $orderByColumn $orderByDirection
+    ";
     $this->_list = $this->_getList( $query, $limitstart, $limit );
+
+    //Load translations
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+    $translationModel->loadTranslationsToObjects($this->_list, 'option', 'option_id');
     
     return $this->_list;
   }
   
   
   
-  function &getPagination()
-  {
+  function &getPagination() {
     if (is_null($this->_list) || is_null($this->_page)) {
       $this->getList();
     }
@@ -53,13 +83,13 @@ class JoomElectionModelOption extends JModelLegacy
   }
   
 
-  function getOption()
-  {
+  function getOption() {
     $input = JFactory::getApplication()->input;
     $option_ids = $input->get('cid',  array(), 'array');
-    
+    $option_id = (int) $option_ids[0];
+
     $query = ' SELECT * FROM #__joomelection_option '.
-        '  WHERE option_id = '.(int) $option_ids[0];
+        '  WHERE option_id = '.$option_id ;
     $this->_db->setQuery( $query );
     $option = $this->_db->loadObject();
     
@@ -69,9 +99,12 @@ class JoomElectionModelOption extends JModelLegacy
       $option->published = 1;
       $option->election_id = 0;
       $option->list_id = 0;
-      $option->description = null;
-      $option->name = null;
       $option->option_number = null;
+    }
+    else {
+      //Load translations to candidate
+      $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+      $translationModel->loadTranslationsToObject($option, 'option', $option_id);
     }
     
     return $option;
@@ -94,6 +127,7 @@ class JoomElectionModelOption extends JModelLegacy
 
   function store()  {
     $input = JFactory::getApplication()->input;
+    $currentLang =& JFactory::getLanguage();
   
     $option     =& $this->getTable();
     $electionModel   =& $this->getInstance('election', 'JoomElectionModel');
@@ -106,7 +140,8 @@ class JoomElectionModelOption extends JModelLegacy
     }
     
     //Validate option name is not empty
-    if ((strlen($option->name) > 0) == false) {
+    $name = $input->getString('name_'.$currentLang->getTag(), '');
+    if ((strlen($name) > 0) == false) {
       JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_NO_NAME_ERROR'), 'error');
       return false;
     }
@@ -132,21 +167,27 @@ class JoomElectionModelOption extends JModelLegacy
       }
     }
     
-    $option->description = $input->getRaw( 'description', '');
-    
     // Store the table to the database
     if (!$option->store()) {
-      $this->setError( $row->getErrorMsg());
+      $this->setError($option->getErrorMsg());
       JFactory::getApplication()->enqueueMessage(JText::_('COM_JOOMELECTION_CANDIDATE_SAVE_ERROR'), 'error');
       return false;
+    }
+
+    // Store text field translations
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+    $languages = JLanguageHelper::getLanguages();
+    foreach($languages as $language) {
+      $langTag = $language->lang_code;
+      $translationModel->saveTranslation($langTag, 'option', $option->option_id, 'name', $input->getString('name_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'option', $option->option_id, 'description', $input->getRaw('description_'.$langTag, ''));
     }
 
     return true;
   }
 
 
-  function delete()
-  {
+  function delete() {
     $input = JFactory::getApplication()->input;
   
     $option_Ids = $input->get( 'cid', array(), 'array' );
@@ -161,6 +202,9 @@ class JoomElectionModelOption extends JModelLegacy
           $this->setError( $row->getErrorMsg() );
           return false;
         }
+
+        // Delete translations
+        $translationModel->deleteTranslation('option', $option_id);
       }            
     }
     
@@ -186,6 +230,9 @@ class JoomElectionModelOption extends JModelLegacy
           $this->setError( $row->getErrorMsg() );
           return false;
         }
+
+        // Delete translations
+        $translationModel->deleteTranslation('option', $option->option_id);
       }            
     }
     
@@ -211,6 +258,9 @@ class JoomElectionModelOption extends JModelLegacy
           $this->setError( $row->getErrorMsg() );
           return false;
         }
+
+        // Delete translations
+        $translationModel->deleteTranslation('option', $option->option_id);
       }            
     }
     

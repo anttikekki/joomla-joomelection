@@ -18,7 +18,7 @@ class JoomElectionViewOptions extends JViewLegacy
     JToolBarHelper::deleteList('', 'option.remove');
     
     $optionModel      = $this->getModel('option');
-    $this->options     = &$optionModel->getOptions();
+    $this->options    = &$optionModel->getPaginatedOptions();
     $this->pagination = &$optionModel->getPagination();
     
     //Sidebar

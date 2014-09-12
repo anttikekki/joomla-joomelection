@@ -11,8 +11,6 @@ class TableOption extends JTable
 	public $option_id = null;
 	public $election_id = null;
 	public $list_id = null;
-	public $name = null;
-	public $description = null;
 	public $option_number = null;
 	public $published = null;
 
