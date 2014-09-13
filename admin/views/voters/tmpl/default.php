@@ -4,6 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load search tools
 JHtml::_('searchtools.form');
+$currentLang =& JFactory::getLanguage();
 
 $sortCallbackTask = 'voter.showList';
 $document =& Jfactory::getDocument();
@@ -51,7 +52,7 @@ $document->addScriptDeclaration("
         <div class="span6">
           <div class="pull-right">
             <?php echo JText::_('COM_JOOMELECTION_VOTER_SHOW_VOTED_INFO'); ?>
-            <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name', $this->election_id ); ?>
+            <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name_'.$currentLang->getTag(), $this->election_id ); ?>
           </div>
         </div>
       </div>

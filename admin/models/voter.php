@@ -22,7 +22,7 @@ class JoomElectionModelVoter extends JModelLegacy
   }
   
 
-  function &getVoters()
+  function &getPaginatedVoters()
   {
     $electionModel = $this->getInstance('election', 'JoomElectionModel');
     
@@ -66,9 +66,9 @@ class JoomElectionModelVoter extends JModelLegacy
     . ' LEFT JOIN #__joomelection_election_voter_status AS evs ON evs.voter_id = v.voter_id AND evs.election_id = '. (int) $election_id
     ;
     if ($search) {
-      $query = $query . ' WHERE LOWER(u.name) LIKE "%'.$this->_db->escape($search).'%"';
+      $query .= ' WHERE LOWER(u.name) LIKE "%'.$this->_db->escape($search).'%"';
     }
-    $query = $query . ' ORDER BY ' .$orderByColumn. ' ' . $orderByDirection;
+    $query .= ' ORDER BY ' .$orderByColumn. ' ' . $orderByDirection;
     
     $this->_list = $this->_getList( $query, $limitstart, $limit );
     

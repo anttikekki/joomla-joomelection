@@ -2,6 +2,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+$currentLang =& JFactory::getLanguage();
+
 ?>
 
 <style type="text/css">
@@ -104,7 +106,7 @@ defined('_JEXEC') or die('Restricted access');
       </label>
     </div>
     <div class="controls">
-      <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name' ); ?>
+      <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name_'.$currentLang->getTag() ); ?>
     </div>
   </div>
   

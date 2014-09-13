@@ -27,7 +27,7 @@ class JoomElectionViewVoters extends JViewLegacy
     $voterModel =& $this->getModel('voter');
     
     // Get data from the model
-    $this->voters      =& $voterModel->getVoters();
+    $this->voters      =& $voterModel->getPaginatedVoters();
     $this->pagination  =& $voterModel->getPagination();
     $this->search      = $input->getString('search', '');
     $this->elections   =& $electionModel->getAllElections();
