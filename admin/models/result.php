@@ -7,47 +7,72 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelResult extends JModelLegacy
-{
+class JoomElectionModelResult extends JModelLegacy {
 
-  function getCandidateElectionResult()
-  {
+  function getCandidateElectionResult() {
     $input = JFactory::getApplication()->input;
     $election_id = $input->getInt('election_id', 0);
+    $langTag = JFactory::getLanguage()->getTag();
     
-    $query = ' SELECT o.option_number, o.name, COUNT(v.option_id) AS votes '
-    . ' FROM #__joomelection_option AS o '
-    . ' LEFT JOIN #__joomelection_vote AS v ON o.option_id = v.option_id '
-    . ' WHERE o.election_id = '. (int) $election_id
-    . ' GROUP BY o.option_number'
-    . ' ORDER BY 3 DESC'
-    ;
+    $query = " 
+      SELECT 
+        o.option_number, 
+        option_name_t.translationText AS name, 
+        COUNT(v.option_id) AS votes 
+      FROM #__joomelection_option AS o 
+      LEFT JOIN #__joomelection_vote AS v ON o.option_id = v.option_id 
+      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
+                                                    AND option_name_t.entity_type = 'option'
+                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND option_name_t.entity_field = 'name'
+      WHERE o.election_id = ". (int) $election_id . "
+      GROUP BY o.option_number
+      ORDER BY 3 DESC
+    ";
     $this->_db->setQuery( $query );
     return $this->_db->loadObjectList();
   }
   
   
   
-  function getListElectionResult()
-  {
+  function getListElectionResult() {
     $input = JFactory::getApplication()->input;
     $election_id = $input->getInt('election_id', 0);
+    $langTag = JFactory::getLanguage()->getTag();
     
-    $query = ' SELECT o. option_id, o.option_number, o.name, COUNT(v.option_id) AS votes, list_totals.list_name, list_totals.list_votes '
-    . ' FROM #__joomelection_option AS o '
-    . ' LEFT JOIN #__joomelection_vote AS v ON o.option_id = v.option_id '
-    . ' INNER JOIN ('
-      . ' SELECT l.list_id, COUNT(vo.option_id) AS list_votes, l.name AS list_name '
-      . ' FROM #__joomelection_list AS l '
-      . ' LEFT JOIN #__joomelection_option AS op ON l.list_id = op.list_id '
-      . ' LEFT JOIN #__joomelection_vote AS vo ON op.option_id = vo.option_id '
-      . ' WHERE l.election_id = '. (int) $election_id
-      . ' GROUP BY l.list_id'
-    . ' ) list_totals ON list_totals.list_id = o.list_id'
-    . ' WHERE o.election_id = '. (int) $election_id
-    . ' GROUP BY o.option_id'
-    . ' ORDER BY 3 DESC'
-    ;
+    $query = " 
+      SELECT 
+        o. option_id, 
+        o.option_number, 
+        option_name_t.translationText AS name, 
+        COUNT(v.option_id) AS votes, 
+        list_totals.list_name, 
+        list_totals.list_votes 
+      FROM #__joomelection_option AS o
+      LEFT JOIN #__joomelection_vote AS v ON o.option_id = v.option_id
+      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
+                                                    AND option_name_t.entity_type = 'option'
+                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND option_name_t.entity_field = 'name'
+      INNER JOIN (
+        SELECT 
+          l.list_id, 
+          COUNT(vo.option_id) AS list_votes, 
+          list_name_t.translationText AS list_name
+        FROM #__joomelection_list AS l
+        LEFT JOIN #__joomelection_option AS op ON l.list_id = op.list_id
+        LEFT JOIN #__joomelection_vote AS vo ON op.option_id = vo.option_id
+        LEFT JOIN #__joomelection_translation AS list_name_t ON l.list_id = list_name_t.entity_id 
+                                                    AND list_name_t.entity_type = 'list'
+                                                    AND list_name_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND list_name_t.entity_field = 'name'
+        WHERE l.election_id = ". (int) $election_id . "
+        GROUP BY l.list_id
+      ) list_totals ON list_totals.list_id = o.list_id
+      WHERE o.election_id = ". (int) $election_id . "
+      GROUP BY o.option_id
+      ORDER BY 3 DESC
+    ";
     $this->_db->setQuery( $query );
     $options =  $this->_db->loadObjectList();
     
@@ -56,24 +81,25 @@ class JoomElectionModelResult extends JModelLegacy
   
   
   
-  function getStatistics()
-  {
+  function getStatistics() {
     $input = JFactory::getApplication()->input;
     $election_id = $input->getInt('election_id', 0);
     
-    $query = ' SELECT COUNT(election_id) AS voters_who_voted'
-    . ' FROM #__joomelection_election_voter_status '
-    . ' WHERE election_id = '. (int) $election_id
-    . ' AND voted = 1'
-    ;
+    $query = "
+      SELECT COUNT(election_id) AS voters_who_voted
+      FROM #__joomelection_election_voter_status
+      WHERE election_id = ". (int) $election_id . "
+      AND voted = 1
+    ";
     $this->_db->setQuery( $query );
     $statistics = $this->_db->loadObject();
     $statistics->voters_who_voted = (int) $statistics->voters_who_voted;
     
-    $query = 'SELECT COUNT(v.voter_id)'
-    . ' FROM #__joomelection_voter AS v'
-    . ' LEFT JOIN #__users AS u ON u.id = v.voter_id'
-    ;
+    $query = "
+      SELECT COUNT(v.voter_id)
+      FROM #__joomelection_voter AS v
+      LEFT JOIN #__users AS u ON u.id = v.voter_id
+    ";
     $this->_db->setQuery( $query );
     $statistics->voter_total = $this->_db->loadResult();
     
@@ -84,9 +110,14 @@ class JoomElectionModelResult extends JModelLegacy
       $statistics->voted_percentage = 0;
     }
     
-    $query = 'SELECT election_name '
-    . ' FROM #__joomelection_election '
-    . ' WHERE election_id = '. (int) $election_id
+    $query = "
+      SELECT t.translationText AS election_name
+      FROM #__joomelection_election AS e
+      LEFT JOIN #__joomelection_translation AS t ON e.election_id = t.entity_id 
+                                                    AND t.entity_type = 'election'
+                                                    AND t.language = " . $this->_db->quote($langTag) . "
+                                                    AND t.entity_field = 'election_name'
+      WHERE e.election_id = ". (int) $election_id
     ;
     $this->_db->setQuery( $query );
     $statistics->election_name = $this->_db->loadResult();

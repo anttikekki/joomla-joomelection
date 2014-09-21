@@ -5,14 +5,12 @@
 defined('_JEXEC') or die();
 
 
-class JoomElectionModelElection extends JModelLegacy
-{
+class JoomElectionModelElection extends JModelLegacy {
   var $_list = null;
   var $_page = null;
   
   
-  function &getPaginatedElections()
-  {    
+  function &getPaginatedElections() {    
     $input = JFactory::getApplication()->input;
     $limit = $input->getInt('limit', JFactory::getApplication()->getCfg('list_limit')); 
     $limitstart = $input->getInt('limitstart', 0);

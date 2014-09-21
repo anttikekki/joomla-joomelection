@@ -44,7 +44,7 @@ class JoomElectionModelOption extends JModelLegacy {
         election_t.translationText AS election_name, 
         o.option_id,
         o.election_id, 
-        o.list_id,  
+        o.list_id,
         option_name_t.translationText AS name,
         option_desc_t.translationText AS description,
         o.option_number,
