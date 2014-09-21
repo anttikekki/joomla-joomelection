@@ -100,15 +100,15 @@ class JoomElectionModelJoomElection extends JModelLegacy {
   
     $query = "
       SELECT
-          option_name_t.translationText AS name,
-          option_desc_t.translationText AS description,
+        option_name_t.translationText AS name,
+        option_desc_t.translationText AS description,
         option.*
       FROM #__joomelection_option AS option
       LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
                                                     AND option_name_t.entity_type = 'option'
                                                     AND option_name_t.language = " . $this->_db->quote($langTag) . "
                                                     AND option_name_t.entity_field = 'name'
-        LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
+      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
                                                     AND option_desc_t.entity_type = 'option'
                                                     AND option_desc_t.language = " . $this->_db->quote($langTag) . "
                                                     AND option_desc_t.entity_field = 'description'
@@ -143,19 +143,19 @@ class JoomElectionModelJoomElection extends JModelLegacy {
     $query = "
       SELECT
         option_name_t.translationText AS name,
-          option_desc_t.translationText AS description,
-          list_name_t.translationText AS list_name,
+        option_desc_t.translationText AS description,
+        list_name_t.translationText AS list_name,
         option.*
       FROM #__joomelection_option AS option
       LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
                                                     AND option_name_t.entity_type = 'option'
                                                     AND option_name_t.language = " . $this->_db->quote($langTag) . "
                                                     AND option_name_t.entity_field = 'name'
-        LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
+      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
                                                     AND option_desc_t.entity_type = 'option'
                                                     AND option_desc_t.language = " . $this->_db->quote($langTag) . "
                                                     AND option_desc_t.entity_field = 'description'
-        LEFT JOIN #__joomelection_translation AS list_name_t ON option.list_id = list_name_t.entity_id 
+      LEFT JOIN #__joomelection_translation AS list_name_t ON option.list_id = list_name_t.entity_id 
                                                     AND list_name_t.entity_type = 'list'
                                                     AND list_name_t.language = " . $this->_db->quote($langTag) . "
                                                     AND list_name_t.entity_field = 'name'
@@ -175,23 +175,23 @@ class JoomElectionModelJoomElection extends JModelLegacy {
     $query = "
       SELECT
         option_name_t.translationText AS name,
-          option_desc_t.translationText AS description,
-          list_name_t.translationText AS list_name,
+        option_desc_t.translationText AS description,
+        list_name_t.translationText AS list_name,
         option.*
       FROM #__joomelection_option AS option
       LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
                                                     AND option_name_t.entity_type = 'option'
                                                     AND option_name_t.language = " . $this->_db->quote($langTag) . "
                                                     AND option_name_t.entity_field = 'name'
-        LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
+      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
                                                     AND option_desc_t.entity_type = 'option'
                                                     AND option_desc_t.language = " . $this->_db->quote($langTag) . "
                                                     AND option_desc_t.entity_field = 'description'
-        LEFT JOIN #__joomelection_translation AS list_name_t ON option.list_id = list_name_t.entity_id 
+      LEFT JOIN #__joomelection_translation AS list_name_t ON option.list_id = list_name_t.entity_id 
                                                     AND list_name_t.entity_type = 'list'
                                                     AND list_name_t.language = " . $this->_db->quote($langTag) . "
                                                     AND list_name_t.entity_field = 'name'
-      WHERE op.option_id = ". (int) $optionId
+      WHERE option.option_id = ". (int) $optionId
     ;
     $this->_db->setQuery( $query );
     $option = $this->_db->loadObject();
@@ -311,7 +311,7 @@ class JoomElectionModelJoomElection extends JModelLegacy {
     
     $query = "
       INSERT INTO #__joomelection_election_voter_status (election_id, voter_id, voted)
-        VALUES ('". (int) $election_id ."', '" . (int) $user_id . "', '1')
+      VALUES (". $this->_db->quote((int) $election_id) .", ". $this->_db->quote((int) $user_id) .", '1')
     ";
     $this->_db->setQuery( $query );
     if (!$this->_db->query()) {
@@ -319,8 +319,8 @@ class JoomElectionModelJoomElection extends JModelLegacy {
     }
     else {
       $query = "
-        INSERT INTO #__joomelection_vote (vote_id, option_id)
-        VALUES ('', '" . (int) $option_id . "')
+        INSERT INTO #__joomelection_vote (option_id)
+        VALUES (". $this->_db->quote((int) $option_id) .")
       ";
       $this->_db->setQuery( $query );
       if (!$this->_db->query()) {
