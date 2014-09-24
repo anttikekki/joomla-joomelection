@@ -3,6 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $document = &JFactory::getDocument();
 $document->addStyleSheet( JURI::base() . 'components/com_joomelection/css/styles.css', 'text/css', null, array( 'id' => 'StyleSheet' ) );
+$langTag = JFactory::getLanguage()->getTag();
 
 
 foreach ($this->elections as $election) { ?>
