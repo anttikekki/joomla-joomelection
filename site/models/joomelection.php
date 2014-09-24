@@ -8,17 +8,18 @@ jimport( 'joomla.application.component.model' );
 
 class JoomElectionModelJoomElection extends JModelLegacy {
 
-  function getElections() {
+   function getElectionQuery() {
     $langTag = JFactory::getLanguage()->getTag();
 
-    $query = "
+   	return "
       SELECT 
-        election.*, 
+        election.*,
         election_name_t.translationText AS election_name,
         election_desc_t.translationText AS election_description,
-        election_type.type_name AS election_type_name
+        election_sign_desc_t.translationText AS confirm_vote_by_sign_description,
+        election_sign_error_t.translationText AS confirm_vote_by_sign_error,
+        election_success_desc_t.translationText AS vote_success_description
       FROM #__joomelection_election AS election
-      LEFT JOIN #__joomelection_election_type AS election_type ON election.election_type_id = election_type.election_type_id
       LEFT JOIN #__joomelection_translation AS election_name_t ON election.election_id = election_name_t.entity_id 
                                                     AND election_name_t.entity_type = 'election'
                                                     AND election_name_t.language = " . $this->_db->quote($langTag) . "
@@ -27,8 +28,50 @@ class JoomElectionModelJoomElection extends JModelLegacy {
                                                     AND election_desc_t.entity_type = 'election'
                                                     AND election_desc_t.language = " . $this->_db->quote($langTag) . "
                                                     AND election_desc_t.entity_field = 'election_description'
-      WHERE election.published = 1
+      LEFT JOIN #__joomelection_translation AS election_sign_desc_t ON election.election_id = election_sign_desc_t.entity_id 
+                                                    AND election_sign_desc_t.entity_type = 'election'
+                                                    AND election_sign_desc_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND election_sign_desc_t.entity_field = 'confirm_vote_by_sign_description'
+      LEFT JOIN #__joomelection_translation AS election_sign_error_t ON election.election_id = election_sign_error_t.entity_id 
+                                                    AND election_sign_error_t.entity_type = 'election'
+                                                    AND election_sign_error_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND election_sign_error_t.entity_field = 'confirm_vote_by_sign_error'
+      LEFT JOIN #__joomelection_translation AS election_success_desc_t ON election.election_id = election_success_desc_t.entity_id 
+                                                    AND election_success_desc_t.entity_type = 'election'
+                                                    AND election_success_desc_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND election_success_desc_t.entity_field = 'vote_success_description'
     ";
+   }
+
+   function getOptionQuery() {
+    $langTag = JFactory::getLanguage()->getTag();
+
+   	return "
+      SELECT
+        option_name_t.translationText AS name,
+        option_desc_t.translationText AS description,
+        list_name_t.translationText AS list_name,
+        o.*
+      FROM #__joomelection_option AS o
+      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
+                                                    AND option_name_t.entity_type = 'option'
+                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND option_name_t.entity_field = 'name'
+      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
+                                                    AND option_desc_t.entity_type = 'option'
+                                                    AND option_desc_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND option_desc_t.entity_field = 'description'
+      LEFT JOIN #__joomelection_translation AS list_name_t ON o.list_id = list_name_t.entity_id 
+                                                    AND list_name_t.entity_type = 'list'
+                                                    AND list_name_t.language = " . $this->_db->quote($langTag) . "
+                                                    AND list_name_t.entity_field = 'name'
+    ";
+   }
+
+  function getElections() {
+    $query = $this->getElectionQuery();
+    $query .= "WHERE election.published = 1";
+
     $this->_db->setQuery( $query );
     $elections = $this->_db->loadObjectList();
     
@@ -45,23 +88,8 @@ class JoomElectionModelJoomElection extends JModelLegacy {
   
   
   function getElection($election_id) {
-    $langTag = JFactory::getLanguage()->getTag();
-
-    $query = "
-      SELECT 
-        election.*,
-        election_name_t.translationText AS election_name,
-        election_desc_t.translationText AS election_description
-      FROM #__joomelection_election AS election
-      LEFT JOIN #__joomelection_translation AS election_name_t ON election.election_id = election_name_t.entity_id 
-                                                    AND election_name_t.entity_type = 'election'
-                                                    AND election_name_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND election_name_t.entity_field = 'election_name'
-        LEFT JOIN #__joomelection_translation AS election_desc_t ON election.election_id = election_desc_t.entity_id 
-                                                    AND election_desc_t.entity_type = 'election'
-                                                    AND election_desc_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND election_desc_t.entity_field = 'election_description'
-      WHERE election.election_id = ". (int) $election_id
+    $query = $this->getElectionQuery();
+    $query .= "WHERE election.election_id = ". (int) $election_id
     ;
     $this->_db->setQuery( $query );
 
@@ -83,7 +111,7 @@ class JoomElectionModelJoomElection extends JModelLegacy {
                                                     AND list_name_t.entity_type = 'list'
                                                     AND list_name_t.language = " . $this->_db->quote($langTag) . "
                                                     AND list_name_t.entity_field = 'name'
-    LEFT JOIN #__joomelection_translation AS list_desc_t ON list.list_id = list_desc_t.entity_id 
+      LEFT JOIN #__joomelection_translation AS list_desc_t ON list.list_id = list_desc_t.entity_id 
                                                     AND list_desc_t.entity_type = 'list'
                                                     AND list_desc_t.language = " . $this->_db->quote($langTag) . "
                                                     AND list_desc_t.entity_field = 'description'
@@ -96,22 +124,8 @@ class JoomElectionModelJoomElection extends JModelLegacy {
   
   
   function getElectionListOptions($election_list_Id) {
-    $langTag = JFactory::getLanguage()->getTag();
-  
-    $query = "
-      SELECT
-        option_name_t.translationText AS name,
-        option_desc_t.translationText AS description,
-        o.*
-      FROM #__joomelection_option AS o
-      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
-                                                    AND option_name_t.entity_type = 'option'
-                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND option_name_t.entity_field = 'name'
-      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
-                                                    AND option_desc_t.entity_type = 'option'
-                                                    AND option_desc_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND option_desc_t.entity_field = 'description'
+    $query = $this->getOptionQuery();
+    $query .= "
       WHERE o.published = 1
       AND o.list_id = ". (int) $election_list_Id ."
       ORDER BY 1 ASC
@@ -125,7 +139,6 @@ class JoomElectionModelJoomElection extends JModelLegacy {
   
   
   function getOptions($electionId) {
-    $langTag = JFactory::getLanguage()->getTag();
     $input = JFactory::getApplication()->input;
     $orderBy = $input->getString('orderBy', 'number');
     $orderBySql = '';
@@ -140,25 +153,8 @@ class JoomElectionModelJoomElection extends JModelLegacy {
       $orderBySql = '3 ASC';
     }
     
-    $query = "
-      SELECT
-        option_name_t.translationText AS name,
-        option_desc_t.translationText AS description,
-        list_name_t.translationText AS list_name,
-        o.*
-      FROM #__joomelection_option AS o
-      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
-                                                    AND option_name_t.entity_type = 'option'
-                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND option_name_t.entity_field = 'name'
-      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
-                                                    AND option_desc_t.entity_type = 'option'
-                                                    AND option_desc_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND option_desc_t.entity_field = 'description'
-      LEFT JOIN #__joomelection_translation AS list_name_t ON o.list_id = list_name_t.entity_id 
-                                                    AND list_name_t.entity_type = 'list'
-                                                    AND list_name_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND list_name_t.entity_field = 'name'
+    $query = $this->getOptionQuery();
+    $query .= "
       WHERE o.published = 1
       AND o.election_id = ". (int) $electionId . "
       ORDER BY ". $orderBySql
@@ -170,29 +166,9 @@ class JoomElectionModelJoomElection extends JModelLegacy {
   }
   
   function getOption($optionId) {
-    $langTag = JFactory::getLanguage()->getTag();
+    $query = $this->getOptionQuery();
+    $query .= "WHERE o.option_id = ". (int) $optionId;
 
-    $query = "
-      SELECT
-        option_name_t.translationText AS name,
-        option_desc_t.translationText AS description,
-        list_name_t.translationText AS list_name,
-        option.*
-      FROM #__joomelection_option AS option
-      LEFT JOIN #__joomelection_translation AS option_name_t ON o.option_id = option_name_t.entity_id 
-                                                    AND option_name_t.entity_type = 'option'
-                                                    AND option_name_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND option_name_t.entity_field = 'name'
-      LEFT JOIN #__joomelection_translation AS option_desc_t ON o.option_id = option_desc_t.entity_id 
-                                                    AND option_desc_t.entity_type = 'option'
-                                                    AND option_desc_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND option_desc_t.entity_field = 'description'
-      LEFT JOIN #__joomelection_translation AS list_name_t ON option.list_id = list_name_t.entity_id 
-                                                    AND list_name_t.entity_type = 'list'
-                                                    AND list_name_t.language = " . $this->_db->quote($langTag) . "
-                                                    AND list_name_t.entity_field = 'name'
-      WHERE option.option_id = ". (int) $optionId
-    ;
     $this->_db->setQuery( $query );
     $option = $this->_db->loadObject();
 
