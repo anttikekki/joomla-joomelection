@@ -27,7 +27,7 @@ $document->addStyleSheet( JURI::base() . 'components/com_joomelection/css/styles
       <table cellspacing="5">
         <tr>
           <td>
-            <input class="inputbox" type="checkbox" name="confirm_vote">
+            <input class="inputbox" type="checkbox" name="confirm_vote" value="1">
           </td>
           <td>
             <?php echo $this->election->confirm_vote_by_sign_description; ?>

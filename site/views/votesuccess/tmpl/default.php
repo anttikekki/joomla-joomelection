@@ -6,5 +6,5 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 
 <p>
-<?php echo $this->election->vote_success_description; ?>.
+<?php echo $this->election->vote_success_description; ?>
 </p>
