@@ -7,10 +7,18 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.model');
 
 
-class JoomElectionModelTranslation extends JModelLegacy
-{
-  function &getTranslations($entity_type, $entity_ids)
-  {
+class JoomElectionModelTranslation extends JModelLegacy {
+
+  function getLanguageFileString($lang, $string) {
+    $language = JLanguage::getInstance($lang);
+    $reload = true;
+    if(!$language->load('com_joomelection', JPATH_BASE, $lang, $reload)) {
+      JFactory::getApplication()->enqueueMessage('Language file loading failed for language '.$lang);
+    }
+    return $language->_($string);
+  }
+
+  function &getTranslations($entity_type, $entity_ids) {
     $db = $this->_db;
     $entity_ids = array_filter($entity_ids, 'is_numeric');
 
@@ -31,8 +39,7 @@ class JoomElectionModelTranslation extends JModelLegacy
     return $db->loadObjectList();
   }
 
-  function loadTranslationsToObject($object, $entity_type, $entity_id) 
-  {
+  function loadTranslationsToObject($object, $entity_type, $entity_id) {
     $translations = $this->getTranslations($entity_type, [$entity_id]);
 
     foreach($translations as $translation) {
@@ -41,8 +48,7 @@ class JoomElectionModelTranslation extends JModelLegacy
     }
   }
 
-  function loadTranslationsToObjects($objects, $entity_type, $entity_id_field) 
-  {
+  function loadTranslationsToObjects($objects, $entity_type, $entity_id_field) {
     $ids = [];
     $objectMap = [];
     foreach($objects as $object) {
@@ -59,8 +65,7 @@ class JoomElectionModelTranslation extends JModelLegacy
     }
   }
 
-  function saveTranslation($language, $entity_type, $entity_id, $entity_field, $translationText)
-  {
+  function saveTranslation($language, $entity_type, $entity_id, $entity_field, $translationText) {
     $db = $this->_db;
     $query = " 
       REPLACE INTO #__joomelection_translation (
@@ -83,8 +88,7 @@ class JoomElectionModelTranslation extends JModelLegacy
     $db->query();
   }
 
-  function deleteTranslation($entity_type, $entity_id)
-  {
+  function deleteTranslation($entity_type, $entity_id) {
     $db = $this->_db;
     $query = " 
       DELETE FROM #__joomelection_translation 

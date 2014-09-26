@@ -126,16 +126,20 @@ class JoomElectionModelElection extends JModelLegacy {
   }
 
 
-  function getElection($election_id=0)
-  {
+  function getElection($election_id=0) {
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
     $input = JFactory::getApplication()->input;
+    
+    //If no election id is given as parameter, try to find one from Request parameters
     if($election_id == 0) {
       $array = $input->get('cid', array(), 'array');
       $election_id = (int) $array[0];
     }
     
-    $query = ' SELECT * FROM #__joomelection_election '.
-        '  WHERE election_id = '.(int) $election_id;
+    $query = "
+      SELECT * 
+      FROM #__joomelection_election
+      WHERE election_id = ".(int) $election_id;
     $this->_db->setQuery( $query );
     $election = $this->_db->loadObject();
     
@@ -148,10 +152,19 @@ class JoomElectionModelElection extends JModelLegacy {
       $election->confirm_vote_by_sign = 0;
       $election->date_to_open = null;
       $election->date_to_close = null;
+
+      $languages = JLanguageHelper::getLanguages();
+      foreach($languages as $language) {
+        $langTag = $language->lang_code;
+        $election->{'confirm_vote_by_sign_description_'.$langTag}  = $translationModel->getLanguageFileString($langTag, 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_DESCRIPTION_EXAMPLE');
+        $election->{'confirm_vote_by_sign_error_'.$langTag}        = $translationModel->getLanguageFileString($langTag, 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_ERROR_EXAMPLE');
+        $election->{'vote_success_description_'.$langTag}          = $translationModel->getLanguageFileString($langTag, 'COM_JOOMELECTION_ELECTION_VOTE_SUCCESS_DESCRIPTION_EXAMPLE' );
+        $election->{'election_voter_email_text_'.$langTag}         = $translationModel->getLanguageFileString($langTag, 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_EXAMPLE');
+        $election->{'election_voter_email_header_'.$langTag}       = $translationModel->getLanguageFileString($langTag, 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_SUBJECT_EXAMPLE');
+      }
     }
     else {
       //Load translations to election
-      $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
       $translationModel->loadTranslationsToObject($election, 'election', (int) $election_id);
     }
     
