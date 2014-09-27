@@ -1,5 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 
+$currentLang =& JFactory::getLanguage();
 
 ?>
 <style type="text/css">
@@ -82,7 +83,7 @@
     <div class="controls">
       <?php 
         if(count($this->elections) > 0) {
-          echo JHTML::_('select.genericlist', $this->elections, 'election_id', 'class="inputbox" ', 'election_id', 'election_name' );
+          echo JHTML::_('select.genericlist', $this->elections, 'election_id', 'class="inputbox" ', 'election_id', 'election_name_'.$currentLang->getTag() );
         }
         else {
           ?>

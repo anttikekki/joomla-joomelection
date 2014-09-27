@@ -153,6 +153,7 @@ class JoomElectionModelElection extends JModelLegacy {
       $election->date_to_open = null;
       $election->date_to_close = null;
 
+      //Load default texts from language files
       $languages = JLanguageHelper::getLanguages();
       foreach($languages as $language) {
         $langTag = $language->lang_code;
@@ -164,7 +165,7 @@ class JoomElectionModelElection extends JModelLegacy {
       }
     }
     else {
-      //Load translations to election
+      //Load translations to existing election from database
       $translationModel->loadTranslationsToObject($election, 'election', (int) $election_id);
     }
     
