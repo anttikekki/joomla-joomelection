@@ -11,10 +11,7 @@ class JoomElectionModelTranslation extends JModelLegacy {
 
   function getLanguageFileString($lang, $string) {
     $language = JLanguage::getInstance($lang);
-    $reload = true;
-    if(!$language->load('com_joomelection', JPATH_BASE, $lang, $reload)) {
-      JFactory::getApplication()->enqueueMessage('Language file loading failed for language '.$lang);
-    }
+    $language->load('com_joomelection', JPATH_BASE, $lang);
     return $language->_($string);
   }
 
