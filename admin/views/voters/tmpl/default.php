@@ -22,6 +22,20 @@ $document->addScriptDeclaration("
 ");
 ?>
 
+<script type="text/javascript">
+    Joomla.submitbutton = function(task) {
+      if(task == 'voter.removeAll') {
+        if(confirm(<?php echo '"'.JText::_('COM_JOOMELECTION_VOTER_DELETE_ALL_CONFIRM').'"'; ?>)) {
+          Joomla.submitform(task);
+        }
+      }
+      else {
+        Joomla.submitform(task);
+      }
+    }
+</script>
+
+
 <form action="index.php?option=com_joomelection&task=voter.showList" method="post" name="adminForm" id="adminForm">
   <div class="row-fluid">
     <div id="j-sidebar-container" class="span2">
