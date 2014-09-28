@@ -4,17 +4,12 @@ defined('_JEXEC') or die('Restricted access');
 
 $currentLang =& JFactory::getLanguage();
 
+$document = JFactory::getDocument();
+$document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelection/css/joomelection_admin.css');
+
 ?>
 
-<style type="text/css">
-
-.form-horizontal .controls {
-    margin-left: 300px;
-}
-
-</style>
-
-<form class="form-horizontal" method="post" name="adminForm" id="adminForm">
+<form class="form-horizontal voter_form" method="post" name="adminForm" id="adminForm">
     
   <!-- Name -->
   <div class="control-group ">

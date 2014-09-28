@@ -2,15 +2,11 @@
 
 require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 JHTML::_('behavior.calendar');
+
+$document = JFactory::getDocument();
+$document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelection/css/joomelection_admin.css');
+
 ?>
-
-<style type="text/css">
-
-.form-horizontal #vote_confirmation .controls {
-    margin-left: 330px;
-}
-
-</style>
 
 <form class="form-horizontal" method="post" name="adminForm" id="adminForm">
   <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
@@ -26,7 +22,7 @@ JHTML::_('behavior.calendar');
         </label>
       </div>
       <div class="controls">
-        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->election, "election_name", ['maxlength' => 250]); ?>
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->election, "election_name", ['class' => 'joomelection_wide_input', 'maxlength' => 250]); ?>
       </div>
     </div>
     
@@ -148,23 +144,27 @@ JHTML::_('behavior.calendar');
     </div>
     
     <!-- Vote confirmation message -->
-    <div class="control-label">
-      <label id="confirm_vote_by_sign_description-lbl" for="confirm_vote_by_sign_description" class="" title="">
-        <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_DESCRIPTION_TITLE' ); ?>
-      </label>
-    </div>
-    <div class="controls">
-      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "confirm_vote_by_sign_description"); ?>
+    <div class="control-group ">
+      <div class="control-label">
+        <label id="confirm_vote_by_sign_description-lbl" for="confirm_vote_by_sign_description" class="" title="">
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_DESCRIPTION_TITLE' ); ?>
+        </label>
+      </div>
+      <div class="controls">
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "confirm_vote_by_sign_description"); ?>
+      </div>
     </div>
   
     <!-- Vote confirmation message -->
-    <div class="control-label">
-      <label id="confirm_vote_by_sign_error-lbl" for="confirm_vote_by_sign_error" class="" title="">
-        <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_ERROR_TITLE' ); ?>
-      </label>
-    </div>
-    <div class="controls">
-      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "confirm_vote_by_sign_error"); ?>
+    <div class="control-group ">
+      <div class="control-label">
+        <label id="confirm_vote_by_sign_error-lbl" for="confirm_vote_by_sign_error" class="" title="">
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CONFIRM_VOTE_BY_SIGN_ERROR_TITLE' ); ?>
+        </label>
+      </div>
+      <div class="controls">
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "confirm_vote_by_sign_error"); ?>
+      </div>
     </div>
           
   <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -174,13 +174,15 @@ JHTML::_('behavior.calendar');
   <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'vote_success', JText::_('COM_JOOMELECTION_ELECTION_VOTE_SUCCESS')); ?>
         
     <!-- Vote confirmation message -->
-    <div class="control-label">
-      <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
-        <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTE_SUCCESS_DESCRIPTION_TITLE' ); ?>
-      </label>
-    </div>
-    <div class="controls">
-      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "vote_success_description"); ?>
+    <div class="control-group ">
+      <div class="control-label">
+        <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTE_SUCCESS_DESCRIPTION_TITLE' ); ?>
+        </label>
+      </div>
+      <div class="controls">
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('editor', $this->election, "vote_success_description"); ?>
+      </div>
     </div>
           
   <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -190,27 +192,30 @@ JHTML::_('behavior.calendar');
   <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'email', JText::_('COM_JOOMELECTION_EMAIL')); ?>
     
     <h3> <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_EMAIL' ); ?></h3>
-      
+    
     <!-- Email subject -->
-    <div class="control-label">
-      <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
-        <?php echo JText::_( 'COM_JOOMELECTION_EMAIL_SUBJECT' ); ?>
-      </label>
-    </div>
-    <div class="controls">
-      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->election, "election_voter_email_header", ['maxlength' => 450]); ?>
+    <div class="control-group ">
+      <div class="control-label">
+        <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
+          <?php echo JText::_( 'COM_JOOMELECTION_EMAIL_SUBJECT' ); ?>
+        </label>
+      </div>
+      <div class="controls">
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->election, "election_voter_email_header", ['class' => 'joomelection_wide_input', 'maxlength' => 450]); ?>
+      </div>
     </div>
   
     <!-- Email message -->
-    <div class="control-label">
-      <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
-        <?php echo JText::_( 'COM_JOOMELECTION_EMAIL_MESSAGE' ); ?>
-      </label>
-    </div>
-    <div class="controls">
-
-      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('textarea', $this->election, "election_voter_email_text", ['rows' => 15]); ?>
-      <p><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_FIELD_LEGEND' ); ?></p>
+    <div class="control-group ">
+      <div class="control-label">
+        <label id="vote_success_description-lbl" for="vote_success_description" class="" title="">
+          <?php echo JText::_( 'COM_JOOMELECTION_EMAIL_MESSAGE' ); ?>
+        </label>
+      </div>
+      <div class="controls">
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('textarea', $this->election, "election_voter_email_text", ['class' => 'joomelection_wide_input', 'rows' => 15]); ?>
+        <p style="width: 100%; float: left; margin-top: 5px;"><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_VOTER_EMAIL_FIELD_LEGEND' ); ?></p>
+      </div>
     </div>
       
   <?php echo JHtml::_('bootstrap.endTab'); ?>

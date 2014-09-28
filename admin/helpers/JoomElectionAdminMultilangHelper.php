@@ -22,7 +22,7 @@ class JoomElectionAdminMultilangHelper {
       $hideStyle = $isCurrentLang ? '' : 'display: none;';
       $fullFieldName = $fieldName . '_' . $language->lang_code;
 
-      $html .= '<div id="'.$fullFieldName.'_container" style="'.$hideStyle.'" class="'.$fieldName.'_input_container">';
+      $html .= '<div id="'.$fullFieldName.'_container" style="'.$hideStyle.'" class="'.$fieldName.'_input_container joomelection_'.$type.'_input_container">';
       $html .= self::getInputElement($type, $fullFieldName, $dataObject, $options);
       $html .= '</div>';
     }
@@ -57,16 +57,17 @@ class JoomElectionAdminMultilangHelper {
 
   private function getInputElement($type, $fullFieldName, $dataObject, $options) {
     $html = '';
+    $class = array_key_exists('class', $options) ? $options['class'] : '';
 
     if($type == 'text') {
-      $html .= '<input type="text" name="'.$fullFieldName.'" id="'.$fullFieldName.'" size="100" maxlength="'.$options['maxlength'].'" value="'.$dataObject->$fullFieldName.'" />';
+      $html .= '<input type="text" name="'.$fullFieldName.'" id="'.$fullFieldName.'" class="'.$class.'" size="100" maxlength="'.$options['maxlength'].'" value="'.$dataObject->$fullFieldName.'" />';
     }
     else if($type == 'editor') {
       $editor =& JFactory::getEditor();
-      $html .= $editor->display( $fullFieldName, $dataObject->$fullFieldName, '100%', '300', '60', '35' );
+      $html .= $editor->display( $fullFieldName, $dataObject->$fullFieldName, '100%', '100px', '60', '20' );
     }
     else if($type == 'textarea') {
-      $html .= '<textarea cols="120" rows="'.$options['rows'].'" name="'.$fullFieldName.'">'.$dataObject->$fullFieldName.'</textarea>';
+      $html .= '<textarea cols="120" rows="'.$options['rows'].'" name="'.$fullFieldName.'" class="'.$class.'">'.$dataObject->$fullFieldName.'</textarea>';
     }
 
     return $html;

@@ -2,6 +2,9 @@
 
 require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 $currentLang =& JFactory::getLanguage();
+
+$document = JFactory::getDocument();
+$document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelection/css/joomelection_admin.css');
 ?>
 
 <form class="form-horizontal" method="post" name="adminForm" id="adminForm">
@@ -15,7 +18,7 @@ $currentLang =& JFactory::getLanguage();
       </label>
     </div>
     <div class="controls">
-      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->electionList, "name", ['maxlength' => 250]); ?>
+      <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->electionList, "name", ['class' => 'joomelection_wide_input', 'maxlength' => 250]); ?>
     </div>
   </div>
 

@@ -1,0 +1,24 @@
+.form-horizontal #vote_confirmation .controls {
+    margin-left: 330px;
+}
+
+.form-horizontal .voter_form .controls {
+    margin-left: 300px;
+}
+
+.joomelection_text_input_container, .joomelection_textarea_input_container, .joomelection_editor_input_container  {
+  float: left;
+}
+
+.joomelection_editor_input_container {
+  width: 75%;
+}
+
+.joomelection_field_language_chooser_container {
+  float: left;
+  padding-left: 10px;
+}
+
+.joomelection_wide_input {
+  width: 400px;
+}

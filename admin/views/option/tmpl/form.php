@@ -4,7 +4,9 @@
 require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 $currentLang =& JFactory::getLanguage();
 
-$document =& Jfactory::getDocument();  
+$document = JFactory::getDocument();
+$document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelection/css/joomelection_admin.css');
+
 $optionJSON = json_encode($this->option);
 $electionsJSON = json_encode($this->elections);
 $electionListsJSON = json_encode($this->electionLists);
@@ -92,7 +94,7 @@ $document->addScriptDeclaration("
         </label>
       </div>
       <div class="controls">
-        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->option, "name", ['maxlength' => 250]); ?>
+        <?php echo JoomElectionAdminMultilangHelper::getFieldHtml('text', $this->option, "name", ['class' => 'joomelection_wide_input', 'maxlength' => 250]); ?>
       </div>
     </div>
   
@@ -109,7 +111,7 @@ $document->addScriptDeclaration("
       </div>
     </div>
   
-    <!-- Option number -->
+    <!-- Election -->
     <div class="control-group ">
       <div class="control-label">
         <label id="election_id-lbl" for="election_id" class="required" title="">
