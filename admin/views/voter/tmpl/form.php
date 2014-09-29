@@ -85,8 +85,8 @@ $document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelecti
       <?php 
         if(count($this->elections) == 0) {?>
           <div class="controls">
-            <div class="alert alert-error"><?php
-              echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );?>
+            <div class="alert alert-error">
+              <?php echo JText::_( 'COM_JOOMELECTION_VOTER_NO_ELECTIONS_FOR_EMAIL_ERROR' );?>
             </div>
           </div>
         <?php
@@ -104,6 +104,9 @@ $document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelecti
       </div>
       <div class="controls">
         <?php echo JHTML::_('select.genericlist', $this->elections, 'election_id', null, 'election_id', 'election_name_'.$currentLang->getTag() ); ?>
+        <div>
+          <?php echo JText::_( 'COM_JOOMELECTION_VOTER_ELECTION_EMAIL_LANGUAGE_INFO' );?>
+        </div>
       </div>
     </div>
 

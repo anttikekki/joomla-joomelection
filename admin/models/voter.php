@@ -153,10 +153,8 @@ class JoomElectionModelVoter extends JModelLegacy
     $userData['password']  = $input->getRaw('password', '');
     $userData['password2']  = $userData['password'];
     $userData['email']    = $input->getString('email', '');
+    $userData['params']    = ['language' => $input->getString('voter_language', JFactory::getLanguage()->getTag())];
     $clearPassword       = $userData['password'];
-
-    //Langugage
-    $user->setParam('language', $input->getString( 'voter_language', JFactory::getLanguage()->getTag()));
     
     /*
     * Registered - This group allows the user to login to the Frontend interface. Registered users can't contribute content, but this may allow them access to other areas, like a 
