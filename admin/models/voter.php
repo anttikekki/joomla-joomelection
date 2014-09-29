@@ -90,11 +90,12 @@ class JoomElectionModelVoter extends JModelLegacy
   {
     $input = JFactory::getApplication()->input;
     $array = $input->get('cid', array(), 'array');
+    $voter_id = (int)$array[0];
     
     $query = 'SELECT v.voter_id, v.email_sent, u.name, u.username, u.email '
     . ' FROM #__joomelection_voter AS v'
     . ' LEFT JOIN #__users AS u ON u.id = v.voter_id'
-    . ' WHERE v.voter_id = '.(int)$array[0];
+    . ' WHERE v.voter_id = '.$voter_id;
     ;
     $this->_db->setQuery( $query );
     $voter = $this->_db->loadObject();
@@ -109,6 +110,9 @@ class JoomElectionModelVoter extends JModelLegacy
     }
     else {
       $voter->password = null;
+
+      //Set voter lang from JUser parameters
+      $voter->voter_language = JFactory::getUser($voter_id)->getParam('language');
     }
     
     return $voter;
@@ -150,6 +154,9 @@ class JoomElectionModelVoter extends JModelLegacy
     $userData['password2']  = $userData['password'];
     $userData['email']    = $input->getString('email', '');
     $clearPassword       = $userData['password'];
+
+    //Langugage
+    $user->setParam('language', $input->getString( 'voter_language', JFactory::getLanguage()->getTag()));
     
     /*
     * Registered - This group allows the user to login to the Frontend interface. Registered users can't contribute content, but this may allow them access to other areas, like a 

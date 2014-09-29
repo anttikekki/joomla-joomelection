@@ -55,6 +55,27 @@ class JoomElectionAdminMultilangHelper {
     return $html;
   }
 
+  public function getLanguageRadioButtonsHtml($name, $selectedLanguage = null) {
+    $languages = JLanguageHelper::getLanguages();
+    $currentLang =& JFactory::getLanguage();
+    $html = '';
+    $selectedLanguage = $selectedLanguage == null ? $currentLang->getTag() : $selectedLanguage;
+
+    foreach($languages as $language) {
+      $isSelectedLang = $language->lang_code == $selectedLanguage;
+      $isDefaultLang = $currentLang->getTag() == $language->lang_code;
+      $checked = $isSelectedLang ? 'checked' : '';
+      $default = $isDefaultLang ? ' ('. JText::_( 'COM_JOOMELECTION_VOTER_LANGUAGE_DEFAULT') .')' : '';
+
+      $html .= '<label class="radio">';
+      $html .= '  <input type="radio" '.$checked.' value="'.$language->lang_code.'" name="'.$name.'">';
+      $html .= $language->title . $default;
+      $html .= '</label>';
+    }
+
+    return $html;
+  }
+
   private function getInputElement($type, $fullFieldName, $dataObject, $options) {
     $html = '';
     $class = array_key_exists('class', $options) ? $options['class'] : '';
