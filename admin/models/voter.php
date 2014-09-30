@@ -293,6 +293,7 @@ class JoomElectionModelVoter extends JModelLegacy
 
     $siteDefaultLanguage = JFactory::getLanguage()->getTag();
     $language = $input->getString('email_language', $siteDefaultLanguage);
+    $all_installed_languages = JLanguageHelper::getLanguages();
     
     if($sendEmailToVoter == 1) {
       if(!$election_id > 0) {
@@ -319,6 +320,7 @@ class JoomElectionModelVoter extends JModelLegacy
               $user_data['password']  = trim($data[2]);
               $user_data['password2'] = $user_data['password'];
               $user_data['email']   = trim($data[3]);
+              $user_data['language'] = array_key_exists(4, $data) ? trim($data[4]) : '';
             }
             else {
               //CSV is not UTF-8. Convert.
@@ -327,6 +329,7 @@ class JoomElectionModelVoter extends JModelLegacy
               $user_data['password']   = trim(utf8_encode($data[2]));
               $user_data['password2'] = $user_data['password'];
               $user_data['email']   = trim(utf8_encode($data[3]));
+              $user_data['language'] = array_key_exists(4, $data) ? trim($data[4]) : '';
             }
 
             /*
@@ -341,10 +344,25 @@ class JoomElectionModelVoter extends JModelLegacy
               $user_data['password2'] = $user_data['password'];
             }
 
-            //User language check
-            $selected_language = $language;
+            //Validate user language
+            $user_language = $user_data['language'];
+            $valid_user_language = null;
+
+            foreach($all_installed_languages as $installed_lang) { 
+              if($user_language == $installed_lang->lang_code) {
+                $valid_user_language = $installed_lang->lang_code;
+              }
+            }
+
+            if(!isset($valid_user_language)) {
+              $user_language = $siteDefaultLanguage;
+            }
+            $user_data['params'] = ['language' => $user_language];
+
+            //Email language solving
+            $selected_email_language = $language;
             if($language == 'user') {
-              $selected_language = $siteDefaultLanguage;
+              $selected_email_language = $user_language;
             }
             
             //Create backupp user-object to be used in email sending
@@ -353,7 +371,7 @@ class JoomElectionModelVoter extends JModelLegacy
             $created_user->username = $user_data['username'];
             $created_user->password = $user_data['password'];
             $created_user->email = $user_data['email'];
-            $created_user->email_language = $selected_language;
+            $created_user->email_language = $selected_email_language;
             
             //Create Joomla userobject
             $user = new JUser();
@@ -459,7 +477,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $sitename     = JFactory::getApplication()->getCfg( 'sitename' );
     $mailfrom     = JFactory::getApplication()->getCfg( 'mailfrom' );
     $fromname     = JFactory::getApplication()->getCfg( 'fromname' );
-    
+
     $language = (!isset($language) || trim($language) === '') ? JFactory::getLanguage()->getTag() : $language;
     $electionNameFieldName = 'election_name_' . $language;
     $emailHeaderFieldName = 'election_voter_email_header_' . $language;
