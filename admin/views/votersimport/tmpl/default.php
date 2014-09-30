@@ -1,5 +1,6 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 
+require_once (JPATH_COMPONENT_ADMINISTRATOR .'/helpers/JoomElectionAdminMultilangHelper.php');
 $currentLang =& JFactory::getLanguage();
 
 ?>
@@ -95,6 +96,23 @@ $currentLang =& JFactory::getLanguage();
       ?>
     </div>
   </div>
+
+    <!-- Language -->
+    <div class="control-group ">
+      <div class="control-label">
+        <label id="election_id-lbl" for="election_id" class="required" title="">
+          <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_EMAIL_LANGUAGE' ); ?>
+          <span class="star">&nbsp;*</span>
+        </label>
+      </div>
+      <div class="controls">
+        <label class="radio">
+          <input type="radio" value="user" name="email_language">
+          <?php echo JText::_( 'COM_JOOMELECTION_VOTER_GENERATE_PASSWORDS_EMAIL_LANGUAGE_USER' ); ?>
+        </label>
+        <?php echo JoomElectionAdminMultilangHelper::getLanguageRadioButtonsHtml('email_language', $currentLang->getTag()); ?>
+      </div>
+    </div>
 
   <input type="hidden" name="task" value="" />
 </form>

@@ -141,6 +141,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $input = JFactory::getApplication()->input;
     $electionModel =& $this->getInstance('election', 'JoomElectionModel');
     $voter         =& $this->getTable();
+    $siteDefaultLanguage = JFactory::getLanguage()->getTag();
   
     $user_id_from_post   = $input->getInt( 'id', 0);
     $sendEmailToVoter   = $input->getInt( 'sendEmailToVoter', 0);
@@ -153,7 +154,7 @@ class JoomElectionModelVoter extends JModelLegacy
     $userData['password']  = $input->getRaw('password', '');
     $userData['password2']  = $userData['password'];
     $userData['email']    = $input->getString('email', '');
-    $userData['params']    = ['language' => $input->getString('voter_language', JFactory::getLanguage()->getTag())];
+    $userData['params']    = ['language' => $input->getString('voter_language', $siteDefaultLanguage)];
     $clearPassword       = $userData['password'];
     
     /*
@@ -194,7 +195,7 @@ class JoomElectionModelVoter extends JModelLegacy
     if($sendEmailToVoter) {
       if($election_id > 0) {
         $election = $electionModel->getElection($election_id);
-        $this->sendPasswordEmail($userTable, $clearPassword, $election);
+        $this->sendPasswordEmail($userTable, $clearPassword, $election, $user->getParam('language', $siteDefaultLanguage));
         $email_sent = 1;
       }
       else {
@@ -289,6 +290,9 @@ class JoomElectionModelVoter extends JModelLegacy
     $sendEmailToVoter   = $input->getInt( 'sendEmailToVoter', 0);
     $election_id        = $input->getInt( 'election_id', 0);
     $separator          = $input->getString( 'separator', ';');
+
+    $siteDefaultLanguage = JFactory::getLanguage()->getTag();
+    $language = $input->getString('email_language', $siteDefaultLanguage);
     
     if($sendEmailToVoter == 1) {
       if(!$election_id > 0) {
@@ -336,6 +340,12 @@ class JoomElectionModelVoter extends JModelLegacy
               $user_data['password']  = JUserHelper::genRandomPassword();
               $user_data['password2'] = $user_data['password'];
             }
+
+            //User language check
+            $selected_language = $language;
+            if($language == 'user') {
+              $selected_language = $siteDefaultLanguage;
+            }
             
             //Create backupp user-object to be used in email sending
             $created_user = new stdClass();
@@ -343,6 +353,7 @@ class JoomElectionModelVoter extends JModelLegacy
             $created_user->username = $user_data['username'];
             $created_user->password = $user_data['password'];
             $created_user->email = $user_data['email'];
+            $created_user->email_language = $selected_language;
             
             //Create Joomla userobject
             $user = new JUser();
@@ -398,7 +409,7 @@ class JoomElectionModelVoter extends JModelLegacy
               if (count( $created_users )) {
                 $election = $electionModel->getElection($election_id);
                 foreach($created_users as $created_user) {
-                  $this->sendPasswordEmail($created_user, $created_user->password, $election);
+                  $this->sendPasswordEmail($created_user, $created_user->password, $election, $created_user->email_language);
                   $voter->load($created_user->id);
                   $voter->email_sent = 1;
                   $voter->store();
@@ -441,7 +452,7 @@ class JoomElectionModelVoter extends JModelLegacy
   
   
   
-  function sendPasswordEmail($user, $password, &$election) {
+  function sendPasswordEmail($user, $password, &$election, $language) {
     $name       = $user->name;
     $email       = $user->email;
     $username     = $user->username;
@@ -449,13 +460,18 @@ class JoomElectionModelVoter extends JModelLegacy
     $mailfrom     = JFactory::getApplication()->getCfg( 'mailfrom' );
     $fromname     = JFactory::getApplication()->getCfg( 'fromname' );
     
-    $markers  = array("[name]", "[username]", "[password]", "[election_name]", "[www]");
-    $data     = array($name, $username, $password, $election->election_name, JURI::root());
+    $language = (!isset($language) || trim($language) === '') ? JFactory::getLanguage()->getTag() : $language;
+    $electionNameFieldName = 'election_name_' . $language;
+    $emailHeaderFieldName = 'election_voter_email_header_' . $language;
+    $emailTextFieldName = 'election_voter_email_text_' . $language;
     
-    $subject  = str_replace($markers, $data, $election->election_voter_email_header);
+    $markers  = array("[name]", "[username]", "[password]", "[election_name]", "[www]");
+    $data     = array($name, $username, $password, $election->$electionNameFieldName, JURI::root());
+    
+    $subject  = str_replace($markers, $data, $election->$emailHeaderFieldName);
     $subject   = html_entity_decode($subject, ENT_QUOTES);
     
-    $message   = str_replace($markers, $data, $election->election_voter_email_text);
+    $message   = str_replace($markers, $data, $election->$emailTextFieldName);
     $message   = html_entity_decode($message, ENT_QUOTES);
     
     JMail::getInstance()->sendMail($mailfrom, $fromname, $email, $subject, $message);  
@@ -473,6 +489,8 @@ class JoomElectionModelVoter extends JModelLegacy
     $selectedVotersIdsArray   = array();
     $user_data          = array();
     $updated_users         = array();
+    $siteDefaultLanguage = JFactory::getLanguage()->getTag();
+    $language = $input->getString('email_language', $siteDefaultLanguage);
     
     if($selectedGenerationGroup == 1) {
       //1 = generate and send email to selected
@@ -495,6 +513,12 @@ class JoomElectionModelVoter extends JModelLegacy
         //Generate new password
         $user_data['password']  = JUserHelper::genRandomPassword();
         $user_data['password2'] = $user_data['password'];
+
+        //User language solver
+        $selected_language = $language;
+        if($language == 'user') {
+          $selected_language = $user->getParam('language', $siteDefaultLanguage);
+        }
         
         //Create backupp user-object to be used in email sending
         $updated_user       = new stdClass();
@@ -503,6 +527,7 @@ class JoomElectionModelVoter extends JModelLegacy
         $updated_user->username = $user->username;
         $updated_user->password = $user_data['password'];
         $updated_user->email   = $user->email;
+        $updated_user->email_language = $selected_language;
         $updated_users[]     = $updated_user;
     
         //Bind new password to user object
@@ -526,7 +551,7 @@ class JoomElectionModelVoter extends JModelLegacy
       
       if (count( $updated_users )) {
         foreach($updated_users as $updatedUser) {
-          $this->sendPasswordEmail($updatedUser, $updatedUser->password, $election);
+          $this->sendPasswordEmail($updatedUser, $updatedUser->password, $election, $updatedUser->email_language);
           $voter->load($updatedUser->id);
           $voter->email_sent = 1;
           $voter->store();
@@ -548,7 +573,7 @@ class JoomElectionModelVoter extends JModelLegacy
   /**
   * Returns true if $string is valid UTF-8 and false otherwise.
   */
-  function is_utf8($string) {
+  private function is_utf8($string) {
     
       // From http://w3.org/International/questions/qa-forms-utf-8.html
       return preg_match('%^(?:
@@ -578,7 +603,7 @@ class JoomElectionModelVoter extends JModelLegacy
       * Escape character = delim character
       * Direct reading from files without bloating memory too much
   */
-  function fgetcsv_ex($file_handle, $delim = ',', $enclosure = '"', $escape = '"') {
+  private function fgetcsv_ex($file_handle, $delim = ',', $enclosure = '"', $escape = '"') {
       $fields = null;
       $fldCount = 0;
       $inQuotes = false;

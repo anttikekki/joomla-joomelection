@@ -113,7 +113,7 @@ $document->addStyleSheet(JURI::root() . 'administrator/components/com_joomelecti
     <!-- Language -->
     <div class="control-group ">
       <div class="control-label">
-        <label id="election_id-lbl" for="election_id" class="required" title="">
+        <label id="voter_language-lbl" for="voter_language" class="required" title="">
           <?php echo JText::_( 'COM_JOOMELECTION_VOTER_LANGUAGE' ); ?>
           <span class="star">&nbsp;*</span>
         </label>
