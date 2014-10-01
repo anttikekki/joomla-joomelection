@@ -311,26 +311,28 @@ class JoomElectionModelVoter extends JModelLegacy
           $user_data     = array();
           $created_users   = array();
           $import_success = true;
+
+          /*
+          * When turned on, PHP will examine the data read by fgets() and file() to see if it is using Unix, MS-Dos or Macintosh line-ending conventions. 
+          * This enables PHP to interoperate with Macintosh systems, but defaults to Off, as there is a very small performance penalty when detecting the EOL conventions for the first line
+          */
+          ini_set("auto_detect_line_endings", true);
+
+          /*
+          * Must be greater than the longest line (in characters) to be found in the CSV file (allowing for trailing line-end characters). It became optional in PHP 5. 
+          * Omitting this parameter (or setting it to 0 in PHP 5.1.0 and later) the maximum line length is not limited, which is slightly slower. 
+          */
+          $length = 0;
           
-          while (($data = $this->fgetcsv_ex($handle, $separator)) !== null && $import_success == true) {
-            if($this->is_utf8($data[0]) && $this->is_utf8($data[1]) && $this->is_utf8($data[2]) && $this->is_utf8($data[3])) {
-              //CSV is allready UTF-8. No need to encode
-              $user_data['name']     = trim($data[0]);
-              $user_data['username']   = trim($data[1]);
-              $user_data['password']  = trim($data[2]);
-              $user_data['password2'] = $user_data['password'];
-              $user_data['email']   = trim($data[3]);
-              $user_data['language'] = array_key_exists(4, $data) ? trim($data[4]) : '';
-            }
-            else {
-              //CSV is not UTF-8. Convert.
-              $user_data['name']     = trim(utf8_encode($data[0]));
-              $user_data['username']   = trim(utf8_encode($data[1]));
-              $user_data['password']   = trim(utf8_encode($data[2]));
-              $user_data['password2'] = $user_data['password'];
-              $user_data['email']   = trim(utf8_encode($data[3]));
-              $user_data['language'] = array_key_exists(4, $data) ? trim($data[4]) : '';
-            }
+          while (($data = fgetcsv($handle, $length, $separator)) !== false && $import_success == true) {
+            
+            //Get data from columns
+            $user_data['name']     = trim($data[0]);
+            $user_data['username']   = trim($data[1]);
+            $user_data['password']  = trim($data[2]);
+            $user_data['password2'] = $user_data['password'];
+            $user_data['email']   = trim($data[3]);
+            $user_data['language'] = array_key_exists(4, $data) ? trim($data[4]) : '';
 
             /*
             * Registered - This group allows the user to login to the Frontend interface. Registered users can't contribute content, but this may allow them access to other areas, like a 
@@ -584,152 +586,5 @@ class JoomElectionModelVoter extends JModelLegacy
     }
   }
   
-  
-  
-  
-  
-  /**
-  * Returns true if $string is valid UTF-8 and false otherwise.
-  */
-  private function is_utf8($string) {
-    
-      // From http://w3.org/International/questions/qa-forms-utf-8.html
-      return preg_match('%^(?:
-            [\x09\x0A\x0D\x20-\x7E]            # ASCII
-          | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-          |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
-          | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-          |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
-          |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
-          | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-          |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
-      )*$%xs', $string);
-    
-  }
-  
-  
-
-  /*
-     From: http://fi.php.net/manual/en/function.fgetcsv.php#82637
-  
-      Modified function from user comment by Marcos Boyington / 06-Mar-2008 03:08
-     
-      This is a pretty useful update/modification to the fgetcsv function, which allows for:
-      * Multiple-character/multibyte delim/enclosure/escape
-      * Multibyte values
-      * Escape character specification in < PHP5
-      * Escape character = delim character
-      * Direct reading from files without bloating memory too much
-  */
-  private function fgetcsv_ex($file_handle, $delim = ',', $enclosure = '"', $escape = '"') {
-      $fields = null;
-      $fldCount = 0;
-      $inQuotes = false;
-
-      $complete = false;
-      $search_chars_list = array('\r\n', '\n', '\r');
-      if ($delim && ($delim != ''))
-          $search_chars_list[] = $delim;
-      if ($enclosure && ($enclosure != '')) {
-          $search_chars_list[] = $enclosure;
-          $enclosure_len = strlen($enclosure);
-      } else
-          $enclosure_len = 0;
-
-      if ($escape && ($escape != '')) {
-          $search_chars_list[] = $escape;
-          $escape_len = strlen($escape);
-      } else
-          $escape_len = 0;
-      $search_regex = '/' . implode('|', $search_chars_list) . '/';
-
-      $cur_pos = 0;
-      $line = '';
-      $cur_value = '';
-      $in_value = false;
-      $last_value = 0;
-      while (! $complete) {
-          $read_result = fread($file_handle, BUFFER_READ_LEN);
-          if ($read_result) {
-              $line .= $read_result;
-          } else if (strlen($line) == 0) {
-              return null;
-          } else {
-              $line .= "\n";
-          }
-
-          $line_len = strlen($line);
-
-          while (true) {
-              if (! preg_match($search_regex, $line, $matches, PREG_OFFSET_CAPTURE, $cur_pos)) {
-                  if ($read_result) {
-                      // need more chars
-                      break;
-                  } else {
-                      // Incomplete file
-                      return null;
-                  }
-              } else {
-                  $non_escape = false;
-                  $cur_char = $matches[0][0];
-                  $cur_len = strlen($cur_char);
-                  $new_pos = $matches[0][1];
-                  if (($enclosure == $escape) && $in_value && ($cur_char == $escape)) {
-                      // Escape char = enclosure char special handling
-                      if (($new_pos + $cur_len + $enclosure_len) >= $line_len) {
-                          // We need the next char
-                          break;
-                      }
-
-                      $next_char = substr($line, $new_pos + $cur_len, $enclosure_len);
-                      if ((! $enclosure) || ($next_char != $enclosure)) {
-                          $non_escape = true;
-                      }
-                  }
-
-                  $cur_pos = $new_pos;
-                  if ($in_value && (! $non_escape)) {
-                      $cur_value .= mb_substr($line, $last_value, $cur_pos - $last_value);
-                      if ($cur_char == $escape) {
-                          // Skip escape char
-                          $cur_pos += $escape_len;
-                      }
-                      $last_value = $cur_pos;
-                  } else if (($cur_char == "\n") || ($cur_char == "\r") || ($cur_char == "\r\n")) {
-                      $blank_start_lines = ($cur_pos == 0);
-                      ++$cur_pos;
-                      $cur_pos = $cur_pos + strspn($line, "\n\r", $cur_pos);
-                      if (! $blank_start_lines) {
-                          $complete = true;
-                      } else {
-                          $last_value = $cur_pos;
-                          continue;
-                      }
-                  }
-                  if ($cur_char == $delim || $complete) {
-                      if (is_null($fields)) {
-                          $fields = array();
-                      }
-                      $fields[] = $cur_value . trim(mb_substr($line, $last_value, $cur_pos - $last_value));
-                      $last_value = $cur_pos + $cur_len;
-                      $cur_value = '';
-                  } else if ($cur_char == $enclosure) {
-                      if ($in_value) {
-                          $cur_value .= mb_substr($line, $last_value, $cur_pos - $last_value);
-                      }
-                      $last_value = $cur_pos + $cur_len;
-                      $in_value = ! $in_value;
-                  }
-                  if ($complete) {
-                      break;
-                  }
-                  $cur_pos += $cur_len;
-              }
-          }
-      }
-
-      fseek($file_handle, $cur_pos - strlen($line), SEEK_CUR);
-      return $fields;
-  } 
 }
 ?>
