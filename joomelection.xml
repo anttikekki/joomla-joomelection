@@ -63,7 +63,6 @@
 			<folder>controllers</folder>
 			<folder>helpers</folder>
 			<folder>css</folder>
-			<folder>js</folder>
 			
 			<filename>importExample/test_user_import.csv</filename>
 		</files>		
