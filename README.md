@@ -1,9 +1,15 @@
 JoomElection
 ===================
 
-JoomElection is [Joomla!](http://www.joomla.org/) 3 component for arraging small scale elections.
+JoomElection is [Joomla!](http://www.joomla.org/) 3 component for arraging small scale elections. JoomElection contains functions to create election info, candidates, voters and for arraging the ballot.
 
-[Documentation](https://github.com/anttikekki/joomla-joomelection/wiki) (currently only in Finnish)
+#### Main features:
+* Candidate and list elections are supported. Elections has automatic opening hours that can be configured.
+* Candidates can have description text and images (or any HTML contet) on their info.
+* Voters are Joomla users. Voters can be imported from CVS file.
+* Every voter can only vote one time in election. Voter can not be traced back to vote decision.
+
+[Full documentation](https://github.com/anttikekki/joomla-joomelection/wiki) (currently only in Finnish)
 
 #### Download
 * [Version 2.1](https://github.com/anttikekki/joomla-joomelection/archive/2.1.zip) (for Joomla! 3.3.x). Released 01.10.2014. Added support for multilingual text for elections, candidate lists and candidates.
