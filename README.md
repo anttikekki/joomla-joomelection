@@ -12,7 +12,8 @@ JoomElection is [Joomla!](http://www.joomla.org/) 3 component for arraging small
 [Full documentation](https://github.com/anttikekki/joomla-joomelection/wiki) (currently only in Finnish)
 
 #### Downloads for Joomla! 3.3.x
-* [Version 2.1](https://github.com/anttikekki/joomla-joomelection/archive/2.1.zip) Released 03.10.2014. Fixed error when deleting election, candidate list or candidate.
+* [Version 2.1.1](https://github.com/anttikekki/joomla-joomelection/archive/2.1.1.zip) Released 03.10.2014. Fixed error when deleting election, candidate list or candidate.
+* [Version 2.1](https://github.com/anttikekki/joomla-joomelection/archive/2.1.zip) Released 01.10.2014. Added support for multilingual text for elections, candidate lists and candidates.
 * [Version 2.0](https://github.com/anttikekki/joomla-joomelection/archive/2.0.zip) Released 21.05.2014. Added support for Joomla 3.
 
 #### Downloads for Joomla! 1.5.x
