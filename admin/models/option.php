@@ -193,6 +193,7 @@ class JoomElectionModelOption extends JModelLegacy {
     $option_Ids = $input->get( 'cid', array(), 'array' );
     $row     =& $this->getTable();
     $voteModel   =& $this->getInstance('vote', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
 
     if (count( $option_Ids ))    {
       foreach($option_Ids as $option_id) {
@@ -216,6 +217,7 @@ class JoomElectionModelOption extends JModelLegacy {
   {
     $row     =& $this->getTable();
     $voteModel   =& $this->getInstance('vote', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
     
     $query = 'SELECT * FROM #__joomelection_option '.
       ' WHERE election_id = '. (int) $election_id;

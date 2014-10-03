@@ -238,7 +238,7 @@ class JoomElectionModelElection extends JModelLegacy {
     $election_ids   = $input->get( 'cid', array(), 'array' );
     $listModel     =& $this->getInstance('list', 'JoomElectionModel');
     $optionModel   =& $this->getInstance('option', 'JoomElectionModel');
-    $translationModel =& $this->getInstance('translations', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
     $row       =& $this->getTable();
 
     if (count( $election_ids ))    {

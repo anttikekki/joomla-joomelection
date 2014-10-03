@@ -177,14 +177,14 @@ class JoomElectionModelList extends JModelLegacy
       return false;
     }
 
-      // Store text field translations
-      $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
-      $languages = JLanguageHelper::getLanguages();
-      foreach($languages as $language) {
-        $langTag = $language->lang_code;
-        $translationModel->saveTranslation($langTag, 'list', $row->list_id, 'name', $input->getString('name_'.$langTag, ''));
-        $translationModel->saveTranslation($langTag, 'list', $row->list_id, 'description', $input->getRaw('description_'.$langTag, ''));
-      }
+    // Store text field translations
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
+    $languages = JLanguageHelper::getLanguages();
+    foreach($languages as $language) {
+      $langTag = $language->lang_code;
+      $translationModel->saveTranslation($langTag, 'list', $row->list_id, 'name', $input->getString('name_'.$langTag, ''));
+      $translationModel->saveTranslation($langTag, 'list', $row->list_id, 'description', $input->getRaw('description_'.$langTag, ''));
+    }
 
     return true;
   }
@@ -196,7 +196,7 @@ class JoomElectionModelList extends JModelLegacy
     $list_ids     = $input->get('cid',  array(), 'array');
     $row       =& $this->getTable();
     $optionModel   =& $this->getInstance('option', 'JoomElectionModel');
-      $translationModel =& $this->getInstance('translations', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
 
     if (count( $list_ids ))    {
       foreach($list_ids as $list_id) {
@@ -206,8 +206,8 @@ class JoomElectionModelList extends JModelLegacy
           return false;
         }
             
-            // Delete translations
-            $translationModel->deleteTranslation('list', $list_id);
+        // Delete translations
+        $translationModel->deleteTranslation('list', $list_id);
         
         //If list delete is succesfull
         //Delete options for this list and option votes
@@ -223,7 +223,7 @@ class JoomElectionModelList extends JModelLegacy
   {
     $row       =& $this->getTable();
     $optionModel   =& $this->getInstance('option', 'JoomElectionModel');
-      $translationModel =& $this->getInstance('translations', 'JoomElectionModel');
+    $translationModel =& $this->getInstance('translation', 'JoomElectionModel');
     
     //Get all lists for given election id
     $query = 'SELECT * FROM #__joomelection_list '.
@@ -239,8 +239,8 @@ class JoomElectionModelList extends JModelLegacy
           return false;
         }
             
-            // Delete translations
-            $translationModel->deleteTranslation('list', $list->list_id);
+        // Delete translations
+        $translationModel->deleteTranslation('list', $list->list_id);
         
         //If list delete is succesfull
         //Delete options for this list and option votes
