@@ -2,110 +2,146 @@
 defined('_JEXEC') or die('Restricted access');
 
 $document = &JFactory::getDocument();
-$document->addStyleSheet( JURI::base() . 'components/com_joomelection/css/styles.css', 'text/css', null, array( 'id' => 'StyleSheet' ) );
+$document->addStyleSheet( JURI::base() . 'components/com_joomelection/css/joomelection-bootstrap.css', 'text/css');
 $langTag = JFactory::getLanguage()->getTag();
 
+?>
 
-foreach ($this->elections as $election) { ?>
-  <h1><?php echo $election->election_name; ?></h1>
+<div class="joomelection-bootstrap-wrapper">
 
-  <div>
-    <table cellspacing="10">
-      <tr>
-        <td nowrap="nowrap">
-          <?php echo "<b>" .JText::_( 'COM_JOOMELECTION_ELECTION_OPEN_TIME') .":</b>"; ?>
-        </td>
-        <td>
-          <?php 
-            echo JHTML::_('date',  $election->date_to_open, 'd.m.Y') ." ". JText::_( 'COM_JOOMELECTION_TIME_AT') ." ". 
-            JHTML::_('date',  $election->date_to_open, 'H.i') ." - ". 
-            JHTML::_('date',  $election->date_to_close, 'd.m.Y') ." ". JText::_( 'COM_JOOMELECTION_TIME_AT') ." ". 
-            JHTML::_('date',  $election->date_to_close, 'H.i'); 
+<?php foreach ($this->elections as $election) { ?>
+
+  <h3><?php echo $election->election_name; ?></h3>
+
+  <form role="form">
+
+    <div class="form-group">
+      <label><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_OPEN_TIME'); ?></label>
+      <div>
+      <?php 
+        echo JHTML::_('date',  $election->date_to_open, 'd.m.Y') ." ". 
+        JText::_( 'COM_JOOMELECTION_TIME_AT') ." ". 
+        JHTML::_('date',  $election->date_to_open, 'H.i') ." - ". 
+        JHTML::_('date',  $election->date_to_close, 'd.m.Y') ." ". 
+        JText::_( 'COM_JOOMELECTION_TIME_AT') ." ". 
+        JHTML::_('date',  $election->date_to_close, 'H.i'); 
+      ?>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS'); ?></label>
+      <div>
+      <?php 
+        if($election->valid_election) { 
           ?>
-        </td>
-      </tr>
-      
-      
-      <tr>
-        <td nowrap="nowrap">
-          <?php echo "<b>" .JText::_( 'COM_JOOMELECTION_ELECTION_STATUS') .":</b>"; ?>
-        </td>
-        <td>
-          <?php 
+          <span class="label label-success">
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_OPEN'); ?>
+          </span>
+          <?php
+        }
+        else {
+          ?>
+          <span class="label label-danger">
+          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_CLOSED'); ?>
+          </span>
+          <?php
+        }
+       ?>
+       </div>
+    </div>
+
+    <div class="form-group">
+      <label><?php echo JText::_( 'COM_JOOMELECTION_YOUR_ELECTION_STATUS'); ?></label>
+      <div>
+      <?php 
+        if($this->user_logged_in) {
+          if($election->valid_voter) {
+            echo JText::_( 'COM_JOOMELECTION_WELCOME_TO_VOTE' ) . ", " .$this->voter_name. ". " .JText::_( 'COM_JOOMELECTION_YOU_CAN_VOTE_IN_THIS_ELECTION');
+          }
+          else {
             if($election->valid_election) {
-              echo "<b class='green'>" .JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_OPEN') ."</b>";
+              echo JText::_( 'COM_JOOMELECTION_ALLREADY_VOTED_ERROR');
             }
             else {
-              echo "<b class='red'>" .JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_CLOSED') ."</b>";
+              echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );
             }
-           ?>
-        </td>
-      </tr>
-      
-      <tr>
-        <td nowrap="nowrap">
-          <?php echo "<b>" .JText::_( 'COM_JOOMELECTION_YOUR_ELECTION_STATUS'). ":</b>"; ?>
-        </td>
-        <td>
-          <?php 
-            if($this->user_logged_in) {
-              if($election->valid_voter) {
-                echo JText::_( 'COM_JOOMELECTION_WELCOME_TO_VOTE' ) . ", " .$this->voter_name. ". " .JText::_( 'COM_JOOMELECTION_YOU_CAN_VOTE_IN_THIS_ELECTION');
-              }
-              else {
-                if($election->valid_election) {
-                  echo JText::_( 'COM_JOOMELECTION_ALLREADY_VOTED_ERROR');
-                }
-                else {
-                  echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );
-                }
-              }
-            }
-            else {
-              if($election->valid_election) {
-                echo JText::_( 'COM_JOOMELECTION_NOT_LOGGED_IN_ERROR' );
-              }
-              else {
-                echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );
-              }
-            } 
-          ?>
-        </td>
-      </tr>
-      
-      <tr>
-        <td nowrap="nowrap" valign="top">
-          <?php echo "<b>" .JText::_( 'COM_JOOMELECTION_ELECTION_DESCRIPTION') .":</b>"; ?>
-        </td>
-        <td>
-          <?php echo $election->election_description; ?>
-        </td>
-      </tr>
-    </table>
-  </div>
+          }
+        }
+        else {
+          if($election->valid_election) {
+            echo JText::_( 'COM_JOOMELECTION_NOT_LOGGED_IN_ERROR' );
+          }
+          else {
+            echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );
+          }
+        } 
+      ?>
+      </div>
+    </div>
   
+    <div class="form-group">
+      <label><?php echo JText::_( 'COM_JOOMELECTION_ELECTION_DESCRIPTION'); ?></label>
+      <div>
+        <?php echo $election->election_description; ?>
+       </div>
+    </div>
+
+  </form>
+
+
+  <hr>
   
-  
-  
-  
-  
-  
-  <?php if(count($election->election_lists) > 0) { ?>
-  <div class="election_list_tabs">
-    <ul class="tabnav">
-      <li class="tabs_legend"><?php echo JText::_('COM_JOOMELECTION_SELECT_VIEW'); ?>:</li>
-      <li <?php if($this->selectedViewTab == 'view_election_candidates') {?> class="selectedTab" <?php } ?>>
-        <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number&selectedViewTab=view_election_candidates">
-          <?php echo JText::_('COM_JOOMELECTION_VIEW_CANDIDATES'); ?>
+
+  <?php if(count($election->election_lists) > 0) { 
+    $candidatesButtonActiveClass = $this->selectedViewTab == 'view_election_candidates' ? 'active' : '';
+    $listsButtonActiveClass = $this->selectedViewTab == 'view_election_lists' ? 'active' : '';
+    $orderByNumberActiveClass = $this->orderBy == 'number' ? 'active' : '';
+    $orderByNameActiveClass = $this->orderBy == 'name' ? 'active' : '';
+    $orderByListNameActiveClass = $this->orderBy == 'listName' ? 'active' : '';
+  ?>
+  <div class="row">
+
+    <div class="col-sx-8">
+      <span><?php echo JText::_('COM_JOOMELECTION_ORDER_BY'); ?>:</span>
+
+      <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number" 
+          class="btn btn-default btn-sm <?php echo $orderByNumberActiveClass; ?>" 
+          role="button">
+        <span class="glyphicon glyphicon-sort-by-order"></span> <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_NUMBER'); ?>
+      </a>
+
+      <a href="index.php?option=com_joomelection&view=joomelection&orderBy=name" 
+          class="btn btn-default btn-sm <?php echo $orderByNameActiveClass; ?>" 
+          role="button">
+        <span class="glyphicon glyphicon-sort-by-alphabet"></span> <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_NAME'); ?>
+      </a>
+
+      <?php if($election->election_type_id == 2) { //List election ?>
+        <a href="index.php?option=com_joomelection&view=joomelection&orderBy=listName" 
+            class="btn btn-default btn-sm <?php echo $orderByListNameActiveClass; ?>" 
+            role="button">
+          <span class="glyphicon glyphicon-sort-by-attributes"></span> <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_LIST_NAME'); ?>
         </a>
-      </li>
-      
-      <li <?php if($this->selectedViewTab == 'view_election_lists') {?> class="selectedTab" <?php } ?>>
-        <a href="index.php?option=com_joomelection&view=joomelection&selectedViewTab=view_election_lists">
-          <?php echo JText::_('COM_JOOMELECTION_VIEW_CANDIDATE_LISTS'); ?>
-        </a>
-      </li>
-    </ul>
+      <?php } ?>
+
+    </div>
+
+    <div class="col-sx-4">
+
+      <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number&selectedViewTab=view_election_candidates" 
+          class="btn btn-default btn-sm <?php echo $candidatesButtonActiveClass; ?>" 
+          role="button">
+        <span class="glyphicon glyphicon-user"></span> <?php echo JText::_('COM_JOOMELECTION_VIEW_CANDIDATES'); ?>
+      </a>
+
+      <a href="index.php?option=com_joomelection&view=joomelection&selectedViewTab=view_election_lists" 
+          class="btn btn-default btn-sm <?php echo $listsButtonActiveClass; ?>" 
+          role="button">
+        <span class="glyphicon glyphicon-list"></span> <?php echo JText::_('COM_JOOMELECTION_VIEW_CANDIDATE_LISTS'); ?>
+      </a>
+
+    </div>
   </div>
   <?php } ?>
   
@@ -116,14 +152,9 @@ foreach ($this->elections as $election) { ?>
   
     <div class="candidate_list_tabs<?php if(count($election->election_lists) == 0) { ?>_no_list_tabs<?php } ?>">
       <ul class="tabnav">
-        <li class="tabs_legend"><?php echo JText::_('COM_JOOMELECTION_ORDER_BY'); ?>:</li>
-        <li <?php if($this->orderBy == 'number') {?> class="selectedTab" <?php } ?>>
-          <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number">
-            <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_NUMBER'); ?>
-          </a>
-        </li>
-        <li <?php if($this->orderBy == 'name') {?> class="selectedTab" <?php } ?> >
-          <a href="index.php?option=com_joomelection&view=joomelection&orderBy=name">
+
+        <li <?php if($this->orderBy == '') {?> class="selectedTab" <?php } ?> >
+          <a href="">
             <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_NAME'); ?>
           </a>
         </li>
@@ -221,3 +252,5 @@ foreach ($this->elections as $election) { ?>
     
   <?php } ?>
 <?php } ?>
+
+</div> <!-- joomelection-bootstrap-wrapper -->
