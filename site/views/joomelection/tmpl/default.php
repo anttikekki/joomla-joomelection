@@ -36,14 +36,14 @@ $langTag = JFactory::getLanguage()->getTag();
         if($election->valid_election) { 
           ?>
           <span class="label label-success">
-          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_OPEN'); ?>
+            <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_OPEN'); ?>
           </span>
           <?php
         }
         else {
           ?>
           <span class="label label-danger">
-          <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_CLOSED'); ?>
+            <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_STATUS_CLOSED'); ?>
           </span>
           <?php
         }
@@ -56,24 +56,34 @@ $langTag = JFactory::getLanguage()->getTag();
       <div>
       <?php 
         if($this->user_logged_in) {
-          if($election->valid_voter) {
-            echo JText::_( 'COM_JOOMELECTION_WELCOME_TO_VOTE' ) . ", " .$this->voter_name. ". " .JText::_( 'COM_JOOMELECTION_YOU_CAN_VOTE_IN_THIS_ELECTION');
+          if($election->valid_voter) { ?>
+            <span class="label label-success">
+              <?php echo JText::_( 'COM_JOOMELECTION_WELCOME_TO_VOTE' ) . ", " .$this->voter_name. ". " .JText::_( 'COM_JOOMELECTION_YOU_CAN_VOTE_IN_THIS_ELECTION'); ?>
+            </span><?php
           }
           else {
-            if($election->valid_election) {
-              echo JText::_( 'COM_JOOMELECTION_ALLREADY_VOTED_ERROR');
+            if($election->valid_election) { ?>
+              <span class="label label-warning">
+                <?php echo JText::_( 'COM_JOOMELECTION_ALLREADY_VOTED_ERROR');?>
+              </span><?php
             }
-            else {
-              echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );
+            else { ?>
+              <span class="label label-danger">
+                <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );?>
+              </span><?php
             }
           }
         }
         else {
-          if($election->valid_election) {
-            echo JText::_( 'COM_JOOMELECTION_NOT_LOGGED_IN_ERROR' );
+          if($election->valid_election) { ?>
+            <span class="label label-danger">
+              <?php echo JText::_( 'COM_JOOMELECTION_NOT_LOGGED_IN_ERROR' );?>
+            </span><?php
           }
-          else {
-            echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );
+          else { ?>
+            <span class="label label-danger">
+              <?php echo JText::_( 'COM_JOOMELECTION_ELECTION_CLOSED_ERROR' );?>
+            </span><?php
           }
         } 
       ?>
@@ -94,17 +104,18 @@ $langTag = JFactory::getLanguage()->getTag();
 
   <a name="candidates_section"></a> 
 
-  <?php if(count($election->election_lists) > 0) { 
+  <?php
     $candidatesButtonActiveClass = $this->selectedViewTab == 'view_election_candidates' ? 'active' : '';
     $listsButtonActiveClass = $this->selectedViewTab == 'view_election_lists' ? 'active' : '';
     $orderByNumberActiveClass = $this->orderBy == 'number' ? 'active' : '';
     $orderByNameActiveClass = $this->orderBy == 'name' ? 'active' : '';
     $orderByListNameActiveClass = $this->orderBy == 'listName' ? 'active' : '';
-    ?>
-    <form>
-      <div class="row">
+  ?>
+  <form>
+    <div class="row">
 
-        <div class="col-xs-7">
+      <div class="col-xs-7">
+        <?php if($this->selectedViewTab == 'view_election_candidates') { ?>
           <div class="form-group">
             <label><?php echo JText::_('COM_JOOMELECTION_ORDER_BY'); ?>:</label>
             <div>
@@ -129,11 +140,11 @@ $langTag = JFactory::getLanguage()->getTag();
               <?php } ?>
             </div>
           </div>
+        <?php } ?>
+      </div>
 
-        </div>
-
-        <div class="col-xs-5 text-right">
-
+      <div class="col-xs-5 text-right">
+      <?php if(count($election->election_lists) > 0) { ?>
           <div class="form-group">
             <label><?php echo JText::_('COM_JOOMELECTION_SELECT_VIEW'); ?>:</label>
             <div>
@@ -150,11 +161,11 @@ $langTag = JFactory::getLanguage()->getTag();
               </a>
             </div>
           </div> <!-- form group end -->
-
-        </div>
+        <?php } ?>
       </div>
-    </form>
-  <?php } ?>
+    </div>
+  </form>
+  
 
 
   
