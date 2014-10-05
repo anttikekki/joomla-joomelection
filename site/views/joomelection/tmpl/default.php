@@ -92,6 +92,7 @@ $langTag = JFactory::getLanguage()->getTag();
 
   <hr>
 
+  <a name="candidates_section"></a> 
 
   <?php if(count($election->election_lists) > 0) { 
     $candidatesButtonActiveClass = $this->selectedViewTab == 'view_election_candidates' ? 'active' : '';
@@ -107,20 +108,20 @@ $langTag = JFactory::getLanguage()->getTag();
           <div class="form-group">
             <label><?php echo JText::_('COM_JOOMELECTION_ORDER_BY'); ?>:</label>
             <div>
-              <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number" 
+              <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number#candidates_section" 
                   class="btn btn-default btn-sm <?php echo $orderByNumberActiveClass; ?>" 
                   role="button">
                 <span class="glyphicon glyphicon-sort-by-order"></span> <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_NUMBER'); ?>
               </a>
 
-              <a href="index.php?option=com_joomelection&view=joomelection&orderBy=name" 
+              <a href="index.php?option=com_joomelection&view=joomelection&orderBy=name#candidates_section" 
                   class="btn btn-default btn-sm <?php echo $orderByNameActiveClass; ?>" 
                   role="button">
                 <span class="glyphicon glyphicon-sort-by-alphabet"></span> <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_NAME'); ?>
               </a>
 
               <?php if($election->election_type_id == 2) { //List election ?>
-                <a href="index.php?option=com_joomelection&view=joomelection&orderBy=listName" 
+                <a href="index.php?option=com_joomelection&view=joomelection&orderBy=listName#candidates_section" 
                     class="btn btn-default btn-sm <?php echo $orderByListNameActiveClass; ?>" 
                     role="button">
                   <span class="glyphicon glyphicon-sort-by-attributes"></span> <?php echo JText::_('COM_JOOMELECTION_ORDER_BY_CANDIDATE_LIST_NAME'); ?>
@@ -136,13 +137,13 @@ $langTag = JFactory::getLanguage()->getTag();
           <div class="form-group">
             <label><?php echo JText::_('COM_JOOMELECTION_SELECT_VIEW'); ?>:</label>
             <div>
-              <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number&selectedViewTab=view_election_candidates" 
+              <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number&selectedViewTab=view_election_candidates#candidates_section" 
                   class="btn btn-default btn-sm <?php echo $candidatesButtonActiveClass; ?>" 
                   role="button">
                 <span class="glyphicon glyphicon-user"></span> <?php echo JText::_('COM_JOOMELECTION_VIEW_CANDIDATES'); ?>
               </a>
 
-              <a href="index.php?option=com_joomelection&view=joomelection&selectedViewTab=view_election_lists" 
+              <a href="index.php?option=com_joomelection&view=joomelection&selectedViewTab=view_election_lists#candidates_section" 
                   class="btn btn-default btn-sm <?php echo $listsButtonActiveClass; ?>" 
                   role="button">
                 <span class="glyphicon glyphicon-list"></span> <?php echo JText::_('COM_JOOMELECTION_VIEW_CANDIDATE_LISTS'); ?>
@@ -159,18 +160,23 @@ $langTag = JFactory::getLanguage()->getTag();
   
   <?php if($this->selectedViewTab == 'view_election_candidates') {
     foreach ($election->options as $option) { ?>
+      <a name="candidate_<?php echo $option->option_id; ?>"></a> 
 
       <div class="panel panel-default">
         <div class="panel-body">
 
-          <h4><?php echo $option->name; ?></h4>
+          <h4><?php echo $option->option_number; ?>. <?php echo $option->name; ?></h4>
 
           <form role="form">
 
             <div class="form-group">
-              <label><?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_NUMBER'); ?></label>
               <div>
-                <?php echo $option->option_number; ?>
+                <?php if($election->valid_voter) { ?>
+                  <a href="<?php echo $option->vote_link; ?>" class="btn btn-success btn-sm" role="button">
+                    <span class="glyphicon glyphicon-ok"></span> 
+                    <?php echo JText::_( 'COM_JOOMELECTION_VOTE'); ?>
+                  </a>
+                <?php } ?>
               </div>
             </div>
 
@@ -178,7 +184,9 @@ $langTag = JFactory::getLanguage()->getTag();
               <div class="form-group">
                 <label><?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST'); ?></label>
                 <div>
-                  <?php echo $option->list_name; ?>
+                  <a href="index.php?option=com_joomelection&view=joomelection&selectedViewTab=view_election_lists#candidate_list_<?php echo $option->list_id; ?>">
+                    <?php echo $option->list_name; ?>
+                  </a>
                 </div>
               </div>
             <?php } ?>
@@ -187,19 +195,6 @@ $langTag = JFactory::getLanguage()->getTag();
               <label><?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_DESCRIPTION'); ?></label>
               <div>
                 <?php echo $option->description; ?>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div>
-                <?php if($election->valid_voter) { ?>
-                  <a href="<?php echo $option->vote_link; ?>" 
-                      class="btn btn-primary" 
-                      role="button">
-                    <span class="glyphicon glyphicon-ok"></span> 
-                    <?php echo JText::_( 'COM_JOOMELECTION_VOTE_CANDIDATE_NUMBER'). " " .$option->option_number; ?>
-                  </a>
-                <?php } ?>
               </div>
             </div>
 
@@ -212,6 +207,7 @@ $langTag = JFactory::getLanguage()->getTag();
    }
   else { //View candidate lists
     foreach ($election->election_lists as $election_list) { ?>
+      <a name="candidate_list_<?php echo $election_list->list_id; ?>"></a> 
 
       <div class="panel panel-default">
         <div class="panel-body">
@@ -230,7 +226,11 @@ $langTag = JFactory::getLanguage()->getTag();
               <label><?php echo JText::_( 'COM_JOOMELECTION_CANDIDATE_LIST_CANDIDATES'); ?></label>
               <div>
                 <?php foreach ($election_list->list_options as $list_option) { ?>
-                    <div><?php echo $list_option->name; ?></div>
+                    <div>
+                      <a href="index.php?option=com_joomelection&view=joomelection&orderBy=number&selectedViewTab=view_election_candidates#candidate_<?php echo $list_option->option_id; ?>">
+                        <?php echo $list_option->option_number; ?>. <?php echo $list_option->name; ?>
+                      </a>
+                    </div>
                 <?php } ?>
               </div>
             </div>
