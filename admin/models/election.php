@@ -188,9 +188,12 @@ class JoomElectionModelElection extends JModelLegacy {
     //Append time to date
     $row->date_to_open   = substr($input->getString( 'date_to_open', ''), 0, 10) ." ". $input->getString( 'time_to_open', '');
     $row->date_to_close  = substr($input->getString( 'date_to_close', ''), 0, 10) ." ". $input->getString( 'time_to_close', '');
+
+    $config = JFactory::getConfig();
+    $defaultTimezone = $config->get('offset');
     
     $user = JFactory::getUser();
-    $timezone = $user->getParam('timezone');
+    $timezone = $user->getParam('timezone', $defaultTimezone);
     
     //Convert to UTC from current server/user timezone so that database allways stores UTC dates
     $date = new JDate($row->date_to_open, $timezone);
