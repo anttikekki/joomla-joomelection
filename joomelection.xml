@@ -7,7 +7,7 @@
 	<authorUrl>https://github.com/anttikekki/joomla-joomelection</authorUrl>
 	<copyright>Antti Kekki</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<version>2.1.3</version>
+	<version>2.1.4</version>
 	<description>COM_JOOMELECTION_COMPONENT_DESCRIPTION</description>
   
 	<install>
