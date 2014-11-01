@@ -494,7 +494,8 @@ class JoomElectionModelVoter extends JModelLegacy
     $message   = str_replace($markers, $data, $election->$emailTextFieldName);
     $message   = html_entity_decode($message, ENT_QUOTES);
     
-    JMail::getInstance()->sendMail($mailfrom, $fromname, $email, $subject, $message);  
+    //New JMail instance is needed to prevent email recipent cumulation
+    JMail::getInstance($user->email)->sendMail($mailfrom, $fromname, $email, $subject, $message);  
   }
   
   
