@@ -108,7 +108,7 @@ $sortCallbackTask = 'election.showList';
     </table>
   </div>
   
-  <input type="hidden" name="task" value=""/>
+  <input type="hidden" name="task" value="election.showList"/>
   <input type="hidden" name="boxchecked" value="0" />
   <input type="hidden" name="opener_task" value="<?php echo $this->task; ?>" /> <!-- For results page so that Back button returns to right page-->
   <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />

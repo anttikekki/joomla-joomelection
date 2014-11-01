@@ -24,8 +24,8 @@ class JoomElectionViewLists extends JViewLegacy
     
     //Pass table sort parameters from last request
     $input = JFactory::getApplication()->input;
-    $this->sortColumn = $input->getString('filter_order', '');
-    $this->sortDirection = $input->getString('filter_order_Dir', '');
+    $this->sortColumn = $input->getString('filter_order', 'list.election_id');
+    $this->sortDirection = $input->getString('filter_order_Dir', 'ASC');
 
     parent::display($tpl);
   }
