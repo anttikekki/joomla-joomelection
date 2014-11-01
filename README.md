@@ -13,7 +13,7 @@ JoomElection is [Joomla!](http://www.joomla.org/) 3.3.x component for arraging s
 [Full documentation](https://github.com/anttikekki/joomla-joomelection/wiki) (currently only in Finnish)
 
 #### Downloads
-[Version 2.1.3](https://github.com/anttikekki/joomla-joomelection/archive/2.1.3.zip) (01.11.2014)
+[Version 2.1.4](https://github.com/anttikekki/joomla-joomelection/archive/2.1.4.zip) (01.11.2014)
 
 [Old releases and changelog](https://github.com/anttikekki/joomla-joomelection/releases)
 
